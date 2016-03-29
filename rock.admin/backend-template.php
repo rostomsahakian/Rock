@@ -11,6 +11,7 @@
 
         <div class="col-md-2">
             <div class="panel panel-default after-nav-left">
+                <div class="panel-heading bg-primary"><?= WEBSITE_NAME ?> Pages</div>
                 <div class="panel-body">
                     <?php
                     /*
@@ -31,7 +32,7 @@
                         $t = $this->show_pages("0", $pages_array);
                         ?>
                     </div>
-        
+                    <p id="event_result"></p>
                 </div>
             </div>
         </div>
@@ -40,7 +41,6 @@
             <div class="panel panel-default after-nav-right">
                 <div class="panel-body">
                     <?php
-                                          
                     if (!isset($cmd['cmd'])) {
                         return false;
                     } else {
@@ -50,6 +50,51 @@
                                 break;
                             case "menus":
                                 echo "hi there i am going to be a menu";
+                                break;
+                            case "move_page":
+                                var_dump($cmd['move_data']['order']);
+                                $tables = array("table1" => "pages");
+                                $fields = array(
+                                    "field1" => "parent",
+                                    "field2" => "id"
+                                );
+
+                                $values = array(
+                                    "value1" => $cmd['move_data']["2"],
+                                    "value2" => $cmd['move_data']["1"]
+                                );
+
+                                $move_data = array(
+                                    "tables" => $tables,
+                                    "fields" => $fields,
+                                    "values" => $values
+                                );
+
+                                $q = new queries();
+
+                                $q->UpdateQueriesServices($move_data, "1");
+                                for ($i = 0; $i < count($cmd['move_data']['order']); $i++)
+                                    $pid = $cmd["move_data"][$i];
+                                $update_fields = array(
+                                    "field1" => "ord",
+                                    "field2" => "id"
+                                );
+                                $update_values = array(
+                                    "value1" => $i,
+                                    "value2" => $pid
+                                );
+                                $order_update = array(
+                                    "tables" => $tables,
+                                    "fields" => $update_fields,
+                                    "values" => $update_values
+                                );
+                                $q->UpdateQueriesServices($order_update, $option = "1");
+                                echo "done";
+
+                                break;
+                            case "edit_page":
+                               
+                                $this->_forms->EditPageForm($cmd['editor_data'], $cmd['page_id']);
                                 break;
                         }
                     }

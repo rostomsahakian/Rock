@@ -83,7 +83,7 @@ class queries {
                     break;
                 case "3":
 
-                    $sql = "SELECT * FROM `" . $table . "`";
+                    $sql = "SELECT * FROM `" . $table . "` ORDER BY ord ASC";
 
                     $result = $this->_mysqli->query($sql);
 
@@ -119,22 +119,40 @@ class queries {
                     $sql = "SELECT * FROM `" . $data['tables']['table1'] . "` WHERE `" . $data['fields']['field1'] . "`= '" . $this->_mysqli->real_escape_string($data['values']['value1']) . "' AND `" . $data['fields']['field2'] . "` = '" . $this->_mysqli->real_escape_string($data['values']['value2']) . "'";
                     $result = $this->_mysqli->query($sql);
                     $num_rows = $result->num_rows;
-                    if($num_rows == "1"){
-                    if ($result) {
-                        while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
-                        
-                            unset($this->_res);
-                            $this->_res[] = $row;
+                    if ($num_rows == "1") {
+                        if ($result) {
+                            while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+
+                                unset($this->_res);
+                                $this->_res[] = $row;
+                            }
+                            return true;
+                        } else {
+                            return false;
                         }
-                        return true;
                     } else {
                         return false;
                     }
-                    
-                    }else{
-                        return false;
-                    }
 
+                    break;
+            }
+        }
+    }
+
+    public function UpdateQueriesServices(array $data, $option = "0") {
+
+        if ($option != "0") {
+            switch ($option) {
+                case "1":
+                    $sql = "UPDATE `" . $data['tables']['table1'] . "` SET `" . $data['fields']['field1'] . "` = '" . (int) $data['values']['value1'] . "' WHERE `" . $data['fields']['field2'] . "` = '" . (int) $data['values']['value2'] . "'";
+                    var_dump($sql);
+                    $result = $this->_mysqli->query($sql);
+                    if ($result) {
+                        return true;
+                    } else {
+                        return false;
+                        exit;
+                    }
                     break;
             }
         }

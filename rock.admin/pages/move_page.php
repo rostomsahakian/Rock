@@ -5,8 +5,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-require '../admin_libs.php';
 
+require $_SERVER['DOCUMENT_ROOT'] . '/public_html/rock.includes/basics.php';
 
 
 

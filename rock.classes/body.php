@@ -121,19 +121,53 @@ class body {
                 $command = (isset($_REQUEST['cmd']) ? $_REQUEST['cmd'] : 'login');
                 $option = (isset($_REQUEST['option']) ? $_REQUEST['option'] : 'true');
                 $page_id = (isset($_REQUEST['page_id']) ? $_REQUEST['page_id'] : '');
+                /*
+                 * For moving pages
+                 */
+                $move_page_id = (isset($_REQUEST['id']) ? $_REQUEST['id'] : '');
+                $to = (isset($_REQUEST['parent_id']) ? $_REQUEST['parent_id'] : '');
+                $order = explode(",", (isset($_REQUEST['order']) ? $_REQUEST['order'] : ''));
+
+                /*
+                 * Moves the pages to different parent jsTree
+                 * Changes the order of pages 
+                 * More work needed 03/28/2016 @1625
+                 */
+                $move_data = array(
+                    "1" => $move_page_id,
+                    "2" => $to,
+                    "order" => $order);
+
+
+                unset($this->queries->_res);
+                $data_for_editor = $this->queries->GetData("pages", "id", $page_id, "0");
+                if ($data_for_editor) {
+                    $data_for_editor = $this->queries->RetData();
+                } else {
+                    return false;
+                }
+
+
+
+                ################################################
+                /* -----------Logical Controller---------------*\
+                  ################################################
+                  /*
+                 * Controls the backend accoring to command
+                 */
                 $cmd = array(
                     "option" => $option,
                     "cmd" => $command,
                     "pages" => $data_for_side_bar,
-                    "page_id" => $page_id
+                    "page_id" => $page_id,
+                    "move_data" => $move_data,
+                    "editor_data" => $data_for_editor
                 );
-                /*
-                 * Controls the backend accoring to command
-                 */
                 $this->listener->controller($cmd);
                 /*
                  * DO NOT REMOVE
                  */
+                #################################################
                 ?>
 
 

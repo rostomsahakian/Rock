@@ -25,7 +25,9 @@ class commands {
             "login",
             "add_page",
             "see_page",
-            "menus"
+            "menus",
+            "move_page",
+            "edit_page"
         );
     }
 

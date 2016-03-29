@@ -37,7 +37,7 @@ class BackendController {
         /*
          * prevent url injection if user is not logged in !important
          */
-        $cmd['cmd'] = (isset($_SESSION['userdata']) ? (isset($_REQUEST['cmd']) ? $_REQUEST['cmd'] : "login") : "login");
+        $cmd['cmd'] = (isset($_SESSION['userdata']) ? (isset($_REQUEST['cmd']) ? $_REQUEST['cmd'] : "menus") : "login");
         /*
          * Check if the command exists or not
          */
@@ -76,7 +76,7 @@ class BackendController {
         foreach ($pages[$id] as $page) {
           
             echo '<li id="page_' . $page['id'] . '">'
-            . '<a href="?cmd=see_page&option=true&page_id=' . $page['id'] . '">'
+            . '<a href="?cmd=edit_page&option=true&page_id=' . $page['id'] . '">'
             . '' . htmlspecialchars($page['name']) . ''
             . '</a>';
             $this->show_pages($page['id'], $pages);
@@ -93,7 +93,11 @@ class BackendController {
         foreach ($page_info as $page_look) {
             if ($page_look['id'] == $extra_info) {
 
-                echo $page_look['body'];
+               // echo $page_look['body'];
+                $url = "http://dev.rock.webulence.com/".$page_look['name'];
+                $iframe = '<iframe src="'.$url.'" width="100%" height="200"></iframe>';
+                echo $iframe;
+
             }
         }
     }

@@ -8,47 +8,52 @@ $(function () {
     // 6 create an instance when the DOM is ready
     $('#pages-wrapper').jstree({
         "core": {
-            "check_callback": true
+            "check_callback": true,
         },
         "plugins":
-                ["contextmenu", "dnd", "changed"],
-    }).bind("move_node.jstree", function(e,data){
-         var p = data.parent.replace(/.*_/, '');
+                ["contextmenu", "dnd", "changed", "search"],
+    }).bind("move_node.jstree", function (e, data) {
+
+
+        //var p = data.old_parent.replace(/.*_/, '');
+
+        var p = data.parent.replace(/.*_/, '');
+        //console.log(p);
+        //var nodes = data.instance.get_node(data.node).parents;
+        var nodes = data.instance.get_node(data.node).parents;
+        var n_p = data.position;
+        var o_p = data.old_position;
+        console.log(n_p);
+        console.log(o_p);
+
+        console.log(nodes);
+        var c = data.node.id.replace(/.*_/, '');
         var new_order = [];
-        var nodes = data.node.id.replace(/.*_/, '');
-        for(var i = 0; i < nodes.length; ++i)
-            
-          new_order.push(nodes[i].replace(/.*_/, ''));
-        $.getJSON('/rock.admin/pages/move_page.php?id='
+
+        for (i = 0, j = nodes.length; i < j; ++i) 
+
+            new_order.push(nodes[i].replace(/.*_/, ''));
+            var childs = data.position[i];
+            //console.log(childs);
+        
+        $.getJSON('?cmd=move_page&id='
                 + data.node.id.replace(/.*_/, '') + '&parent_id='
                 + (p == "#" ? 0 : p)
                 + '&order=' + new_order
                 );
-        
-               // nodes = data
-        console.log(new_order+p);
-    }).on("changed.jstree" ,function(g,data){
-        document.location='?cmd=see_page&option=true&page_id='+data.node.id.replace(/.*_/, '');
+
+        console.log('?cmd=move_page&id='
+                + data.node.id.replace(/.*_/, '') + '&parent_id='
+                + (p == "#" ? 0 : p)
+                + '&order=' + new_order.join(', '));
+
+
+    }).on("changed.jstree", function (g, data) {
+
+
+        document.location='?cmd=edit_page&option=true&page_id='+data.node.id.replace(/.*_/, '');
     })
-        
-//        callback: {
-//
-//            onmove: function (node) {
-//                var p = $.jstree.focused().parent(node);
-//                console.log(p);
-//                var new_order = [],
-//                        nodes = node.parentNode.childNodes;
-//                for (var i = 0; i < nodes.length; ++i)
-//                    new_order.push(nodes[i].id.replace(/.*_/, ''));
-//                $.getJSON('/rock.admin/pages/move_page.php?id='
-//                        + node.id.replace(/.*_/, '') + '&parent_id='
-//                        + (p == -1 ? 0 : p[0].id.replace(/.*_/, ''))
-//                        + '&order=' + new_order
-//                        );
-//                console.log(p);
-//            }
-////        }
-//    });
+
     var div = $(
             '<div><i>right-click for options</i><br/><br/></div>'
             );

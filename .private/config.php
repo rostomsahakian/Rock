@@ -5,7 +5,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
+define("WEBSITE_NAME", "101-Clothing"); //-->change this
 $DBVARS =array(
     'username' => "rockadmin",
     'password' => "RockRoll1234#",

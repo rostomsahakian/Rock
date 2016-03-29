@@ -99,7 +99,7 @@ class main {
                     "badge" => ""
                 ),
                 "Edit Pages" => array(
-                    "link" => "/rock.admin/?cmd=add_page&option=true",
+                    "link" => "/rock.admin/?cmd=edit_page&option=true",
                     "class" => "glyphicon glyphicon-pencil",
                     "badge" => ""
                 )
