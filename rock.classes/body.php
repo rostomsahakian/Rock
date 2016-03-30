@@ -116,11 +116,37 @@ class body {
                 /*
                  * listener listens to the command and executes
                  */
+                /*
+                 * If user needs to change the order of page this should be where we process the data for cleaness
+                 * the sned it to form processor in class forms
+                 * This put here so when the GetData is called it will fetch the latest data from table. 
+                 * increases the speed
+                 */
+
+                if ((isset($_REQUEST['new_order']) && is_numeric($_REQUEST['new_order']) && $_REQUEST['new_order'] != '' && $_REQUEST['new_order'] != $_REQUEST['old_order'])) {
+                    $change_order_number = $_REQUEST['new_order'];
+                    $change_order_number_old = $_REQUEST['old_order'];
+                    $change_order_page_id = $_REQUEST['page_id'];
+                    $change_order_parent_id = $_REQUEST['parent'];
+                    $order_processor_data = array(
+                        $change_order_number,
+                        $change_order_number_old,
+                        $change_order_page_id,
+                        $change_order_parent_id
+                    );
+                    $this->_forms->DoUpdateOrderForPages($order_processor_data);
+                }
+
+
+                $this->queries->_res = NULL;
                 $data_for_side_bar = $this->queries->GetData("pages", NULL, NULL, "3");
                 $data_for_side_bar = $this->queries->RetData();
+
+
                 $command = (isset($_REQUEST['cmd']) ? $_REQUEST['cmd'] : 'login');
                 $option = (isset($_REQUEST['option']) ? $_REQUEST['option'] : 'true');
                 $page_id = (isset($_REQUEST['page_id']) ? $_REQUEST['page_id'] : '');
+
                 /*
                  * For moving pages
                  */
@@ -138,8 +164,8 @@ class body {
                     "2" => $to,
                     "order" => $order);
 
-
-                unset($this->queries->_res);
+                $this->queries->_res = NULL;
+                //unset($this->queries->_res);
                 $data_for_editor = $this->queries->GetData("pages", "id", $page_id, "0");
                 if ($data_for_editor) {
                     $data_for_editor = $this->queries->RetData();
@@ -161,7 +187,8 @@ class body {
                     "pages" => $data_for_side_bar,
                     "page_id" => $page_id,
                     "move_data" => $move_data,
-                    "editor_data" => $data_for_editor
+                    "editor_data" => $data_for_editor,
+//                "page_menu" => $data_for_page_menu
                 );
                 $this->listener->controller($cmd);
                 /*

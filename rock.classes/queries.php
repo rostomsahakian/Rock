@@ -19,10 +19,17 @@ class queries {
     private $_mysqli;
     private $_db;
     public $_res = array();
+    public $_parent = array();
+    public $_child = array();
 
     public function __construct() {
         $this->_db = basics::getInstance();
         $this->_mysqli = $this->_db->getConnection();
+    }
+
+    public function RetData() {
+
+        return $this->_res;
     }
 
     public function GetData($table, $fields, $value, $option = NULL) {
@@ -31,7 +38,7 @@ class queries {
             switch ($option) {
                 case "0":
 
-                    $sql = "SELECT * FROM `" . $table . "` WHERE `" . $fields . "`= '" . $value . "' LIMIT 1";
+                    $sql = "SELECT * FROM `" . $table . "` WHERE `" . $fields . "`= '" . $value . "'";
 
                     $result = $this->_mysqli->query($sql);
                     if ($result) {
@@ -102,10 +109,6 @@ class queries {
         }
     }
 
-    public function RetData() {
-        return $this->_res;
-    }
-
     public function checkUserInDB(array $data, $option = "0") {
 
         if ($option != "0") {
@@ -145,7 +148,6 @@ class queries {
             switch ($option) {
                 case "1":
                     $sql = "UPDATE `" . $data['tables']['table1'] . "` SET `" . $data['fields']['field1'] . "` = '" . (int) $data['values']['value1'] . "' WHERE `" . $data['fields']['field2'] . "` = '" . (int) $data['values']['value2'] . "'";
-                    var_dump($sql);
                     $result = $this->_mysqli->query($sql);
                     if ($result) {
                         return true;
@@ -153,6 +155,82 @@ class queries {
                         return false;
                         exit;
                     }
+                    break;
+            }
+        }
+    }
+
+    public function findParent(array $data, $option = "0") {
+        if ($option != "0") {
+
+            switch ($option) {
+                case "1":
+                    $sql = "SELECT `parent` FROM `" . $data['table'] . "` WHERE `" . $data['field'] . "` = '" . (int) $data['value'] . "'";
+
+                    $result = $this->_mysqli->query($sql);
+                    $row = $result->fetch_array(MYSQLI_ASSOC);
+                    $this->_parent[] = $row;
+                    if ($row['parent'] != 0) {
+
+
+                        $new_data = array(
+                            "table" => "pages",
+                            "field" => "id",
+                            "value" => $row['parent']
+                        );
+                        $find_parnet = $this->findParent($new_data, "1");
+
+                        return $this->_parent;
+                    } else {
+
+                        return $this->_parent;
+                    }
+                    break;
+                case "2": //Find immidiate parent 
+                    if ($data['value'] != "0" || $data['value'] != 0) {
+                        $sql = "SELECT * FROM `" . $data['table'] . "` WHERE `" . $data['field'] . "` = '" . (int) $data['value'] . "'";
+
+                        $result = $this->_mysqli->query($sql);
+                        if ($result) {
+                            while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+
+                                $this->_child[] = $row;
+                            }
+                            return $this->_child;
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        $this->GetData($data['table'], $data['field'], $data['value'], $option = "0");
+                    }
+                    break;
+            }
+        }
+    }
+
+    public function findChildren(array $data, $option = 0) {
+        if ($option != 0) {
+            switch ($option) {
+                case 1:
+                    $sql = "SELECT `" . $data['fields']['field1'] . "`,`" . $data['fields']['field2'] . "` FROM `" . $data['tables']['table1'] . "` WHERE "
+                            . "`" . $data['fields']['field3'] . "` = '" . $data['values']['value1'] . "' AND "
+                            . "`" . $data['fields']['field1'] . "` != '" . $data['values']['value2'] . "'"
+                            . " ORDER by `" . $data['fields']['field4'] . "` , `" . $data['fields']['field2'] . "` ";
+                   // var_dump($sql);
+
+                    $result = $this->_mysqli->query($sql);
+                    while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+                        if (count($row) < 1) {
+                            return false;
+                        } else {
+                            $this->_res[] = $row;
+                           // var_dump($row);
+                            $data['values']['value1'] = $row['id'];
+
+                            $find_all = $this->findChildren($data, $option = 1);
+                        }
+                    }
+                    
                     break;
             }
         }

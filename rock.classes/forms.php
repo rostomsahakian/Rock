@@ -21,6 +21,7 @@ class forms {
     public $_pass_flag = "";
     public $_editFormData = array();
     public $_pages_instance;
+    public $_list_pages = array();
 
     public function __construct() {
         $this->_queries = new queries();
@@ -317,7 +318,7 @@ class forms {
                     <form method="post" id="pages_form" name="form['page_edit]">
                         <div class="col-md-12">
                             <div class="panel panel-default " style="padding: 10px;" >
-                                <div class="panel-heading bg-primary">Edit Page</div>
+                                <div class="panel-heading bg-primary">Edit <?= $this->_editFormData['name'] ?></div>
                                 <div class="panel-body" >
 
                                     <input type="hidden" name="form[page_edit][id]" value="<?= $page_id; ?>"/>
@@ -375,21 +376,50 @@ class forms {
                                                         <label>parent</label>
                                                         <select name="form[page_edit][parent]" class="form-control">
                                                             <?php
-                                                            if ($this->_editFormData['parent'] != "0") {
-                                                                $data_for_query = array(
-                                                                    "table" => "pages",
-                                                                    "fields" => "id",
-                                                                    "value" => $this->_editFormData['parent'],
-                                                                    "option" => "0");
+                                                            /*
+                                                             * If the parent is zero meaning it is a top level page do not change the parent
+                                                             * If you want to make a page then use it under page
+                                                             */
 
-                                                                $parent = $this->_pages_instance->getInstance($this->_editFormData['parent'], $data_for_query);
-                                                                ?>
-                                                                <option value="<?= $this->_pages_instace->id ?>"><?= htmlspecialchars($this->_pages_instance->name) ?></option>
+                                                            $tables = array("table1" => "pages");
+                                                            $fields = array(
+                                                                "field1" => "id",
+                                                                "field2" => "name",
+                                                                "field3" => "parent",
+                                                                "field4" => "ord",
+                                                            );
+                                                            $values = array(
+                                                                "value1" => 0,
+                                                                "value2" => $this->_editFormData['id']
+                                                            );
+                                                            $child_data = array(
+                                                                "tables" => $tables,
+                                                                "fields" => $fields,
+                                                                "values" => $values
+                                                            );
+                                                            $this->_queries->_res = NULL;
+                                                            $get_data_child_parent = $this->_queries->findChildren($child_data, $option = 1);
+                                                            $get_data_child_parent = $this->_queries->RetData();
+                                                            ?>
 
-                                                                <?php
-                                                            } else {
+                                                            <?php
+                                                            if ($this->_editFormData['parent'] == 0)
+                                                                
                                                                 ?>
-                                                                <option value="0">-- None --</option>
+                                                            <option value="0">-- None --</option>
+                                                            <?php
+                                                            foreach ($get_data_child_parent as $parents) {
+                                                                if ($this->_editFormData['parent'] == $parents['id']) {
+
+                                                                    $selected = "selected='selected'";
+                                                                } else {
+                                                                    $selected = "";
+                                                                }
+                                                                ?>
+
+                                                                <option value="<?= $parents['id'] ?>" <?= $selected ?>><?= $parents['name'] ?></option>
+
+
                                                                 <?php
                                                             }
                                                             ?>
@@ -407,7 +437,7 @@ class forms {
                                                             $this->_editFormData['ass_date'] = date('Y-m-d');
                                                         }
                                                         ?>
-                                                        <input type="date" class="form-control" name="form[page_edit][associated_date]" value="<?= $this->_editFormData['ass_date'] ?>"/>
+                                                        <input type="date" id="date-human" class="form-control" name="form[page_edit][associated_date]" value="<?= $this->_editFormData['ass_date'] ?>"/>
 
 
                                                     </div>
@@ -508,7 +538,7 @@ class forms {
                                                                                     }
                                                                                     ?>
                                                                                     <option value="<?= $k ?>" <?= $selected ?>>                                                                             
-                                                                                        <?= $v; ?>
+                                                                                    <?= $v; ?>
                                                                                     </option>
                                                                                     <?php
                                                                                 }
@@ -552,7 +582,8 @@ class forms {
                         <div class="row">
                             <div class="col-lg-4">
                                 <div class="form-group">
-                                    <input type="submit" name="form[page_edit][do_edit]" value="Update page Details" class="btn btn-primary"/>
+                                    <input type="submit" name="form[page_edit][action]" value="<?= $edit ? 'Update Page Details' : 'Insert Page Details' ?>" class="btn btn-primary"/>
+                    <?= '<script>windows.currentpageid=' . $page_id . ';</script>' ?>
 
                                 </div>
                             </div>
@@ -567,6 +598,120 @@ class forms {
         } else {
             #Error #11 null value for the first argument
             echo "page not found error#11";
+        }
+    }
+
+    public function ListAllPagesOnMainContent(array $list_pages) {
+        $this->_list_pages = $list_pages;
+        //var_dump($this->_list_pages);
+        ?>
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span>Edit Your Pages</span>                    
+                </div>
+                <div class="panel-body">
+                    <table class="table table-hover">
+                        <tr class="active">
+                            <th>#</th>
+                            <th>Order</th>
+                            <th>Name</th>
+                            <th>Parent</th>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                            <?php
+                            foreach ($this->_list_pages as $do_list_pages) {
+                                ?>
+                            </tr>
+                            <tr>
+                                <td>
+            <?= $do_list_pages['id'] ?>
+                                </td>
+                                <td>
+                                    <?php
+//                                    if(isset($_REQUEST['new_order']) && isset($_REQUEST['page_id']) && $_REQUEST['page_id'] == $do_list_pages['id']){
+//                                        $do_list_pages['ord'] = $_REQUEST['new_order'];
+//                                    }
+                                    ?>
+                                    <form  method="post">
+                                        <input  type="text"  style="width: 25px; text-align:center;" name="new_order" value="<?= (isset($do_list_pages['ord']) && $do_list_pages['ord'] != '') ? $do_list_pages['ord'] : 0; ?>"/>
+                                        <input type="hidden" name="page_id" value="<?= $do_list_pages['id'] ?>"/>
+                                        <input type="hidden" name="old_order" value="<?= $do_list_pages['ord'] ?>" />
+                                        <input type="hidden" name="parent" value="<?= $do_list_pages['parent'] ?>"/>
+                                        <input type="hidden" name="cmd" value="choose_edit_page"/>
+                                        <input type="submit"  name="do_update_order" class="btn btn-default btn-xs" value="update"/>
+                                    </form>
+
+                                </td>
+                                <td>
+            <?= $do_list_pages['name'] ?>
+                                </td>
+                                <td>
+            <?= $do_list_pages['parent'] ?>
+                                </td>
+                                <td>
+            <?= $do_list_pages['title'] ?>
+                                </td>
+
+                                <td>
+                                    Admin
+                                </td>
+                                <td>
+            <?= $do_list_pages['cdate'] ?>
+                                </td>
+                                <td>
+                                    <a href="?cmd=choose_edit_page&option=delete&page_id=<?= $do_list_pages['id'] ?>"><i class="glyphicon glyphicon-trash"></i></a>
+
+                                    <a href="?cmd=edit_page&option=edit&page_id=<?= $do_list_pages['id'] ?>"><i class="glyphicon glyphicon-pencil"></i></a>
+                                </td>
+
+
+                            </tr>
+        <?php } ?>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+
+        <?php
+    }
+
+    public function DoUpdateOrderForPages(array $order_data) {
+
+        if (isset($_REQUEST['do_update_order'])) {
+
+            $new_order = $order_data[0];
+            $old_order = $order_data[1];
+            $page_id = $order_data[2];
+            $parent = $order_data[3];
+            $data = array(
+                "table" => "pages",
+                "field" => "parent",
+                "value" => $parent
+            );
+
+            if ($parent != 0 || $parent != "0") {
+                $get_child_data = $this->_queries->findParent($data, $option = "2");
+            } else {
+                $get_child_data = $this->_queries->findParent($data, $option = "2");
+                $get_child_data = $this->_queries->RetData();
+            }
+            foreach ($get_child_data as $child) {
+
+                $table = array("table1" => "pages");
+                $fields = array("field1" => "ord", "field2" => "id");
+                $values = array("value1" => $new_order, "value2" => $page_id);
+
+                $update_order_array = array(
+                    "tables" => $table,
+                    "fields" => $fields,
+                    "values" => $values
+                );
+                $update_order_query = $this->_queries->UpdateQueriesServices($update_order_array, $option = "1");
+            }
         }
     }
 

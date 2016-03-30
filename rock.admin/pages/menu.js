@@ -7,19 +7,24 @@
 $(function () {
     // 6 create an instance when the DOM is ready
     $('#pages-wrapper').jstree({
+
+        "type":{
+            "default":{
+                "icon": "glyphicon glyphicon-file"
+            }
+        },
         "core": {
             "check_callback": true,
+            
         },
         "plugins":
-                ["contextmenu", "dnd", "changed", "search"],
+                ["contextmenu", "dnd", "changed", "search", "types"],
     }).bind("move_node.jstree", function (e, data) {
 
 
-        //var p = data.old_parent.replace(/.*_/, '');
 
         var p = data.parent.replace(/.*_/, '');
-        //console.log(p);
-        //var nodes = data.instance.get_node(data.node).parents;
+
         var nodes = data.instance.get_node(data.node).parents;
         var n_p = data.position;
         var o_p = data.old_position;
@@ -31,11 +36,10 @@ $(function () {
         var new_order = [];
 
         for (i = 0, j = nodes.length; i < j; ++i) 
-
             new_order.push(nodes[i].replace(/.*_/, ''));
-            var childs = data.position[i];
-            //console.log(childs);
-        
+        var childs = data.position[i];
+        //console.log(childs);
+
         $.getJSON('?cmd=move_page&id='
                 + data.node.id.replace(/.*_/, '') + '&parent_id='
                 + (p == "#" ? 0 : p)
@@ -51,7 +55,7 @@ $(function () {
     }).on("changed.jstree", function (g, data) {
 
 
-        document.location='?cmd=edit_page&option=true&page_id='+data.node.id.replace(/.*_/, '');
+        document.location = '?cmd=edit_page&option=true&page_id=' + data.node.id.replace(/.*_/, '');
     })
 
     var div = $(

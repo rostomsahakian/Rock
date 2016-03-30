@@ -76,7 +76,7 @@ class BackendController {
         foreach ($pages[$id] as $page) {
           
             echo '<li id="page_' . $page['id'] . '">'
-            . '<a href="?cmd=edit_page&option=true&page_id=' . $page['id'] . '">'
+            . '<a href="?cmd=edit_page&option=true&page_id=' . $page['id'] . '" >'
             . '' . htmlspecialchars($page['name']) . ''
             . '</a>';
             $this->show_pages($page['id'], $pages);

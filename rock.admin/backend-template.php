@@ -1,8 +1,8 @@
 <?php
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * This page is the template for the Rock back-end 
+ * It gets most of the data from body.php class in $cmd variable array()
+ * Do not change the side bar area and main content area.
  */
 ?>
 <!--Side Bar-->
@@ -13,24 +13,24 @@
             <div class="panel panel-default after-nav-left">
                 <div class="panel-heading bg-primary"><?= WEBSITE_NAME ?> Pages</div>
                 <div class="panel-body">
-                    <?php
-                    /*
-                     * Get Data from body.php
-                     * Set the parent child relationship
-                     * Rostom 03/26/2016
-                     */
-                    $pages_array = array();
-                    foreach ($cmd['pages'] as $p) {
-                        if (!isset($pages_array[$p['parent']])) {
-                            $pages_array[$p['parent']] = array();
-                        }
-                        $pages_array[$p['parent']][] = $p;
-                    }
-                    ?>
+<?php
+/*
+ * Get Data from body.php
+ * Set the parent child relationship
+ * Rostom 03/26/2016
+ */
+$pages_array = array();
+foreach ($cmd['pages'] as $p) {
+    if (!isset($pages_array[$p['parent']])) {
+        $pages_array[$p['parent']] = array();
+    }
+    $pages_array[$p['parent']][] = $p;
+}
+?>
                     <div id="pages-wrapper">
-                        <?php
-                        $t = $this->show_pages("0", $pages_array);
-                        ?>
+                    <?php
+                    $t = $this->show_pages("0", $pages_array);
+                    ?>
                     </div>
                     <p id="event_result"></p>
                 </div>
@@ -40,65 +40,63 @@
         <div class="col-md-9">
             <div class="panel panel-default after-nav-right">
                 <div class="panel-body">
-                    <?php
-                    if (!isset($cmd['cmd'])) {
-                        return false;
-                    } else {
-                        switch ($cmd['cmd']) {
-                            case "see_page":
-                                $page_body = $this->seePageLook($cmd['pages'], $cmd['page_id']);
-                                break;
-                            case "menus":
-                                echo "hi there i am going to be a menu";
-                                break;
-                            case "move_page":
-                                var_dump($cmd['move_data']['order']);
-                                $tables = array("table1" => "pages");
-                                $fields = array(
-                                    "field1" => "parent",
-                                    "field2" => "id"
-                                );
+<?php
+if (!isset($cmd['cmd'])) {
+    return false;
+} else {
+    switch ($cmd['cmd']) {
+        case "see_page":
+            $page_body = $this->seePageLook($cmd['pages'], $cmd['page_id']);
+            break;
+        /*
+         * Available moculdes and capabilites 
+         */
+        case "menus":
+            echo "hi there I am going to be a menu";
+            break;
+        /*
+         * Move pages parent or children
+         * This is an Ajax call done behind the scene with jstree $.getJSON function
+         */
+        case "move_page":
 
-                                $values = array(
-                                    "value1" => $cmd['move_data']["2"],
-                                    "value2" => $cmd['move_data']["1"]
-                                );
+            $tables = array("table1" => "pages");
+            $fields = array(
+                "field1" => "parent",
+                "field2" => "id"
+            );
 
-                                $move_data = array(
-                                    "tables" => $tables,
-                                    "fields" => $fields,
-                                    "values" => $values
-                                );
+            $values = array(
+                "value1" => $cmd['move_data']["2"],
+                "value2" => $cmd['move_data']["1"]
+            );
 
-                                $q = new queries();
+            $move_data = array(
+                "tables" => $tables,
+                "fields" => $fields,
+                "values" => $values
+            );
 
-                                $q->UpdateQueriesServices($move_data, "1");
-                                for ($i = 0; $i < count($cmd['move_data']['order']); $i++)
-                                    $pid = $cmd["move_data"][$i];
-                                $update_fields = array(
-                                    "field1" => "ord",
-                                    "field2" => "id"
-                                );
-                                $update_values = array(
-                                    "value1" => $i,
-                                    "value2" => $pid
-                                );
-                                $order_update = array(
-                                    "tables" => $tables,
-                                    "fields" => $update_fields,
-                                    "values" => $update_values
-                                );
-                                $q->UpdateQueriesServices($order_update, $option = "1");
-                                echo "done";
+            $q = new queries();
 
-                                break;
-                            case "edit_page":
-                               
-                                $this->_forms->EditPageForm($cmd['editor_data'], $cmd['page_id']);
-                                break;
-                        }
-                    }
-                    ?>
+            $q->UpdateQueriesServices($move_data, "1");
+            break;
+        /*
+         * Edit form in main content area
+         */
+        case "edit_page":
+
+            $this->_forms->EditPageForm($cmd['editor_data'], $cmd['page_id']);
+            break;
+        /*
+         * Pages manu in main content section
+         */
+        case "choose_edit_page":
+            $this->_forms->ListAllPagesOnMainContent($cmd['pages']);
+            break;
+    }
+}
+?>
                 </div>
             </div>
         </div>

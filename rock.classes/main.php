@@ -68,7 +68,12 @@ class main {
             "js_links" => array(
                 "1" => '    <!-- jQuery (necessary for Bootstrap\'s JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>',
-                "2" => '  <script src="' . ABSOLUTH_PATH_ADMIN . '/pages/menu.js"></script>'
+                "2" => '  <script src="' . ABSOLUTH_PATH_ADMIN . 'pages/menu.js"></script>',
+                "3" => '<script
+			  src="https://code.jquery.com/ui/1.12.0-rc.1/jquery-ui.js"
+			  integrity="sha256-IY2gCpIs4xnQTJzCIPlL3uUgSOwVQYD9M8t208V+7KA="
+			  crossorigin="anonymous"></script>',
+                "4" => '  <script src="' . ABSOLUTH_PATH_ADMIN . 'pages/pages.js"></script>'
             ),
         );
 
@@ -99,7 +104,7 @@ class main {
                     "badge" => ""
                 ),
                 "Edit Pages" => array(
-                    "link" => "/rock.admin/?cmd=edit_page&option=true",
+                    "link" => "/rock.admin/?cmd=choose_edit_page&option=true",
                     "class" => "glyphicon glyphicon-pencil",
                     "badge" => ""
                 )
