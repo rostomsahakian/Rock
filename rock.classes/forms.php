@@ -307,7 +307,7 @@ class forms {
                     $this->_editFormData['title'] = $page_editables['title'];
                     $this->_editFormData['description'] = $page_editables['description'];
                     $this->_editFormData['keywords'] = $page_editables['keywords'];
-                    $this->_editFormData['special'] = $specials;
+                    $this->_editFormData['special'] = $page_editables['special'];
                     $this->_editFormData['template'] = $page_editables['template'];
                     $this->_editFormData['ass_date'] = $page_editables['associated_date'];
                     $page_vars = array();
@@ -408,19 +408,21 @@ class forms {
                                                                 ?>
                                                             <option value="0">-- None --</option>
                                                             <?php
-                                                            foreach ($get_data_child_parent as $parents) {
-                                                                if ($this->_editFormData['parent'] == $parents['id']) {
+                                                            if ($get_data_child_parent != NULL) {
+                                                                foreach ($get_data_child_parent as $parents) {
+                                                                    if ($this->_editFormData['parent'] == $parents['id']) {
 
-                                                                    $selected = "selected='selected'";
-                                                                } else {
-                                                                    $selected = "";
+                                                                        $selected = "selected='selected'";
+                                                                    } else {
+                                                                        $selected = "";
+                                                                    }
+                                                                    ?>
+
+                                                                    <option value="<?= $parents['id'] ?>" <?= $selected ?>><?= $parents['name'] ?></option>
+
+
+                                                                    <?php
                                                                 }
-                                                                ?>
-
-                                                                <option value="<?= $parents['id'] ?>" <?= $selected ?>><?= $parents['name'] ?></option>
-
-
-                                                                <?php
                                                             }
                                                             ?>
 
@@ -449,7 +451,7 @@ class forms {
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label>Body</label>
-                                                    <textarea class="form-control" rows="20"><?= htmlspecialchars($this->_editFormData['body']) ?></textarea>
+                                                    <textarea class="form-control" rows="20" name="form[page_edit][content]"><?= htmlspecialchars($this->_editFormData['body']) ?></textarea>
                                                 </div>
                                             </div>
                                         </div>                            
@@ -483,33 +485,41 @@ class forms {
                                                                 <label>Special</label>
                                                             </div>
                                                             <div class="panel-body">
-                                                                <?php
-                                                                $specials = array('Is Home Page', 'Does not appear in navigation');
-                                                                for ($i = 0; $i < count($specials); ++$i) {
-                                                                    if ($specials[$i] != '') {
-                                                                        ?>
-                                                                        <div class="row">
-                                                                            <div class="col-md-9 ">
 
-                                                                                <input type="checkbox" name="form[page_edit][special<?= $i ?>]" 
-                                                                                <?php
-                                                                                if ($this->_editFormData['special'] & pow(2, $i)) {
-                                                                                    echo 'checked="checked"';
-                                                                                }
-                                                                                ?>
-                                                                                       />
-
-                                                                                <?php
-                                                                                echo $specials[$i];
-                                                                                ?>
-                                                                            </div>
-
-                                                                        </div>
+                                                                <div class="row">
+                                                                    <table style="margin-left: 20px;">
                                                                         <?php
-                                                                    }
-                                                                }
-                                                                ?>
+                                                                        if ($this->_editFormData['special'] == '1') {
+                                                                            $checked = 'checked="checked"';
+                                                                        } else {
+                                                                            $checked = "";
+                                                                        }
+                                                                        ?>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <input type="checkbox" name="form[page_edit][is_homepage]" <?= $checked ?>/>
 
+                                                                                <span>Is Home Page</span>
+                                                                            </td>
+                                                                        </tr>
+
+                                                                        <?php
+                                                                        if ($this->_editFormData['special'] != 1 && $this->_editFormData['special'] != 0) {
+
+                                                                            $checked = 'checked="checked"';
+                                                                        } else {
+
+                                                                            $checked = "";
+                                                                        }
+                                                                        ?>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <input type="checkbox" name="form[page_edit][is_hidden]" <?= $checked ?>/>
+                                                                                <span>Does not appear in navigation</span>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
 
                                                             </div>
                                                         </div>
@@ -538,7 +548,7 @@ class forms {
                                                                                     }
                                                                                     ?>
                                                                                     <option value="<?= $k ?>" <?= $selected ?>>                                                                             
-                                                                                    <?= $v; ?>
+                                                                                        <?= $v; ?>
                                                                                     </option>
                                                                                     <?php
                                                                                 }
@@ -582,8 +592,10 @@ class forms {
                         <div class="row">
                             <div class="col-lg-4">
                                 <div class="form-group">
+
                                     <input type="submit" name="form[page_edit][action]" value="<?= $edit ? 'Update Page Details' : 'Insert Page Details' ?>" class="btn btn-primary"/>
-                    <?= '<script>windows.currentpageid=' . $page_id . ';</script>' ?>
+
+                                    <?= '<script>windows.currentpageid=' . $page_id . ';</script>' ?>
 
                                 </div>
                             </div>
@@ -627,7 +639,7 @@ class forms {
                             </tr>
                             <tr>
                                 <td>
-            <?= $do_list_pages['id'] ?>
+                                    <?= $do_list_pages['id'] ?>
                                 </td>
                                 <td>
                                     <?php
@@ -646,20 +658,20 @@ class forms {
 
                                 </td>
                                 <td>
-            <?= $do_list_pages['name'] ?>
+                                    <?= $do_list_pages['name'] ?>
                                 </td>
                                 <td>
-            <?= $do_list_pages['parent'] ?>
+                                    <?= $do_list_pages['parent'] ?>
                                 </td>
                                 <td>
-            <?= $do_list_pages['title'] ?>
+                                    <?= $do_list_pages['title'] ?>
                                 </td>
 
                                 <td>
                                     Admin
                                 </td>
                                 <td>
-            <?= $do_list_pages['cdate'] ?>
+                                    <?= $do_list_pages['cdate'] ?>
                                 </td>
                                 <td>
                                     <a href="?cmd=choose_edit_page&option=delete&page_id=<?= $do_list_pages['id'] ?>"><i class="glyphicon glyphicon-trash"></i></a>
@@ -669,7 +681,7 @@ class forms {
 
 
                             </tr>
-        <?php } ?>
+                        <?php } ?>
                     </table>
 
                 </div>

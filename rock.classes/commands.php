@@ -28,7 +28,8 @@ class commands {
             "menus",
             "move_page",
             "edit_page",
-            "choose_edit_page"
+            "choose_edit_page",
+            "action"
         );
     }
 

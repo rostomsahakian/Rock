@@ -106,7 +106,11 @@ class body {
 
                 <?php
             }
-
+            /*
+             * @athur: Rostom
+             * Desc: All dynamic content will pass through here then to class BackendController::controller
+             * then class BackendController::controller transmits
+             */
             public function BodyDynamicContent() {
                 ?>
 
@@ -137,22 +141,27 @@ class body {
                     $this->_forms->DoUpdateOrderForPages($order_processor_data);
                 }
 
-
+                /*
+                 * page data
+                 */
                 $this->queries->_res = NULL;
                 $data_for_side_bar = $this->queries->GetData("pages", NULL, NULL, "3");
                 $data_for_side_bar = $this->queries->RetData();
 
-
+                /*
+                 * Login
+                 */
                 $command = (isset($_REQUEST['cmd']) ? $_REQUEST['cmd'] : 'login');
                 $option = (isset($_REQUEST['option']) ? $_REQUEST['option'] : 'true');
                 $page_id = (isset($_REQUEST['page_id']) ? $_REQUEST['page_id'] : '');
 
                 /*
-                 * For moving pages
+                 * For moving pages jstree
                  */
                 $move_page_id = (isset($_REQUEST['id']) ? $_REQUEST['id'] : '');
                 $to = (isset($_REQUEST['parent_id']) ? $_REQUEST['parent_id'] : '');
                 $order = explode(",", (isset($_REQUEST['order']) ? $_REQUEST['order'] : ''));
+
 
                 /*
                  * Moves the pages to different parent jsTree
@@ -165,14 +174,30 @@ class body {
                     "order" => $order);
 
                 $this->queries->_res = NULL;
-                //unset($this->queries->_res);
                 $data_for_editor = $this->queries->GetData("pages", "id", $page_id, "0");
                 if ($data_for_editor) {
                     $data_for_editor = $this->queries->RetData();
                 } else {
                     return false;
                 }
+                /*
+                 * Edit or save page
+                 * Get data from Request
+                 */
+                if (isset($_REQUEST['form']['page_edit']['action'])) {
 
+                    $page_name = trim($_REQUEST['form']['page_edit']['page_name']);
+                    $page_title = trim($_REQUEST['form']['page_edit']['page_title']);
+                    $page_type = trim($_REQUEST['form']['page_edit']['type']);
+                    $page_parent = trim($_REQUEST['form']['page_edit']['parent']);
+                    $page_ass_date = trim($_REQUEST['form']['page_edit']['associated_date']);
+                    $page_content = $_REQUEST['form']['page_edit']['content'];
+                    $page_advanced_options_keywords = $_REQUEST['form']['page_edit']['keywords'];
+                    $page_advanced_options_description = $_REQUEST['form']['page_edit']['description'];
+                    $page_advanced_options_homepage = (isset($_REQUEST['form']['page_edit']['is_homepage']) ? $_REQUEST['form']['page_edit']['is_homepage'] : '');
+                    $page_advanced_options_hidden = (isset($_REQUEST['form']['page_edit']['is_hidden']) ? $_REQUEST['form']['page_edit']['is_hidden'] : '');
+
+                }
 
 
                 ################################################
@@ -188,7 +213,6 @@ class body {
                     "page_id" => $page_id,
                     "move_data" => $move_data,
                     "editor_data" => $data_for_editor,
-//                "page_menu" => $data_for_page_menu
                 );
                 $this->listener->controller($cmd);
                 /*
