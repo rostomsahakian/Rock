@@ -73,7 +73,8 @@ class main {
 			  src="https://code.jquery.com/ui/1.12.0-rc.1/jquery-ui.js"
 			  integrity="sha256-IY2gCpIs4xnQTJzCIPlL3uUgSOwVQYD9M8t208V+7KA="
 			  crossorigin="anonymous"></script>',
-                "4" => '  <script src="' . ABSOLUTH_PATH_ADMIN . 'pages/pages.js"></script>'
+                "4" => '  <script src="' . ABSOLUTH_PATH_ADMIN . 'pages/pages.js"></script>',
+                "5" => '<script src="'.ABSOLUTH_PATH_JS.'ckeditor/ckeditor.js"></script>'
             ),
         );
 

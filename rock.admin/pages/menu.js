@@ -7,15 +7,8 @@
 $(function () {
     // 6 create an instance when the DOM is ready
     $('#pages-wrapper').jstree({
-
-        "type":{
-            "default":{
-                "icon": "glyphicon glyphicon-file"
-            }
-        },
         "core": {
             "check_callback": true,
-            
         },
         "plugins":
                 ["contextmenu", "dnd", "changed", "search", "types"],
@@ -35,7 +28,7 @@ $(function () {
         var c = data.node.id.replace(/.*_/, '');
         var new_order = [];
 
-        for (i = 0, j = nodes.length; i < j; ++i) 
+        for (i = 0, j = nodes.length; i < j; ++i)
             new_order.push(nodes[i].replace(/.*_/, ''));
         var childs = data.position[i];
         //console.log(childs);
@@ -56,7 +49,9 @@ $(function () {
 
 
         document.location = '?cmd=edit_page&option=true&page_id=' + data.node.id.replace(/.*_/, '');
+
     })
+
 
     var div = $(
             '<div><i>right-click for options</i><br/><br/></div>'

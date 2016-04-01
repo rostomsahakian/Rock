@@ -50,6 +50,7 @@
                                 break;
                             /*
                              * Available moculdes and capabilites 
+                             * to be added
                              */
                             case "menus":
                                 echo "hi there I am going to be a menu";
@@ -93,6 +94,88 @@
                              */
                             case "choose_edit_page":
                                 $this->_forms->ListAllPagesOnMainContent($cmd['pages']);
+
+                                break;
+                            /*
+                             * If clciked to update the page in the pages form
+                             */
+                            case "update_page_details":
+
+                                /*
+                                 * First We check if the page name is does not exist under the same directory 
+                                 */
+                                if (isset($cmd['edit_save_page_data']) && $cmd['edit_save_page_data'] != '') {
+
+                                    $name_checked = $this->_forms->setupPagesNames($cmd['edit_save_page_data']);
+
+                                    if ($name_checked) {
+
+                                        $flag = 1;
+                                        $message = array("message" => "All names under parent have been updated to be unqiue");
+
+                                        $pass_message = $this->_forms->ReturnMessages($message, $flag);
+                                    } else {
+                                        $flag = 1;
+                                        $message = array("message" => "All names under directory are unique#12");
+                                        $pass_message = $this->_forms->ReturnMessages($message, $flag);
+                                    }
+                                    /*
+                                     * If the page is special
+                                     * case 1 there must be only a single home page
+                                     * check that
+                                     * case 2 if the page is not a home page then it can be a hidden page(not shown on navigation)
+                                     */
+                                    $check_special = $this->_forms->setupSpecialPages($cmd['edit_save_page_data']);
+                                    $get_home_page_name = $this->_forms->ReturnvaluesFromFormsFunctions();
+
+                                    $page_name_for_message = (isset($get_home_page_name[0]['name']) && $get_home_page_name[0]['name'] != NULL ? $get_home_page_name[0]['name'] : '');
+
+                                    if ($check_special) {
+
+                                        $flag = 1;
+                                        $message = array("message" => "There must at be one home page. {$page_name_for_message} is assigned as home page");
+                                        $pass_message = $this->_forms->ReturnMessages($message, $flag);
+                                    } else {
+                                        $flag = 1;
+                                        $message = array("message" => "Home page is assigned as {$page_name_for_message}");
+                                        $pass_message = $this->_forms->ReturnMessages($message, $flag);
+                                    }
+                                    if (isset($cmd['edit_save_page_data'][12]) && $cmd['edit_save_page_data'][12] == "update_page_details") {
+
+                                        $do_update_page = $this->_forms->UpdatePages($cmd['edit_save_page_data'], $type = "update_page_details");
+
+                                        if ($do_update_page) {
+
+                                            $flag = 1;
+                                            $message = array("message" => "Page was successfully update!");
+                                            $pass_message = $this->_forms->ReturnMessages($message, $flag);
+                                        } else {
+                                            $flag = 1;
+                                            $message = array("message" => "Unable to update page");
+                                            $pass_message = $this->_forms->ReturnMessages($message, $flag);
+                                        }
+                                    } else {
+                                        $do_save_page = $this->_forms->UpdatePages($cmd['edit_save_page_data'], $type = "insert_page_details");
+                                    }
+                                } else {
+                                    return false;
+                                }
+
+
+
+
+
+
+
+                                /*
+                                 * After form is processed
+                                 */
+                                $this->_queries->_res = NULL;
+                                $data_for_editor_after_update = $this->_queries->GetData("pages", "id", $cmd['page_id'], "0");
+                                $data_for_editor_after_update = $this->_queries->RetData();
+                                $this->_forms->EditPageForm($data_for_editor_after_update, $cmd['page_id']);
+
+
                                 break;
                         }
                     }

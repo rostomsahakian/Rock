@@ -17,11 +17,13 @@ class forms {
     public $error_message = array();
     public $_formdata = array();
     public $_queries;
+    public $_flag = 0;
     public $_email_flag = "";
     public $_pass_flag = "";
     public $_editFormData = array();
     public $_pages_instance;
     public $_list_pages = array();
+    public $_values = array();
 
     public function __construct() {
         $this->_queries = new queries();
@@ -315,8 +317,28 @@ class forms {
                         echo '<em>NOTE: this page is currenly hidden from the front-end navigation. Use the "Advanced Options" to un-hide it.<em>';
                     }
                     ?>
-                    <form method="post" id="pages_form" name="form['page_edit]">
+                    <?php
+                    if ($this->_flag == 1) {
+                        ?>
+                        <div class="col-md-12" style="margin-top: 10px !important;">
+
+                            <div class="list-group">
+                                <ul>
+                                    <?php
+                                    foreach ($this->error_message as $message) {
+
+                                        echo "<li class='list-group-item list-group-item-warning'><i class='glyphicon glyphicon-info-sign'></i>&nbsp;" . $message . "</li>";
+                                    }
+                                    ?>
+                                </ul>
+                            </div>
+                        </div>
+                        <?php
+                    }
+                    ?>
+                    <form method="post" id="pages_form" name="form['page_edit]" enctype="multipart/form-data">
                         <div class="col-md-12">
+
                             <div class="panel panel-default " style="padding: 10px;" >
                                 <div class="panel-heading bg-primary">Edit <?= $this->_editFormData['name'] ?></div>
                                 <div class="panel-body" >
@@ -350,10 +372,11 @@ class forms {
                                                 <div class="col-md-4">
 
                                                     <div class="form-group">
-                                                        <label>&nbsp;</label>
+                                                        <label>Preview</label>
                                                         <?php
                                                         $url = '/' . str_replace('', '-', $this->_editFormData['name']);
                                                         ?>
+                                                        <input type="button" name="prev" class="form-control" value="Preview"/> 
                                                         <a href="<?= $url ?>" target="_blank">View page</a>
                                                     </div>
                                                 </div>
@@ -447,11 +470,26 @@ class forms {
                                             </div>
                                             <!-- type, parent, date div ends-->
                                             <!--*****************-->
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading"><span><i class="glyphicon glyphicon-picture"  ></i>&nbsp;Upload Images</span></div>
+                                                        <input type="file" name="form[page_edit][images]"  value="" style="margin: 10px;;"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading"><span><i class="glyphicon glyphicon-file" ></i>&nbsp;Upload Files</span></div>
+                                                        <input type="file" name="form[page_edit][files]"  value=""  style="margin: 10px; "/>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <!-- page body text-->
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label>Body</label>
-                                                    <textarea class="form-control" rows="20" name="form[page_edit][content]"><?= htmlspecialchars($this->_editFormData['body']) ?></textarea>
+                    <!--                                                    <textarea class="form-control" rows="20" name="form[page_edit][content]"><?php //htmlspecialchars($this->_editFormData['body'])   ?></textarea>-->
+                                                    <?= $this->ckeditor('form[page_edit][content]', $this->_editFormData['body']) ?>
                                                 </div>
                                             </div>
                                         </div>                            
@@ -595,7 +633,7 @@ class forms {
 
                                     <input type="submit" name="form[page_edit][action]" value="<?= $edit ? 'Update Page Details' : 'Insert Page Details' ?>" class="btn btn-primary"/>
 
-                                    <?= '<script>windows.currentpageid=' . $page_id . ';</script>' ?>
+
 
                                 </div>
                             </div>
@@ -723,6 +761,201 @@ class forms {
                     "values" => $values
                 );
                 $update_order_query = $this->_queries->UpdateQueriesServices($update_order_array, $option = "1");
+            }
+        }
+    }
+
+    /*
+     * Reference to page data in array
+     * each nuber represents the key for the value
+     *  #[0] = Name
+      #[1] = Title
+      #[2] = Type
+      #[3] = ID
+      #[4] = Parent
+      #[5] = Associated date
+      #[6] = Content {Body}
+      #[7] = Keywords
+      #[8] = Description
+      #[9] = Special 1 is home page?
+      #[10] = Special 2 is hidden pahe?
+      #[11] = vars json
+     */
+
+    public function setupPagesNames(array $page_form_data) {
+
+
+        $table = array("table1" => "pages");
+        $fields = array(
+            "field1" => "id",
+            "field2" => "name",
+            "field3" => "parent",
+        );
+        $values = array(
+            "value1" => $page_form_data[0],
+            "value2" => $page_form_data[4],
+            "value3" => $page_form_data[3],
+        );
+        $check_name = $this->_queries->GetData($table, $fields, $values, $option = "4");
+
+        if ($check_name === true) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function setupSpecialPages(array $page_from_data) {
+
+
+        $special = (isset($page_from_data[9]) && ($page_from_data[9] == "on" && (isset($page_from_data[0]) && ($page_from_data[0] == "Home"))) ? 1 : 0);
+
+        $table = array("table1" => "pages");
+        $fields = array("field1" => "id", "field2" => "special");
+        $values = array("value1" => "num_specials", "value2" => 1, "value3" => $page_from_data[3]);
+
+        $check_home_page = $this->_queries->GetData($table, $fields, $values, $option = "5");
+        $check_home_page = $this->_queries->RetData();
+        $this->_values = $check_home_page;
+        if ($check_home_page === true) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /*
+     * Reference to page data in array
+     * each nuber represents the key for the value
+     *  #[0] = Name
+      #[1] = Title
+      #[2] = Type
+      #[3] = ID
+      #[4] = Parent
+      #[5] = Associated date
+      #[6] = Content {Body}
+      #[7] = Keywords
+      #[8] = Description
+      #[9] = Special 1 is home page?
+      #[10] = Special 2 is hidden pahe?
+      #[11] = vars json
+      #[12] = transmission type Update or Save
+     */
+
+    public function UpdatePages(array $page_form_data, $type = NULL) {
+        if ($type != NULL) {
+            switch ($type) {
+                case "update_page_details":
+                    $update_vars = array(
+                        "'" . date("Y,m,d") . "',",
+                        "'" . addslashes($page_form_data[2]) . "',",
+                        "'" . addslashes($page_form_data[5]) . "',",
+                        "'" . addslashes($page_form_data[7]) . "',",
+                        "'" . addslashes($page_form_data[8]) . "',",
+                        "'" . addslashes($page_form_data[0]) . "',",
+                        "'" . addslashes($page_form_data[1]) . "',",
+                        "'" . addslashes($page_form_data[6]) . "',",
+                        "'" . $page_form_data[4] . "',",
+                        "'" . addslashes($page_form_data[11]) . "'"
+                    );
+                    $fields = array(
+                        "edate",
+                        "type",
+                        "associated_date",
+                        "keywords",
+                        "description",
+                        "name",
+                        "title",
+                        "body",
+                        "parent",
+                        "vars",
+                    );
+
+                    $data_for_query = array(
+                        "table" => "pages",
+                        "value1" => $update_vars,
+                        "field" => $fields,
+                        "field2" => "id",
+                        "value2" => $page_form_data[3]
+                    );
+                    $data_to_update = $this->_queries->UpdateQueriesServices($data_for_query, $option = "3");
+                    if ($data_to_update) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                    break;
+                case "insert_page_details":
+                    break;
+            }
+        }
+    }
+
+    public function ReturnMessages(array $message, $flag_value = 0) {
+
+        if (isset($message) && $message != NULL && $flag_value != 0) {
+            $this->_flag = $flag_value;
+            array_push($this->error_message, $message['message']);
+            $message = $this->error_message;
+        }
+    }
+
+    public function ReturnvaluesFromFormsFunctions() {
+        return $this->_values;
+    }
+
+    public function ckeditor($name, $value = '', $height = 450) {
+        return ' <textarea class="form-control" rows="20" name="' . addslashes($name) . '">' . htmlspecialchars($value) . '</textarea>'
+                . '<script> CKEDITOR.replace( "' . $name . '" ); </script>';
+    }
+
+    public function Do_Upload_images($image, $path, $date_added, $page_uid, $page_type) {
+
+        $dir = IMAGE_PATH;
+        $image_file = $dir . basename($_FILES["uploadimage"]["name"]);
+        $uploadOk = 1;
+        $imageFileType = pathinfo($image_file, PATHINFO_EXTENSION);
+        if (isset($_POST['imgupload'])) {
+            $check = getimagesize($_FILES["uploadimage"]["tmp_name"]);
+            if ($check !== FALSE) {
+                $this->ReturnMessages("File is an image - " . $check["mime"] . ".");
+
+                $uploadOk = 1;
+            } else {
+                $this->ReturnMessages("File is not an image.");
+                $uploadOk = 0;
+            }
+        }
+//        if (file_exists($image_file)) {
+//            $this->ErrorMessages("Sorry, file already exists.");
+//            $uploadOk = 0;
+//        }
+        if ($_FILES['uploadimage']["size"] > 5000000) {
+            $this->ReturnMessages("Sorry, your file is too large.");
+            $uploadOk = 0;
+        }
+        if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif") {
+            $this->ReturnMessages("Sorry, only JPG, JPEG, PNG & GIF files are allowed.");
+            $uploadOk = 0;
+        }
+        if ($uploadOk == 0) {
+            $this->ReturnMessages("Sorry, your file was not uploaded.");
+        } else {
+            if (move_uploaded_file($_FILES["uploadimage"]["tmp_name"], $image_file)) {
+                $this->ReturnMessages("<br/>The file " . basename($_FILES["uploadimage"]["name"]) . " has been uploaded.");
+                $image_name = basename($_FILES["uploadimage"]["name"]);
+
+                //$this->SavePageUID($page_uid, $page_type);
+                //$this->_values['one'] = $page_uid;
+                //$this->_values['two'] = $page_type;
+                //$this->_values['three'] = $date_added;
+                // $this->Insert_Into_generic("page_content", "page_id", "page_type", "page_added", NULL, $this->_values);
+
+                $sql = "INSERT INTO `page_images`(`page_uid`,`image_path`, `image_name`, `date_added`) VALUES ('$page_uid','$path','$image_name','$date_added')";
+
+                $result = $this->_mysqli->query($sql);
+            } else {
+                $this->ReturnMessages("Sorry, there was an error uploading your file.");
             }
         }
     }

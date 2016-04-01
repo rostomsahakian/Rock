@@ -39,7 +39,6 @@ class queries {
                 case "0":
 
                     $sql = "SELECT * FROM `" . $table . "` WHERE `" . $fields . "`= '" . $value . "'";
-
                     $result = $this->_mysqli->query($sql);
                     if ($result) {
                         while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
@@ -50,10 +49,6 @@ class queries {
                     } else {
                         return FALSE;
                     }
-
-
-
-
                     break;
                 case "1":
 
@@ -105,6 +100,101 @@ class queries {
                     }
 
                     break;
+                /*
+                 * This part deals with names under same parent 
+                 * if the names are accidently inputed as the same then new name = name_$i 
+                 */
+                case "4":
+                    $table[] = $table;
+                    $fields[] = $fields;
+                    $value[] = $value;
+                    $sql = "SELECT `" . $fields['field1'] . "`  FROM `" . $table['table1'] . "`"
+                            . " WHERE "
+                            . "`" . $fields['field2'] . "` = '" . addslashes($value['value1']) . "'"
+                            . " AND "
+                            . "`" . $fields['field3'] . "` = '" . $value['value2'] . "'";
+
+
+                    $result = $this->_mysqli->query($sql);
+                    $num_rows = $result->num_rows;
+
+                    if ($result && $num_rows > 1) {
+
+                        $sql = "SELECT `" . $fields['field1'] . "`, `" . $fields['field2'] . "`   FROM `" . $table['table1'] . "`"
+                                . " WHERE "
+                                . "`" . $fields['field2'] . "` = '" . addslashes($value['value1']) . "'"
+                                . " AND "
+                                . "`" . $fields['field3'] . "` = '" . $value['value2'] . "'"
+                                . "AND `" . $fields['field1'] . "` != '" . $value['value3'] . "'";
+
+                        $result = $this->_mysqli->query($sql);
+                        $num_rows = $result->num_rows;
+
+                        while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+
+                            $this->_res[] = $row;
+                        }
+
+                        $value_returned = $this->RetData();
+                        if (count($value_returned > 0)) {
+                            for ($i = 0; $i < count($value_returned); $i++) {
+                                $new_name = $value_returned[$i]['name'] . "_" . $i;
+                                $id = $value_returned[$i]['id'];
+                                $tables_c = array("table1" => "pages");
+                                $fields_c = array("field1" => "name", "field2" => "id");
+                                $values_c = array("value1" => $new_name, "value2" => $id);
+                                $data_to_update = array(
+                                    "tables" => $tables_c,
+                                    "fields" => $fields_c,
+                                    "values" => $values_c
+                                );
+                                $fix_names = $this->UpdateQueriesServices($data_to_update, $option = "2");
+                            }
+                        }
+
+
+                        return true;
+                    } else {
+                        return FALSE;
+                    }
+
+                    break;
+                case "5":
+                    $table[] = $table;
+                    $fields[] = $fields;
+                    $value[] = $value;
+                    $sql = "SELECT COUNT(`" . $fields['field1'] . "`) AS '" . $value['value1'] . "' FROM `" . $table['table1'] . "`"
+                            . " WHERE "
+                            . "`" . $fields['field2'] . "` = '" . $value['value2'] . "'"
+                            . " AND "
+                            . "`" . $fields['field1'] . "` != '" . $value['value3'] . "'";
+
+                    $result = $this->_mysqli->query($sql);
+                    $row = $result->fetch_array(MYSQLI_ASSOC);
+                    if ((int) $row['num_specials'] > 1) {
+                        $tables = array("table1" => $table['table1']);
+                        $fields = array("field1" => $fields['field2'], "field2" => $fields['field2']);
+                        $values = array("value1" => 0, "value2" => $value['value2']);
+                        $only_one_page_as_home = array(
+                            "tables" => $tables,
+                            "fields" => $fields,
+                            "values" => $values
+                        );
+                        $update_specials = $this->UpdateQueriesServices($only_one_page_as_home, $option = "2");
+                    } else if ((int) $row['num_specials'] === 0) {
+
+                        $tables = array("table1" => $table['table1']);
+                        $fields = array("field1" => $fields['field2'], "field2" => $fields['field1']);
+                        $values = array("value1" => 1, "value2" => $value['value3']);
+                        $only_one_page_as_home = array(
+                            "tables" => $tables,
+                            "fields" => $fields,
+                            "values" => $values
+                        );
+                        $update_specials = $this->UpdateQueriesServices($only_one_page_as_home, $option = "2");
+                    }
+                    $get_new_home_page_name = $this->GetData($table['table1'], $fields['field2'], 1, $option = "0");
+                    break;
             }
         }
     }
@@ -119,7 +209,12 @@ class queries {
                  */
                 case "1":
 
-                    $sql = "SELECT * FROM `" . $data['tables']['table1'] . "` WHERE `" . $data['fields']['field1'] . "`= '" . $this->_mysqli->real_escape_string($data['values']['value1']) . "' AND `" . $data['fields']['field2'] . "` = '" . $this->_mysqli->real_escape_string($data['values']['value2']) . "'";
+                    $sql = "SELECT * FROM `" . $data['tables']['table1'] . "` WHERE `" . $data['fields']['field1'] . ""
+                            . "`= '" . $this->_mysqli->real_escape_string($data['values']['value1']) . "'"
+                            . " AND "
+                            . "`" . $data['fields']['field2'] . "`"
+                            . " = "
+                            . "'" . $this->_mysqli->real_escape_string($data['values']['value2']) . "'";
                     $result = $this->_mysqli->query($sql);
                     $num_rows = $result->num_rows;
                     if ($num_rows == "1") {
@@ -147,13 +242,41 @@ class queries {
         if ($option != "0") {
             switch ($option) {
                 case "1":
-                    $sql = "UPDATE `" . $data['tables']['table1'] . "` SET `" . $data['fields']['field1'] . "` = '" . (int) $data['values']['value1'] . "' WHERE `" . $data['fields']['field2'] . "` = '" . (int) $data['values']['value2'] . "'";
+                    $sql = "UPDATE `" . $data['tables']['table1'] . "` SET `" . $data['fields']['field1'] . ""
+                            . "` = '" . (int) $data['values']['value1'] . "' WHERE `" . $data['fields']['field2'] . ""
+                            . "` = '" . (int) $data['values']['value2'] . "'";
                     $result = $this->_mysqli->query($sql);
                     if ($result) {
                         return true;
                     } else {
                         return false;
                         exit;
+                    }
+                    break;
+                case "2":
+                    $sql = "UPDATE `" . $data['tables']['table1'] . "` SET `" . $data['fields']['field1'] . ""
+                            . "` = '" . $data['values']['value1'] . "' WHERE `" . $data['fields']['field2'] . ""
+                            . "` = '" . (int) $data['values']['value2'] . "'";
+                    $result = $this->_mysqli->query($sql);
+                    if ($result) {
+                        return true;
+                    } else {
+                        return false;
+                        exit;
+                    }
+                    break;
+                case "3":
+                    $sql = "UPDATE `" . $data['table'] . "` SET ";
+                    for($i=0; $i < count($data['field']); $i++){
+                    $sql .= "`" . $data['field'][$i] . "` =" . $data['value1'][$i];
+                    }
+                    $sql .= "WHERE `" . $data['field2'] . "` = '" . $data['value2'] . "'";
+                  
+                    $result = $this->_mysqli->query($sql);
+                    if ($result) {
+                        return true;
+                    } else {
+                        return false;
                     }
                     break;
             }
@@ -216,7 +339,7 @@ class queries {
                             . "`" . $data['fields']['field3'] . "` = '" . $data['values']['value1'] . "' AND "
                             . "`" . $data['fields']['field1'] . "` != '" . $data['values']['value2'] . "'"
                             . " ORDER by `" . $data['fields']['field4'] . "` , `" . $data['fields']['field2'] . "` ";
-                   // var_dump($sql);
+                    // var_dump($sql);
 
                     $result = $this->_mysqli->query($sql);
                     while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
@@ -224,13 +347,13 @@ class queries {
                             return false;
                         } else {
                             $this->_res[] = $row;
-                           // var_dump($row);
+                            // var_dump($row);
                             $data['values']['value1'] = $row['id'];
 
                             $find_all = $this->findChildren($data, $option = 1);
                         }
                     }
-                    
+
                     break;
             }
         }

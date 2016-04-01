@@ -18,6 +18,7 @@ class BackendController {
 
     public $_forms;
     public $_cmd_checker;
+    public $_queries;
     public $_page_list = array();
 
     /*
@@ -26,6 +27,7 @@ class BackendController {
     public function __construct() {
         $this->_forms = new forms();
         $this->_cmd_checker = new commands();
+        $this->_queries = new queries();
     }
 
     /*
@@ -38,6 +40,7 @@ class BackendController {
          * prevent url injection if user is not logged in !important
          */
         $cmd['cmd'] = (isset($_SESSION['userdata']) ? (isset($_REQUEST['cmd']) ? $_REQUEST['cmd'] : "menus") : "login");
+        
         /*
          * Check if the command exists or not
          */

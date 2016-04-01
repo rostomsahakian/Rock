@@ -17,9 +17,9 @@ class body {
     public $queries;
 
     public function __construct() {
-        $this->_forms = new forms();
-        $this->listener = new BackendController();
-        $this->queries = new queries();
+        $this->_forms = new forms(); //Forms
+        $this->listener = new BackendController(); //BackendController
+        $this->queries = new queries(); //queries (MySQL commands)
     }
 
     public function TopNavBar(array $topNavBar) {
@@ -74,6 +74,10 @@ class body {
         return $this->_navigation1;
     }
 
+    /*
+     * NOT USED
+     */
+
     public function SideNavbar(array $sideNavBar) {
         $this->_sideNav = $sideNavBar;
         foreach ($this->_sideNav as $side_menu) {
@@ -84,6 +88,10 @@ class body {
             }
         }
     }
+
+    /*
+     * Page static content top navigation(i.e modules)
+     */
 
     public function BodyStaticContent() {
         ?>
@@ -106,11 +114,13 @@ class body {
 
                 <?php
             }
+
             /*
              * @athur: Rostom
              * Desc: All dynamic content will pass through here then to class BackendController::controller
              * then class BackendController::controller transmits
              */
+
             public function BodyDynamicContent() {
                 ?>
 
@@ -150,6 +160,10 @@ class body {
 
                 /*
                  * Login
+                 * OR
+                 * Any command variable passed through which will be analyzed 
+                 * in back-end template
+                 * logic
                  */
                 $command = (isset($_REQUEST['cmd']) ? $_REQUEST['cmd'] : 'login');
                 $option = (isset($_REQUEST['option']) ? $_REQUEST['option'] : 'true');
@@ -161,6 +175,8 @@ class body {
                 $move_page_id = (isset($_REQUEST['id']) ? $_REQUEST['id'] : '');
                 $to = (isset($_REQUEST['parent_id']) ? $_REQUEST['parent_id'] : '');
                 $order = explode(",", (isset($_REQUEST['order']) ? $_REQUEST['order'] : ''));
+
+                
 
 
                 /*
@@ -185,19 +201,49 @@ class body {
                  * Get data from Request
                  */
                 if (isset($_REQUEST['form']['page_edit']['action'])) {
-
+                    $edit_save_command = str_replace(' ', '_', strtolower($_REQUEST['form']['page_edit']['action']));
+                    $command = ($_REQUEST['form']['page_edit']['action']) ? $edit_save_command : 'edit_page';
+                    /*
+                     * Changes the command when the edit button in the form is clicked
+                     */
+                    $_REQUEST['cmd'] = $command;
                     $page_name = trim($_REQUEST['form']['page_edit']['page_name']);
                     $page_title = trim($_REQUEST['form']['page_edit']['page_title']);
                     $page_type = trim($_REQUEST['form']['page_edit']['type']);
-                    $page_parent = trim($_REQUEST['form']['page_edit']['parent']);
+                    $page_n_id = trim((int) $_REQUEST['form']['page_edit']['id']);
+                    $page_parent = trim((int) $_REQUEST['form']['page_edit']['parent']);
                     $page_ass_date = trim($_REQUEST['form']['page_edit']['associated_date']);
                     $page_content = $_REQUEST['form']['page_edit']['content'];
                     $page_advanced_options_keywords = $_REQUEST['form']['page_edit']['keywords'];
                     $page_advanced_options_description = $_REQUEST['form']['page_edit']['description'];
                     $page_advanced_options_homepage = (isset($_REQUEST['form']['page_edit']['is_homepage']) ? $_REQUEST['form']['page_edit']['is_homepage'] : '');
                     $page_advanced_options_hidden = (isset($_REQUEST['form']['page_edit']['is_hidden']) ? $_REQUEST['form']['page_edit']['is_hidden'] : '');
+                    $page_advanced_options_pages_vars_array = (isset($_REQUEST['form']['page_edit']['page_vars']) ? json_encode($_REQUEST['form']['page_edit']['page_vars']) : '[]');
 
+
+                    /*
+                     * put all the variables into array and pass it to listener in BackendController
+                     * else pass a empty string
+                     */
+                    $page_data_array = array(
+                        $page_name, //[0]->name string
+                        $page_title, //[1]->title string
+                        $page_type, //[2]->type string
+                        $page_n_id, //[3]->id string
+                        $page_parent, //[4]->parent string
+                        $page_ass_date, //[5]-> associated_date string
+                        $page_content, //[6]-> content string
+                        $page_advanced_options_keywords, //[7]->keywords (Must use commas as delimiter)
+                        $page_advanced_options_description, //[8]->description string
+                        $page_advanced_options_homepage, //[9]-> is Homapage or not
+                        $page_advanced_options_hidden, //[10]-> is hidden page (not showing in navigation
+                        $page_advanced_options_pages_vars_array, //[11]->json format
+                        $edit_save_command //[12] request type edit or save
+                    );
+                } else {
+                    $page_data_array = "";
                 }
+
 
 
                 ################################################
@@ -213,6 +259,8 @@ class body {
                     "page_id" => $page_id,
                     "move_data" => $move_data,
                     "editor_data" => $data_for_editor,
+                    "edit_save_page_data" => $page_data_array,
+                    "data_after_update" => $data_for_editor_after_update
                 );
                 $this->listener->controller($cmd);
                 /*

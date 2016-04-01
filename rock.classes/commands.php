@@ -29,7 +29,9 @@ class commands {
             "move_page",
             "edit_page",
             "choose_edit_page",
-            "action"
+            "action",
+            "update_page_details",
+            "insert_page_details"
         );
     }
 
