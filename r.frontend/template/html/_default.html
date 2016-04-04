@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+
+        {{$METADATA}}
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        {{if isset($CSS)}}
+        {{foreach $CSS as $css}}
+        <link rel='stylesheet' href="{{$css}}" type="text/css"/>
+        {{/foreach}}
+        {{/if}}
+        <link rel="stylesheet" href="{{$FRONTEND_CSS}}bootstrap.min.css" type="text/css"/>
+     
+        {{if isset($JS)}}
+        {{foreach $JS as $js}}
+        <script type='text/javascript' src="{{$js}}"></script>
+        {{/foreach}}
+        {{/if}}
+    </head>
+    <body>
+     
+            
+            <!--PAGE CONTENT GO HERE-->
+            {{$PAGECONTENT}}
+        
+        
+        
+           <script src="{{$JQUERY}}"></script>
+        {{$BOOTSRAP_JS}}
+        
+        
+        <footer></footer>
+    </body>
+</html>

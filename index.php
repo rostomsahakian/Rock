@@ -1,4 +1,5 @@
 <?php
+
 error_reporting(E_ALL);
 
 ini_set('display_errors', '1');
@@ -8,14 +9,19 @@ ini_set('display_errors', '1');
  * and open the template in the editor.
  */
 include_once 'rock.includes/common.php';
-
 $page = isset($_REQUEST['page']) ? $_REQUEST['page'] : '';
 $id = isset($_REQUEST['id']) ? (int) $_REQUEST['id'] : 0;
+$page = str_replace('-', ' ', $page);
+$page = explode("/", $page);
 
+foreach ($page as $page_name) {
+    
+}
 
-$page = substr($page, 12);
-$class_page = new Page();
-$PAGEDATA = "";
+//$page = substr($page_name, 12);
+$page = $page_name;
+$PAGEDATA = new Page();
+
 if (!$id) {
     //Load by name
     if ($page && $id == 0) {
@@ -25,13 +31,13 @@ if (!$id) {
             "fields" => "name",
             "value" => $page,
             "option" => "1");
-        $class_page->getInstanceByName($page, $data_for_query);
-        $class_page->body;
+        $PAGEDATA->getInstanceByName($page, $data_for_query);
+        $PAGEDATA->body;
 
-        if ($class_page->body && isset($class_page->id)) {
+        if ($PAGEDATA->body && isset($PAGEDATA->id)) {
 
-            $id = $class_page->id;
-            unset($class_page->body);
+            $id = $PAGEDATA->id;
+            unset($PAGEDATA->body);
         }
     }
 
@@ -44,12 +50,12 @@ if (!$id) {
                 "value" => $special,
                 "option" => "2");
 
-            $class_page->getInstanceBySpecial($special, $data_for_query);
-            $class_page->body;
+            $PAGEDATA->getInstanceBySpecial($special, $data_for_query);
+            $PAGEDATA->body;
 
-            if ($class_page->body && isset($class_page->id)) {
-                $id = $class_page->id;
-                unset($class_page->body);
+            if ($PAGEDATA->body && isset($PAGEDATA->id)) {
+                $id = $PAGEDATA->id;
+                unset($PAGEDATA->body);
             }
         }
     }
@@ -62,12 +68,89 @@ if (!$id) {
         "option" => "0");
 }
 
-if ($class_page->getInstance($id, $data_for_query)) {
-    $PAGEDATA = $class_page->body;
-    echo $PAGEDATA;
+if ($PAGEDATA->getInstance($id, $data_for_query)) {
+
+    if (file_exists(THEME_DIR . '/' . THEME . '/html/' . $PAGEDATA->template . '.html')) {
+
+        $template = THEME_DIR . '/' . THEME . '/html' . $PAGEDATA->template . '.html';
+    } else if (file_exists(THEME_DIR . '/' . THEME . '/html/_default.html')) {
+        $template = THEME_DIR . '/' . THEME . '/html/_default.html';
+    } else {
+        $d = array();
+        $dir = new DirectoryIterator(THEME_DIR . '/' . THEME . '/html/');
+        foreach ($dir as $f) {
+            if ($f->isDot())
+                continue;
+            $n = $f->getFilename();
+            if (preg_match('/^includes\./', $n))
+                continue;
+            if (preg_match('/\.html/', $n))
+                $d[] = preg_replace('/\.html', '', $n);
+        }
+        asort($d);
+        $template = THEME_DIR . '/' . THEME . '/html/' . $d[0] . '.html';
+
+        if ($template == '') {
+            die(' No template created please create a template first.');
+        }
+    }
+
+    $title = ($PAGEDATA->title != '') ? $PAGEDATA->title : str_replace('www.', '', $_SERVER['HTTP_HOST']) . '>' . $PAGEDATA->name;
+    $metadata = '<title>' . htmlspecialchars($title) . '</title>';
+    $metadata.='<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>';
+    if ($PAGEDATA->keywords != NULL) {
+        $metadata .= '<meta http-equiv="keywords" content="' . htmlspecialchars($PAGEDATA->keywords) . '"/>';
+        if ($PAGEDATA->description != NULL) {
+            $metadata .='<meta http-equiv="description" content="' . htmlspecialchars($PAGEDATA->description) . '"/>';
+        }
+    }
+    $smarty = smarty_setup('pages');
+    if ($PAGEDATA->_files != NULL) {
+        //var_dump($PAGEDATA->_files);
+
+        $css = array();
+        $js = array();
+        foreach ($PAGEDATA->_files as $files) {
+
+            if ($files['file_extension'] == "css") {
+               $css[] = $files['file_path'].$files['file_name'];
+                
+                $smarty->assign('CSS', $css);
+            
+               
+                
+                
+            } else if ($files['file_extension'] == "js") {
+
+                $js[] = $files['file_path'].$files['file_name'];     
+                $smarty->assign('JS', $js);
+            } else {
+                $files = array();
+            }
+        }
+    }
+    //var_dump($PAGEDATA);
+    switch ($PAGEDATA->type) {
+        case "0": //Normal Page Type
+            $pagecontent = $PAGEDATA->body;
+            break;
+    }
 } else {
 
     echo "404 , page not found";
     exit;
 }
+
+$smarty->template_dir = THEME_DIR . '/' . THEME . '/html/';
+$smarty->assign('PAGECONTENT', $pagecontent);
+$smarty->assign('PAGEDATA', $PAGEDATA);
+$smarty->assign('METADATA', $metadata);
+$smarty->assign("CSS_INDEX", "file_path");
+$smarty->assign('FRONTEND_CSS', ABSOLUTH_PATH_FRONTEND_CSS);
+$smarty->assign("JQUERY", "https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js");
+$smarty->assign("BOOTSRAP_JS", '<script src="../rock.assets/js/bootstrap.min.js"></script> ');
+
+
+header('Content-type: text/html; Charset=utf-8');
+$smarty->display($template);
 

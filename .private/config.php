@@ -10,7 +10,8 @@ $DBVARS =array(
     'username' => "rockadmin",
     'password' => "RockRoll1234#",
     'hostname' => "localhost",
-    'db_name' => "rock_cmsdb"
+    'db_name' => "rock_cmsdb",
+    'theme' =>'template'
 );
 
 define("DB_USERNAME", "rockadmin");
@@ -25,3 +26,24 @@ define("ABSOLUTH_PATH_FONTS", "../rock.assets/fonts/");
 define("ABSOLUTH_PATH_IMAGES", "../rock.assets/r.images/");
 define("ABSOLUTH_PATH_JS", "../rock.assets/js/");
 define("ABSOLUTH_PATH_ADMIN" , "../rock.admin/");
+define("ABSOLUTH_PATH_FILE_BACKEND", "../rock.files/");
+define("ABSOLUTH_PATH_FILE_FRONT_END", "../r.frontend/files/");
+define("ABSOLUTH_PATH_IMAGE_FRONT_END", "../r.frontend/images/");
+define("ABSOLUTH_PATH_FRONTEND_CSS", "../r.frontend/css/");
+define("ABSOLUTH_PATH_CACHE", "../rock.cache/");
+define("DATE_ADDED", date("F j,Y, g:i a"));
+define("THEME_DIR",SCRIPTBASE.'public_html/r.frontend');
+
+if(isset($DBVARS['theme'])&& $DBVARS['theme']){
+    define("THEME" , $DBVARS['theme']);
+}else{
+    $dir = new DirectoryIterator(THEME_DIR);
+    $DBVARS['theme'] = '';
+    foreach ($dir as $file){
+        if($file->isDot())
+            continue;
+        $DBVARS['theme'] = $file->getFilename();
+        break;
+    }
+    define('THEME', $DBVARS['theme']);
+}

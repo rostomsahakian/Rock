@@ -35,6 +35,7 @@ class Page {
     public $vars;
     public $queries;
     public $data = array();
+    public $_files = array();
 
     public function __construct() {
         $this->queries = new queries();
@@ -67,6 +68,20 @@ class Page {
                 $this->description = $page_info['description'];
                 $this->associated_date = $page_info['associated_date'];
                 $this->vars = $page_info['vars'];
+
+                /*
+                 * Get Additional data
+                 */
+             
+                if (isset($this->id)) {
+                    $this->queries->_res = NULL;
+
+                    $get_files = $this->queries->GetData("page_files", "page_id", $this->id, $option= "0");
+                    $get_files = $this->queries->RetData();
+                    
+                    $this->_files = $get_files;
+                    
+                }
             }
             return true;
         }
@@ -78,6 +93,8 @@ class Page {
 
     public function getInstanceByName($name, array $data) {
         $name = strtolower($name);
+        // var_dump($name);
+
         if ($name = "") {
             header("Location: index.php");
             return false;
@@ -102,7 +119,7 @@ class Page {
             }
 
 
-            $nameIndex = preg_replace('#[^a-z0-9/]#', '-', $name);
+            $nameIndex = preg_replace('#[^a-z0-9/]#', '-', $this->name);
         }
     }
 

@@ -87,7 +87,56 @@
                              */
                             case "edit_page":
 
-                                $this->_forms->EditPageForm($cmd['editor_data'], $cmd['page_id']);
+
+                                /*
+                                 * URL OPTIONS
+                                 * SHORT
+                                 * LONG
+                                 */
+
+                                if (isset($_REQUEST['form']['page_edit']['rewrite_url']) && $_REQUEST['form']['page_edit']['rewrite_url'] != '') {
+
+                                    $URL_OPTIONS = $this->_forms->ReWriteUrl($_REQUEST);
+
+                                    if ($URL_OPTIONS) {
+                                        $message = array("message" => "URL Option Updated");
+                                        $this->_forms->ReturnMessages($message, $flag = 1);
+                                    } else {
+                                        $message = array("message" => "Unable to update");
+                                        $this->_forms->ReturnMessages($message, $flag = 1);
+                                    }
+                                }
+
+
+                                if (isset($_REQUEST['form']['page_edit']['douploadimage']) && $_REQUEST['form']['page_edit']['douploadimage'] != '') {
+
+
+                                    $upload_images = $this->_forms->Do_Upload_images($_POST['form']['page_edit']['douploadimage'], ABSOLUTH_PATH_IMAGE_FRONT_END, DATE_ADDED, $cmd['page_id'], NULL);
+                                    if ($upload_images) {
+                                        $message = array("message" => "Images Uploaded");
+                                        $this->_forms->ReturnMessages($message, $flag = 1);
+                                    } else {
+                                        $message = array("message" => "Unable to upload image");
+                                        $this->_forms->ReturnMessages($message, $flag = 1);
+                                    }
+                                }
+                                if (isset($_REQUEST['form']['page_edit']['douploadfile']) && $_REQUEST['form']['page_edit']['douploadfile'] != '') {
+
+
+                                    $upload_files = $this->_forms->Do_Upload_files($_POST['form']['page_edit']['douploadfile'], ABSOLUTH_PATH_FILE_FRONT_END, DATE_ADDED, $cmd['page_id'], NULL);
+                                    if ($upload_files) {
+                                        $message = array("message" => "File was Uploaded");
+                                        $this->_forms->ReturnMessages($message, $flag = 1);
+                                    } else {
+                                        $message = array("message" => "Unable to upload file");
+                                        $this->_forms->ReturnMessages($message, $flag = 1);
+                                    }
+                                }
+
+
+
+
+                                $this->_forms->EditPageForm($cmd['editor_data'], $cmd['url_options'], $cmd['page_images'], $cmd['page_files'], $cmd['page_id']);
                                 break;
                             /*
                              * Pages manu in main content section
@@ -164,18 +213,38 @@
 
 
 
-
-
-
                                 /*
                                  * After form is processed
                                  */
-                                $this->_queries->_res = NULL;
-                                $data_for_editor_after_update = $this->_queries->GetData("pages", "id", $cmd['page_id'], "0");
-                                $data_for_editor_after_update = $this->_queries->RetData();
-                                $this->_forms->EditPageForm($data_for_editor_after_update, $cmd['page_id']);
+//                                $this->_queries->_res = NULL;
+//                                $data_for_editor_after_update = $this->_queries->GetData("pages", "id", $cmd['page_id'], "0");
+//                                $data_for_editor_after_update = $this->_queries->RetData();
+                                $this->_forms->EditPageForm($cmd['editor_data'], $cmd['url_options'], $cmd['page_images'], $cmd['page_files'], $cmd['page_id']);
 
 
+                                break;
+                            case "add_page":
+
+
+                                if (isset($_REQUEST['form']['add_new_page']['do_add_new_page'])) {
+                                    $do_add_new_page = $this->_forms->DoAddNewPage($_REQUEST, $cmd['pages']);
+                                    $do_add_new_page = $this->_forms->RET_MESSAGE_TO();
+                                    if ($do_add_new_page != NULL) {
+                                        $message['message'] = $do_add_new_page['message'];
+                                        
+                                        $this->_forms->ReturnMessages($message, $do_add_new_page[0]);
+                                    }
+                                }
+                                /*
+                                 * pop dialog to add new page
+                                 */
+                                $this->_forms->AddNewPagePopUp($cmd['pages']);
+
+                                /*
+                                 * the edit page form 
+                                 */
+
+                                $this->_forms->EditPageForm($cmd['editor_data'], $cmd['url_options'], $cmd['page_images'], $cmd['page_files'], $cmd['page_id']);
                                 break;
                         }
                     }

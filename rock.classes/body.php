@@ -176,7 +176,7 @@ class body {
                 $to = (isset($_REQUEST['parent_id']) ? $_REQUEST['parent_id'] : '');
                 $order = explode(",", (isset($_REQUEST['order']) ? $_REQUEST['order'] : ''));
 
-                
+
 
 
                 /*
@@ -188,14 +188,59 @@ class body {
                     "1" => $move_page_id,
                     "2" => $to,
                     "order" => $order);
+                /*
+                 * Data for page editor form 
+                 */
 
+                $data_for_editor = array();
+                $get_url_option_info = array();
+                $get_all_page_images = array();
+                $get_all_page_files = array();
+
+
+                /*
+                 * Editor main data
+                 */
                 $this->queries->_res = NULL;
                 $data_for_editor = $this->queries->GetData("pages", "id", $page_id, "0");
                 if ($data_for_editor) {
                     $data_for_editor = $this->queries->RetData();
                 } else {
-                    return false;
+                    $data_for_editor = array();
                 }
+                /*
+                 * Url Option Data
+                 */
+                $this->queries->_res = NULL;
+                $get_url_option_info = $this->queries->GetData("url_options", "page_id", $page_id, "0");
+                if ($get_url_option_info) {
+                    $get_url_option_info = $this->queries->RetData();
+                } else {
+                    $get_url_option_info = array();
+                }
+
+                /*
+                 * Images for each page data
+                 */
+                $this->queries->_res = NULL;
+                $get_all_page_images = $this->queries->GetData("page_images", "page_id", $page_id, "0");
+                if ($get_all_page_images) {
+                    $get_all_page_images = $this->queries->RetData();
+                } else {
+                    $get_all_page_images = array();
+                }
+
+                /*
+                 * Associated files for each page data
+                 */
+                $this->queries->_res = NULL;
+                $get_all_page_files = $this->queries->GetData("page_files", "page_id", $page_id, "0");
+                if (is_array($get_all_page_files) ? $get_all_page_files : array("3")) {
+                    $get_all_page_files = $this->queries->RetData();
+                } else {
+                    $get_all_page_files = array();
+                }
+
                 /*
                  * Edit or save page
                  * Get data from Request
@@ -246,6 +291,10 @@ class body {
 
 
 
+
+
+
+
                 ################################################
                 /* -----------Logical Controller---------------*\
                   ################################################
@@ -259,9 +308,13 @@ class body {
                     "page_id" => $page_id,
                     "move_data" => $move_data,
                     "editor_data" => $data_for_editor,
+                    "url_options" => $get_url_option_info,
+                    "page_images" => $get_all_page_images,
+                    "page_files" => $get_all_page_files,
                     "edit_save_page_data" => $page_data_array,
-                    "data_after_update" => $data_for_editor_after_update
                 );
+
+
                 $this->listener->controller($cmd);
                 /*
                  * DO NOT REMOVE

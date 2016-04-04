@@ -37,7 +37,7 @@ class queries {
             $rows = array();
             switch ($option) {
                 case "0":
-
+                    
                     $sql = "SELECT * FROM `" . $table . "` WHERE `" . $fields . "`= '" . $value . "'";
                     $result = $this->_mysqli->query($sql);
                     if ($result) {
@@ -195,6 +195,20 @@ class queries {
                     }
                     $get_new_home_page_name = $this->GetData($table['table1'], $fields['field2'], 1, $option = "0");
                     break;
+                    /*
+                     * Return only the count
+                     */
+                case "6":
+                    $sql = "SELECT COUNT(id) AS row_count FROM `".$table."` WHERE `".$fields."` = '".$value."'";
+                    $result = $this->_mysqli->query($sql);
+                    $row = $result->fetch_array(MYSQLI_ASSOC);
+                    
+                    if($result){
+                        return $row;
+                    }else{
+                        return false;
+                    }
+                    break;
             }
         }
     }
@@ -288,7 +302,7 @@ class queries {
 
             switch ($option) {
                 case "1":
-                    $sql = "SELECT `parent` FROM `" . $data['table'] . "` WHERE `" . $data['field'] . "` = '" . (int) $data['value'] . "'";
+                    $sql = "SELECT `".$data['select']."`, `parent` FROM `" . $data['table'] . "` WHERE `" . $data['field'] . "` = '" . (int) $data['value'] . "' ORDER BY `id` ASC";
 
                     $result = $this->_mysqli->query($sql);
                     $row = $result->fetch_array(MYSQLI_ASSOC);
@@ -299,6 +313,7 @@ class queries {
                         $new_data = array(
                             "table" => "pages",
                             "field" => "id",
+                            "select" => "name",
                             "value" => $row['parent']
                         );
                         $find_parnet = $this->findParent($new_data, "1");
@@ -356,6 +371,35 @@ class queries {
 
                     break;
             }
+        }
+    }
+    
+    public function Insertvalues(array $data, $option=0){
+        
+        if($option != 0){
+            switch ($option){
+                case "1":
+                    $sql="INSERT INTO `".$data['tables']['table1']."`";
+                        $sql .= " ( ";
+                            $sql .= implode("," ,$data['columns']);
+                        $sql .= " ) ";
+                        $sql .= " VALUES ";
+                        $sql .= " ( ";
+                            $sql .= implode("," ,$data['values']);
+
+                        $sql .= " ) ";
+                       
+                        
+                        $result = $this->_mysqli->query($sql);
+                        if($result){
+                            return true;
+                        }else{
+                            return false;
+                        }
+                        
+                    break;
+            }
+            
         }
     }
 
