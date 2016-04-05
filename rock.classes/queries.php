@@ -21,6 +21,7 @@ class queries {
     public $_res = array();
     public $_parent = array();
     public $_child = array();
+    public $_nav = array();
 
     public function __construct() {
         $this->_db = basics::getInstance();
@@ -37,7 +38,7 @@ class queries {
             $rows = array();
             switch ($option) {
                 case "0":
-                    
+
                     $sql = "SELECT * FROM `" . $table . "` WHERE `" . $fields . "`= '" . $value . "'";
                     $result = $this->_mysqli->query($sql);
                     if ($result) {
@@ -195,17 +196,17 @@ class queries {
                     }
                     $get_new_home_page_name = $this->GetData($table['table1'], $fields['field2'], 1, $option = "0");
                     break;
-                    /*
-                     * Return only the count
-                     */
+                /*
+                 * Return only the count
+                 */
                 case "6":
-                    $sql = "SELECT COUNT(id) AS row_count FROM `".$table."` WHERE `".$fields."` = '".$value."'";
+                    $sql = "SELECT COUNT(id) AS row_count FROM `" . $table . "` WHERE `" . $fields . "` = '" . $value . "'";
                     $result = $this->_mysqli->query($sql);
                     $row = $result->fetch_array(MYSQLI_ASSOC);
-                    
-                    if($result){
+
+                    if ($result) {
                         return $row;
-                    }else{
+                    } else {
                         return false;
                     }
                     break;
@@ -281,11 +282,11 @@ class queries {
                     break;
                 case "3":
                     $sql = "UPDATE `" . $data['table'] . "` SET ";
-                    for($i=0; $i < count($data['field']); $i++){
-                    $sql .= "`" . $data['field'][$i] . "` =" . $data['value1'][$i];
+                    for ($i = 0; $i < count($data['field']); $i++) {
+                        $sql .= "`" . $data['field'][$i] . "` =" . $data['value1'][$i];
                     }
                     $sql .= "WHERE `" . $data['field2'] . "` = '" . $data['value2'] . "'";
-                  
+
                     $result = $this->_mysqli->query($sql);
                     if ($result) {
                         return true;
@@ -302,7 +303,7 @@ class queries {
 
             switch ($option) {
                 case "1":
-                    $sql = "SELECT `".$data['select']."`, `parent` FROM `" . $data['table'] . "` WHERE `" . $data['field'] . "` = '" . (int) $data['value'] . "' ORDER BY `id` ASC";
+                    $sql = "SELECT `" . $data['select'] . "`, `parent` FROM `" . $data['table'] . "` WHERE `" . $data['field'] . "` = '" . (int) $data['value'] . "' ORDER BY `id` ASC";
 
                     $result = $this->_mysqli->query($sql);
                     $row = $result->fetch_array(MYSQLI_ASSOC);
@@ -362,7 +363,7 @@ class queries {
                             return false;
                         } else {
                             $this->_res[] = $row;
-                            // var_dump($row);
+
                             $data['values']['value1'] = $row['id'];
 
                             $find_all = $this->findChildren($data, $option = 1);
@@ -373,33 +374,78 @@ class queries {
             }
         }
     }
-    
-    public function Insertvalues(array $data, $option=0){
-        
-        if($option != 0){
-            switch ($option){
-                case "1":
-                    $sql="INSERT INTO `".$data['tables']['table1']."`";
-                        $sql .= " ( ";
-                            $sql .= implode("," ,$data['columns']);
-                        $sql .= " ) ";
-                        $sql .= " VALUES ";
-                        $sql .= " ( ";
-                            $sql .= implode("," ,$data['values']);
 
-                        $sql .= " ) ";
-                       
-                        
-                        $result = $this->_mysqli->query($sql);
-                        if($result){
-                            return true;
-                        }else{
-                            return false;
-                        }
-                        
+    public function Insertvalues(array $data, $option = 0) {
+
+        if ($option != 0) {
+            switch ($option) {
+                case "1":
+                    $sql = "INSERT INTO `" . $data['tables']['table1'] . "`";
+                    $sql .= " ( ";
+                    $sql .= implode(",", $data['columns']);
+                    $sql .= " ) ";
+                    $sql .= " VALUES ";
+                    $sql .= " ( ";
+                    $sql .= implode(",", $data['values']);
+
+                    $sql .= " ) ";
+
+
+                    $result = $this->_mysqli->query($sql);
+                    if ($result) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+
                     break;
             }
-            
+        }
+    }
+
+    public function NavigationQuaries($id, $page_type, $self, $option = NULL) {
+        $nav = array();
+        /*
+         * Navigation options
+         * 0 => with order of id
+         * 1 => alphbetically 
+         * 2 => TBD
+         */
+        if ($option != NULL) {
+            switch ($option) {
+                /*
+                 * Case 0 with id order
+                 */
+                case "0":
+                    $sql = "SELECT * FROM `pages` WHERE `parent`= '" . $id . "' AND `type` = '" . $page_type . "' ";
+                    $result = $this->_mysqli->query($sql);
+                    if ($result) {
+
+                        while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+                            $this->_nav[] = $row;
+                            $parent_id = $row['id'];
+                            $type = $row['type'];
+
+                            $find_nav = $this->NavigationQuaries($parent_id, $type, $parent_id, "0");
+                        }
+                        return $this->_nav;
+                    }
+
+                    break;
+                case "1":
+                    $sql = "SELECT * FROM `pages` WHERE `parent` != '" . $id . "' AND `type` ='" . $page_type . "'";
+                    $result = $this->_mysqli->query($sql);
+                    if ($result) {
+                        while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+                            
+                            $this->_nav[] = $row;
+                        }
+                        return $this->_nav;
+                        
+                    }else{
+                        return false;
+                    }
+            }
         }
     }
 

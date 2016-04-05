@@ -104,6 +104,8 @@ if ($PAGEDATA->getInstance($id, $data_for_query)) {
             $metadata .='<meta http-equiv="description" content="' . htmlspecialchars($PAGEDATA->description) . '"/>';
         }
     }
+
+
     $smarty = smarty_setup('pages');
     if ($PAGEDATA->_files != NULL) {
         //var_dump($PAGEDATA->_files);
@@ -113,16 +115,12 @@ if ($PAGEDATA->getInstance($id, $data_for_query)) {
         foreach ($PAGEDATA->_files as $files) {
 
             if ($files['file_extension'] == "css") {
-               $css[] = $files['file_path'].$files['file_name'];
-                
+                $css[] = $files['file_path'] . $files['file_name'];
+
                 $smarty->assign('CSS', $css);
-            
-               
-                
-                
             } else if ($files['file_extension'] == "js") {
 
-                $js[] = $files['file_path'].$files['file_name'];     
+                $js[] = $files['file_path'] . $files['file_name'];
                 $smarty->assign('JS', $js);
             } else {
                 $files = array();
@@ -141,6 +139,7 @@ if ($PAGEDATA->getInstance($id, $data_for_query)) {
     exit;
 }
 
+
 $smarty->template_dir = THEME_DIR . '/' . THEME . '/html/';
 $smarty->assign('PAGECONTENT', $pagecontent);
 $smarty->assign('PAGEDATA', $PAGEDATA);
@@ -149,8 +148,14 @@ $smarty->assign("CSS_INDEX", "file_path");
 $smarty->assign('FRONTEND_CSS', ABSOLUTH_PATH_FRONTEND_CSS);
 $smarty->assign("JQUERY", "https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js");
 $smarty->assign("BOOTSRAP_JS", '<script src="../rock.assets/js/bootstrap.min.js"></script> ');
-
+///$smarty->assign("NAV_MENU", $PAGEDATA->_naviagtion->MenuController());
 
 header('Content-type: text/html; Charset=utf-8');
 $smarty->display($template);
 
+
+
+
+//$PAGEDATA->BuildNavigation(0, NULL, NULL);
+
+$PAGEDATA->BuildNavForFrontEnd(0);

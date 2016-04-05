@@ -10,4 +10,7 @@ CKEDITOR.editorConfig = function (config) {
     config.height = 500;        // 500 pixels.
     config.height = '25em';     // CSS length.
     config.height = '500px';    // CSS length.
+    
+
 };
+CKEDITOR.config.allowedContent = true;

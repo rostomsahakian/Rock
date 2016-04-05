@@ -1094,7 +1094,9 @@ class forms {
 
     public function ckeditor($name, $value = '', $height = 450) {
         return ' <textarea class="form-control" rows="20" name="' . addslashes($name) . '">' . htmlspecialchars($value) . '</textarea>'
-                . '<script> CKEDITOR.replace( "' . $name . '" ); </script>';
+                . '<script> CKEDITOR.replace( "' . $name . '"); '
+                . ''
+                . '</script>';
     }
 
     /*

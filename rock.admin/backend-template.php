@@ -240,11 +240,7 @@
                                  */
                                 $this->_forms->AddNewPagePopUp($cmd['pages']);
 
-                                /*
-                                 * the edit page form 
-                                 */
-
-                                $this->_forms->EditPageForm($cmd['editor_data'], $cmd['url_options'], $cmd['page_images'], $cmd['page_files'], $cmd['page_id']);
+                                
                                 break;
                         }
                     }

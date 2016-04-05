@@ -21,7 +21,7 @@ CKEDITOR.on( 'instanceReady', function( ev ) {
 	document.getElementById( 'eButtons' ).style.display = 'block';
 });
 
-function InsertHTML() {
+function insertElement() {
 	// Get the editor instance that we want to interact with.
 	var editor = CKEDITOR.instances.editor1;
 	var value = document.getElementById( 'htmlArea' ).value;
