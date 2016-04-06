@@ -150,6 +150,20 @@ class body {
                     );
                     $this->_forms->DoUpdateOrderForPages($order_processor_data);
                 }
+                if (isset($_REQUEST['do_delete_page'])) {
+                    $flag = 1;                
+                    $page_id = $_REQUEST['p_id'];
+                    $parent_id = $_REQUEST['page_parent'];
+                    $process_delete_data = array(
+                        $page_id,
+                        $parent_id
+                    );
+                  $page_to_delete = $this->_forms->DoDeleteSelectedPage($process_delete_data);
+                  $page_to_delete = $this->_forms->RET_MESSAGE_TO();
+                  if($page_to_delete !=NULL){
+                      $message['message'] = $page_to_delete['message'];
+                  }
+                }
 
                 /*
                  * page data
@@ -157,6 +171,24 @@ class body {
                 $this->queries->_res = NULL;
                 $data_for_side_bar = $this->queries->GetData("pages", NULL, NULL, "3");
                 $data_for_side_bar = $this->queries->RetData();
+
+
+
+
+                if (isset($_REQUEST['form']['add_new_page']['do_add_new_page'])) {
+                  
+                    $do_add_new_page = $this->_forms->DoAddNewPage($_REQUEST, $data_for_side_bar);
+                    $do_add_new_page = $this->_forms->RET_MESSAGE_TO();
+                    if ($do_add_new_page != NULL) {
+                        $message['message'] = $do_add_new_page['message'];
+
+                    }
+                }
+
+
+
+
+
 
                 /*
                  * Login
@@ -312,6 +344,7 @@ class body {
                     "page_images" => $get_all_page_images,
                     "page_files" => $get_all_page_files,
                     "edit_save_page_data" => $page_data_array,
+                    "message" => $message
                 );
 
 

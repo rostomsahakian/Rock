@@ -53,40 +53,40 @@ $(function () {
     })
 
 
-    var div = $(
-            '<div><i>right-click for options</i><br/><br/></div>'
-            );
-    $('<button>add main page</button>').click(pages_add_main_page).appendTo(div);
-    div.appendTo('#pages-wrapper');
-console.log(click(pages_add_main_page).appendTo(div));
+//    var div = $(
+//            '<div><i>right-click for options</i><br/><br/></div>'
+//            );
+//    $('<button>add main page</button>').click(pages_add_main_page).appendTo(div);
+//    div.appendTo('#pages-wrapper');
+//console.log(click(pages_add_main_page).appendTo(div));
 
 });
-function pages_add_main_page() {
-    pages_new(0);
-    console.log(pages_new);
-}
-function pages_new(p) {
-    $('<form id="new_page_dialog" method="post"> <input typ="hidden" name="cmd" value="insert page details"/> \n\
-       <input type="hidden" name="special[1]" value="1"/>\n\
-        <input type="hidden" name="parent" value="'+p+'" /> \n\
-         <table>\n\
-           <tr><th>Name</th><td><input type="text" name="name"/></td></tr>         \n\
-           <tr><th>Page Type</th><td><select name="type"><option value="0">normal</option></select></td></tr>         \n\
-</table></form> ')
-            .dialog({
-                modal:true,
-                buttons:{
-                    'Create Page':function(){
-                        $('#newpage_page_dialog').submit();
-                    },
-                    'Cancel': function(){
-                        $(this).dialog('distroy');
-                        $(this).remove();
-                    }
-                }
-            });
-            return false;
-}
+//function pages_add_main_page() {
+//    pages_new(0);
+//    console.log(pages_new);
+//}
+//function pages_new(p) {
+//    $('<form id="new_page_dialog" method="post"> <input typ="hidden" name="cmd" value="insert page details"/> \n\
+//       <input type="hidden" name="special[1]" value="1"/>\n\
+//        <input type="hidden" name="parent" value="'+p+'" /> \n\
+//         <table>\n\
+//           <tr><th>Name</th><td><input type="text" name="name"/></td></tr>         \n\
+//           <tr><th>Page Type</th><td><select name="type"><option value="0">normal</option></select></td></tr>         \n\
+//</table></form> ')
+//            .dialog({
+//                modal:true,
+//                buttons:{
+//                    'Create Page':function(){
+//                        $('#newpage_page_dialog').submit();
+//                    },
+//                    'Cancel': function(){
+//                        $(this).dialog('distroy');
+//                        $(this).remove();
+//                    }
+//                }
+//            });
+//            return false;
+//}
 
 
 

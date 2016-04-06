@@ -31,7 +31,8 @@ class commands {
             "choose_edit_page",
             "action",
             "update_page_details",
-            "insert_page_details"
+            "insert_page_details",
+            "delete_page"
         );
     }
 

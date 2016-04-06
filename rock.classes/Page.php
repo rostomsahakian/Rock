@@ -235,22 +235,22 @@ class Page {
             $this->_top_level[] = $top_link;
         }
 
-     
+
 
 
         $this->queries->_nav = NULL;
         $sub_links = $this->queries->NavigationQuaries($parent_id, "0", "1", $option = "1");
-        foreach ($sub_links as $sub_link) {
+        if ($sub_links != NULL) {
+            foreach ($sub_links as $sub_link) {
 
-            
-            $this->_sub_level['sub'][$sub_link['parent']] = $sub_link;
+
+                $this->_sub_level['sub'][$sub_link['parent']] = $sub_link;
+            }
         }
-       
-       // var_dump($this->_sub_level['sub'][0]);
+        // var_dump($this->_sub_level['sub'][0]);
 
-        
+
         $nav_links = array("top" => $this->_top_level, "sub" => $this->_sub_level);
-
     }
 
 }

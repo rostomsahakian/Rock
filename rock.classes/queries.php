@@ -448,5 +448,41 @@ class queries {
             }
         }
     }
+    
+    public function DeleteServices ($to_delete, $option = NULL){
+        if($option !=NULL){
+            
+            switch($option){
+                
+                case "0":
+                    $sql = "SELECT COUNT(id) AS number_pages FROM `pages`";
+                    $result = $this->_mysqli->query($sql);
+                    $row = $result->fetch_array(MYSQLI_ASSOC);
+                    
+                    if($row['number_pages'] < 2){
+                        return false;
+                    }else{
+                        for($i = 0; $i <count($to_delete['tables']); $i++){
+                        $sql ="DELETE FROM `".$to_delete['tables'][$i]."`  WHERE `".$to_delete['fields'][$i]."` = '".$to_delete['value']."'";
+                        $result = $this->_mysqli->query($sql);
+                        
+                        }
+                        
+                        if($result){
+                            return true;
+                        }
+                        
+                    }
+                    break;
+                case "1":
+                    $sql ="DELETE FROM `".$to_delete['table']."` WHERE `".$to_delete['field1']."` = '".$to_delete['value1']."' AND `".$to_delete['field2']."` = '".$to_delete['value2']."'";
+                    $result = $this->_mysqli->query($sql);
+                    if($result){
+                        return true;
+                    }
+                    break;
+            }
+        }
+    }
 
 }

@@ -45,20 +45,24 @@
                         return false;
                     } else {
                         switch ($cmd['cmd']) {
+
+                            /* ######################
+                             * See pages
+                             */#####################
                             case "see_page":
                                 $page_body = $this->seePageLook($cmd['pages'], $cmd['page_id']);
                                 break;
-                            /*
+                            /* ##################################
                              * Available moculdes and capabilites 
                              * to be added
-                             */
+                             */##################################
                             case "menus":
                                 echo "hi there I am going to be a menu";
                                 break;
-                            /*
+                            /* #################################
                              * Move pages parent or children
                              * This is an Ajax call done behind the scene with jstree $.getJSON function
-                             */
+                             */################################
                             case "move_page":
 
                                 $tables = array("table1" => "pages");
@@ -82,9 +86,9 @@
 
                                 $q->UpdateQueriesServices($move_data, "1");
                                 break;
-                            /*
+                            /* ###############################
                              * Edit form in main content area
-                             */
+                             */##############################
                             case "edit_page":
 
 
@@ -96,7 +100,13 @@
 
                                 if (isset($_REQUEST['form']['page_edit']['rewrite_url']) && $_REQUEST['form']['page_edit']['rewrite_url'] != '') {
 
-                                    $URL_OPTIONS = $this->_forms->ReWriteUrl($_REQUEST);
+                                    $url_values = array(
+                                        "option" => $_REQUEST['form']['page_edit']['url_rewrite'],
+                                        "id" => $_REQUEST['form']['page_edit']['id'],
+                                        "url_page_id" => $_REQUEST['form']['page_edit']['url_page_id']
+                                    );
+
+                                    $URL_OPTIONS = $this->_forms->ReWriteUrl($url_values);
 
                                     if ($URL_OPTIONS) {
                                         $message = array("message" => "URL Option Updated");
@@ -107,7 +117,10 @@
                                     }
                                 }
 
-
+                                /*
+                                 * Upload Images
+                                 * 
+                                 */
                                 if (isset($_REQUEST['form']['page_edit']['douploadimage']) && $_REQUEST['form']['page_edit']['douploadimage'] != '') {
 
 
@@ -120,6 +133,9 @@
                                         $this->_forms->ReturnMessages($message, $flag = 1);
                                     }
                                 }
+                                /*
+                                 * Upload files
+                                 */
                                 if (isset($_REQUEST['form']['page_edit']['douploadfile']) && $_REQUEST['form']['page_edit']['douploadfile'] != '') {
 
 
@@ -138,16 +154,23 @@
 
                                 $this->_forms->EditPageForm($cmd['editor_data'], $cmd['url_options'], $cmd['page_images'], $cmd['page_files'], $cmd['page_id']);
                                 break;
-                            /*
+                            /* ###################################
                              * Pages manu in main content section
-                             */
+                             */##################################
                             case "choose_edit_page":
+
+                                if ($cmd['message'] != NULL) {
+
+                                    $flag = 1;
+                                    $pass_message = $this->_forms->ReturnMessages($cmd['message'], $flag);
+                                }
+
                                 $this->_forms->ListAllPagesOnMainContent($cmd['pages']);
 
                                 break;
-                            /*
+                            /* #################################################
                              * If clciked to update the page in the pages form
-                             */
+                             */#################################################
                             case "update_page_details":
 
                                 /*
@@ -223,24 +246,24 @@
 
 
                                 break;
+
+                            /* ##################
+                             * Add New page
+                             */#################
                             case "add_page":
 
 
-                                if (isset($_REQUEST['form']['add_new_page']['do_add_new_page'])) {
-                                    $do_add_new_page = $this->_forms->DoAddNewPage($_REQUEST, $cmd['pages']);
-                                    $do_add_new_page = $this->_forms->RET_MESSAGE_TO();
-                                    if ($do_add_new_page != NULL) {
-                                        $message['message'] = $do_add_new_page['message'];
-                                        
-                                        $this->_forms->ReturnMessages($message, $do_add_new_page[0]);
-                                    }
+                                if ($cmd['message'] != NULL) {
+
+                                    $flag = 1;
+                                    $pass_message = $this->_forms->ReturnMessages($cmd['message'], $flag);
                                 }
                                 /*
                                  * pop dialog to add new page
                                  */
                                 $this->_forms->AddNewPagePopUp($cmd['pages']);
 
-                                
+
                                 break;
                         }
                     }

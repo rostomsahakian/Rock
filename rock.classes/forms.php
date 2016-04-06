@@ -321,6 +321,8 @@ class forms {
 
                     $this->_editFormData['url_option'] = $url_options[0]['option'];
                     $this->_editFormData['url_page_id'] = $url_options[0]['page_id'];
+                } else {
+                    $this->_editFormData['url_option'] = "short";
                 }
 
 
@@ -365,7 +367,9 @@ class forms {
                                         <li aria-controls="f_pass" role="tab" ><a href="#tabs-images" data-toggle="tab">Images</a></li>
                                         <li aria-controls="f_pass" role="tab" ><a href="#tabs-files" data-toggle="tab">Files</a></li>
                                         <!--add plugin tabs here-->
+                                        <li class=""> </li>
                                     </ul>
+
                                 </div>
                                 <div class="tab-content">
 
@@ -386,23 +390,24 @@ class forms {
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
-                                                <?php
-                                                $url_array = array(
-                                                    "parent_id" => (isset($_REQUEST['form']['page_edit']['parent']) ? $_REQUEST['form']['page_edit']['parent'] : $this->_editFormData['parent']),
-                                                    "id" => $this->_editFormData['id'],
-                                                    "selected" => (isset($_REQUEST['form']['page_edit']['url_rewrite']) ? $_REQUEST['form']['page_edit']['url_rewrite'] : $this->_editFormData['url_option']),
-                                                    "page_name" => (isset($_REQUEST['form']['page_edit']['page_name']) ? $_REQUEST['form']['page_edit']['page_name'] : $this->_editFormData['name']),
-                                                );
+                                            
+                                                    <?php
+                                                    $url_array = array(
+                                                        "parent_id" => (isset($_REQUEST['form']['page_edit']['parent']) ? $_REQUEST['form']['page_edit']['parent'] : $this->_editFormData['parent']),
+                                                        "id" => $this->_editFormData['id'],
+                                                        "selected" => (isset($_REQUEST['form']['page_edit']['url_rewrite']) ? $_REQUEST['form']['page_edit']['url_rewrite'] : $this->_editFormData['url_option']),
+                                                        "page_name" => (isset($_REQUEST['form']['page_edit']['page_name']) ? $_REQUEST['form']['page_edit']['page_name'] : $this->_editFormData['name']),
+                                                    );
 
 
 
-                                                $set_url = $this->URL_RE_WRITER($url_array);
-                                                $set_url = $this->RET_URL();
-                                                ?>
-                                                <a href="<?= $set_url ?>" target="_blank" class="btn bg-primary">View page</a>
+                                                    $set_url = $this->URL_RE_WRITER($url_array);
+                                                    $set_url = $this->RET_URL();
+                                                    ?>
+                                                    <a href="<?= $set_url ?>" target="_blank" class="btn bg-primary">View page</a>
+                                                </div>
 
-
-                                            </div>
+                                      
                                         </div>
                                         <!-- name and tile div ends-->
                                         <!--*****************-->
@@ -537,9 +542,11 @@ class forms {
                                                                                 <?php
                                                                                 $check_short = '';
                                                                                 $check_long = '';
-                                                                                if ((isset($_REQUEST['form']['page_edit']['url_rewrite']) ? $_REQUEST['form']['page_edit']['url_rewrite'] == "short" : $this->_editFormData['url_option'] == "short")) {
+                                                                                if ((isset($_REQUEST['form']['page_edit']['url_rewrite']) && $_REQUEST['form']['page_edit']['url_rewrite'] == "short") || $this->_editFormData['url_option'] == "short") {
+
                                                                                     $check_short = 'checked="checked"';
                                                                                 } else {
+
                                                                                     $check_long = 'checked="checked"';
                                                                                 }
                                                                                 ?>
@@ -829,9 +836,27 @@ class forms {
 
     public function ListAllPagesOnMainContent(array $list_pages) {
         $this->_list_pages = $list_pages;
-//var_dump($this->_list_pages);
         ?>
         <div class="col-lg-12">
+            <?php
+            if ($this->_flag == 1) {
+                ?>
+                <div class="col-md-12" style="margin-top: 10px !important;">
+
+                    <div class="list-group">
+                        <ul>
+                            <?php
+                            foreach ($this->error_message as $message) {
+
+                                echo "<li class='list-group-item list-group-item-warning'><i class='glyphicon glyphicon-info-sign'></i>&nbsp;" . $message . "</li>";
+                            }
+                            ?>
+                        </ul>
+                    </div>
+                </div>
+                <?php
+            }
+            ?>
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <span>Edit Your Pages</span>                    
@@ -888,9 +913,19 @@ class forms {
                                     <?= $do_list_pages['cdate'] ?>
                                 </td>
                                 <td>
-                                    <a href="?cmd=choose_edit_page&option=delete&page_id=<?= $do_list_pages['id'] ?>"><i class="glyphicon glyphicon-trash"></i></a>
-
-                                    <a href="?cmd=edit_page&option=edit&page_id=<?= $do_list_pages['id'] ?>"><i class="glyphicon glyphicon-pencil"></i></a>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <form  method="post">
+                                                <input type="hidden" name="p_id" value="<?= $do_list_pages['id'] ?>"/>
+                                                <input type="hidden" name="page_parent" value="<?= $do_list_pages['parent'] ?>"/>
+                                                <input type="hidden" name="cmd" value="choose_edit_page"/>
+                                                <input type="submit"  name="do_delete_page" class="btn btn-danger btn-xs" value="Delete"/>
+                                            </form>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <a href="?cmd=edit_page&option=edit&page_id=<?= $do_list_pages['id'] ?>" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-pencil"></i></a>
+                                        </div>
+                                    </div>
                                 </td>
 
 
@@ -942,6 +977,55 @@ class forms {
                 );
                 $update_order_query = $this->_queries->UpdateQueriesServices($update_order_array, $option = "1");
             }
+        }
+    }
+
+    /*
+     * Delete pages 
+     */
+
+    public function DoDeleteSelectedPage(array $delete_data) {
+
+
+        if (isset($_REQUEST['do_delete_page'])) {
+
+            $page_id = $delete_data[0];
+            $parent = $delete_data[1];
+            var_dump($page_id);
+            var_dump($parent);
+            $tables = array("pages", "page_file", "page_images", "url_options");
+            $fields = array("id", "page_id", "page_id", "page_id");
+            $values = $page_id;
+            $to_delete = array(
+                "tables" => $tables,
+                "fields" => $fields,
+                "value" => $values
+            );
+            $flag = 1;
+            if ($flag == 1) {
+
+                $message = array("message" => "This will dlete the page and all the associated files with it. Are you sure?<br/><br/>"
+                    . "<div class='btn-group'>"
+                    . "<form method='post'>"
+                    . "<input type='hidden' name='do_delete_page' value='Delete'/>"
+                    . "<input type='hidden' name='cmd' value='choose_edit_page'/>"
+                    . "<input type='hidden' name='page_parent' value='" . $_REQUEST['page_parent'] . "'/>"
+                    . "<input type='hidden' name='p_id' value='" . $_REQUEST['p_id'] . "'/>"
+                    . "<input type='submit' name='confirm' value='yes' class='btn btn-default'/>"
+                    . "<input type='submit' name='cancel' value='no' class='btn btn-default'/>"
+                    . "</div>");
+
+                array_push($message, $flag);
+                $this->_message = $message;
+
+                if (isset($_REQUEST['confirm']) && $_REQUEST['confirm'] == "yes") {
+                    $do_delete = $this->_queries->DeleteServices($to_delete, $option = "0");
+                }
+            }
+            if ($flag == 0) {
+                
+            }
+            return FALSE;
         }
     }
 
@@ -1213,12 +1297,8 @@ class forms {
                 $uploadOk = 1;
             }
         }
-        if (file_exists($upload_file)) {
 
-            //$message = array("File already exists");
-            //array_push($this->error_message, $message);
-            $uploadOk == 0;
-        }
+
         if ($file["size"]['page_edit']['uploadfile'] > 5000000) {
             //$message = array("File size is too large.");
             // array_push($this->error_message, $message);
@@ -1234,6 +1314,9 @@ class forms {
             //$message = array("Unable to upload file. Try again!");
             /// array_push($this->error_message, $message);
         } else {
+            if (file_exists("$path/$upload_file")) {
+                unlink("$path/$upload_file");
+            }
 
             if (move_uploaded_file($file["tmp_name"]['page_edit']['uploadfile'], $upload_file)) {
 
@@ -1248,6 +1331,21 @@ class forms {
                     "columns" => $columns,
                     "values" => $values
                 );
+
+                $files_to_delete = array(
+                    "table" => "page_files",
+                    "field1" => "page_id",
+                    "value1" => $page_uid,
+                    "field2" => "file_name",
+                    "value2" => $file_name
+                );
+                $this->_queries->_res = NULL;
+                $check_file_in_db = $this->_queries->GetData("page_files", "file_name", $file_name, $option="6");
+               if((int)$check_file_in_db > 0){
+                   $do = $this->_queries->DeleteServices($files_to_delete, $option = "1"); 
+                }
+
+
                 $insert_file_into = $this->_queries->Insertvalues($values_to_insert, $option = "1");
                 return true;
             } else {
@@ -1263,8 +1361,9 @@ class forms {
      */
 
     public function ReWriteUrl(array $values) {
-        if (isset($values['form']['page_edit']['url_rewrite']) && $values['form']['page_edit']['url_option'] != '' && $values['form']['page_edit']['id'] == $values['form']['page_edit']['url_page_id']) {
-            $option = $values['form']['page_edit']['url_rewrite'];
+        if (isset($values['option']) && $values['option'] != '' && $values['id'] == $values['url_page_id']) {
+            $option = $values['option'];
+            var_dump($values['id']);
             //Update if different
             $update_vars = array(
                 "'" . addslashes($option) . "'",
@@ -1277,7 +1376,7 @@ class forms {
                 "value1" => $update_vars,
                 "field" => $fields,
                 "field2" => "page_id",
-                "value2" => $values['form']['page_edit']['id']
+                "value2" => $values['id']
             );
             $url_option_to_update = $this->_queries->UpdateQueriesServices($data_for_query, $option = "3");
             if ($url_option_to_update) {
@@ -1287,10 +1386,10 @@ class forms {
                 return false;
             }
         } else {
-
+            $option = $values['option'];
             $table = array("table1" => "url_options");
             $columns = array("`page_id`", "`option`");
-            $values = array("'" . $values['form']['page_edit']['id'] . "'", "'" . $option . "'");
+            $values = array("'" . $values['id'] . "'", "'" . $option . "'");
             $values_to_insert = array(
                 "tables" => $table,
                 "columns" => $columns,
@@ -1358,25 +1457,25 @@ class forms {
         ?>
         <div class="row">
             <div class="col-md-12">
-                <?php
-                if ($this->_flag == 1) {
-                    ?>
+        <?php
+        if ($this->_flag == 1) {
+            ?>
                     <div class="col-md-12" style="margin-top: 10px !important;">
 
                         <div class="list-group">
                             <ul>
-                                <?php
-                                foreach ($this->error_message as $message) {
+            <?php
+            foreach ($this->error_message as $message) {
 
-                                    echo "<li class='list-group-item list-group-item-warning'><i class='glyphicon glyphicon-info-sign'></i>&nbsp;" . $message . "</li>";
-                                }
-                                ?>
+                echo "<li class='list-group-item list-group-item-warning'><i class='glyphicon glyphicon-info-sign'></i>&nbsp;" . $message . "</li>";
+            }
+            ?>
                             </ul>
                         </div>
                     </div>
-                    <?php
-                }
-                ?>
+                                <?php
+                            }
+                            ?>
                 <div class="col-md-3"></div>
                 <div class="col-md-6">
 
@@ -1399,12 +1498,13 @@ class forms {
                                             <select name="form[add_new_page][page_parent]" class="form-control">
                                                 <option value="0">--None--</option>
 
-                                                <?php
-                                                if ($paren_list != NULL) {
+        <?php
+        if ($paren_list != NULL) {
 
-                                                    foreach ($paren_list as $p_list) {
-                                                        ?>
-                                                        <option value="<?= ($_REQUEST['form']['add_new_page']['page_parent']) ? $_REQUEST['form']['add_new_page']['page_parent'] : $p_list['id'] ?>"><?= $p_list['name'] ?></option>
+            foreach ($paren_list as $p_list) {
+                var_dump($p_list);
+                ?>
+                                                        <option value="<?= (isset($_REQUEST['form']['add_new_page']['page_parent'])) ? $_REQUEST['form']['add_new_page']['page_parent'] : $p_list['id'] ?>"><?= $p_list['name'] ?></option>
 
                                                         <?php
                                                     }
@@ -1428,7 +1528,7 @@ class forms {
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            
+
                                             <input type="submit" name="form[add_new_page][do_add_new_page]" value="Add New page" class="btn btn-primary"/>
                                         </div>
                                     </div>
@@ -1439,102 +1539,101 @@ class forms {
                 </div>
                 <div class="col-md-3"></div>
             </div>
-            <?php
-        }
+        <?php
+    }
 
-        /*
-         * Will process AddNewPagePopUp function
-         */
+    /*
+     * Will process AddNewPagePopUp function
+     */
 
-        public function DoAddNewPage(array $data = NULL, array $data_to_compare = NULL) {
-            if ($data != NULL) {
-                $page_name = $data['form']['add_new_page']['page_name'];
-                $new_page_parent = $data['form']['add_new_page']['page_parent'];
-                $page_type = $data['form']['add_new_page']['page_type'];
-                /*
-                 * First check and make sure data is enterd
-                 */
-                $flag = 0;
-                if (empty($page_name)) {
-                    $flag = 1;
-                    if ($flag === 1) {
-                        $message = array("message" => "Page name cannot be empty");
+    public function DoAddNewPage(array $data = NULL, array $data_to_compare = NULL) {
+        if ($data != NULL) {
+            $page_name = $data['form']['add_new_page']['page_name'];
+            $new_page_parent = $data['form']['add_new_page']['page_parent'];
+            $page_type = $data['form']['add_new_page']['page_type'];
+            /*
+             * First check and make sure data is enterd
+             */
+            $flag = 0;
+            if (empty($page_name)) {
+                $flag = 1;
+                if ($flag === 1) {
+                    $message = array("message" => "Page name cannot be empty");
 
-                        array_push($message, $flag);
-                        $this->_message = $message;
-                    }
+                    array_push($message, $flag);
+                    $this->_message = $message;
                 }
-                if(!isset($page_type)){
-                    $page_type = "0";
-                }
-                if ($data_to_compare != NULL) {
-                    for ($i = 0; $i < count($data_to_compare); $i++) {
+            }
+            if (!isset($page_type)) {
+                $page_type = "0";
+            }
+            if ($data_to_compare != NULL) {
+                for ($i = 0; $i < count($data_to_compare); $i++) {
 
-                        $exsisting_pages_name = $data_to_compare[$i]['name'];
-                        $exsisting_pages_ids = $data_to_compare[$i]['id'];
+                    $exsisting_pages_name = $data_to_compare[$i]['name'];
+                    $exsisting_pages_ids = $data_to_compare[$i]['id'];
 
-                        if ($new_page_parent == $exsisting_pages_ids) {
+                    if ($new_page_parent == $exsisting_pages_ids) {
+                        if ($page_name == $exsisting_pages_name) {
+                            $flag = 1;
+                            if ($flag === 1) {
+                                $message = array("message" => "Page name cannot be the same as the parent");
+
+                                array_push($message, $flag);
+                                $this->_message = $message;
+                            }
+                        }
+                    } else if ($new_page_parent === "0") {
+                        $exsisting_pages_parents = $data_to_compare[$i]['parent'];
+                        if ($new_page_parent == $exsisting_pages_parents) {
                             if ($page_name == $exsisting_pages_name) {
                                 $flag = 1;
                                 if ($flag === 1) {
-                                    $message = array("message" => "Page name cannot be the same as the parent");
-
+                                    $message = array("message" => "Page name is duplicated! Try an other name.");
                                     array_push($message, $flag);
                                     $this->_message = $message;
-                                }
-                            }
-                        } else if ($new_page_parent === "0") {
-                            $exsisting_pages_parents = $data_to_compare[$i]['parent'];
-                            if ($new_page_parent == $exsisting_pages_parents) {
-                                if ($page_name == $exsisting_pages_name) {
-                                    $flag = 1;
-                                    if ($flag === 1) {
-                                        $message = array("message" => "Page name is duplicated! Try an other name.");
-                                        array_push($message, $flag);
-                                        $this->_message = $message;
-                                    }
                                 }
                             }
                         }
                     }
                 }
-                if ($flag == 0) {
+            }
+            if ($flag == 0) {
 
 
-                    $table = array("table1" => "pages");
-                    $columns = array("`name`", "`parent`","`type`", "`edate`");
+                $table = array("table1" => "pages");
+                $columns = array("`name`", "`parent`", "`type`", "`edate`");
 
-                    $values = array("'" . $page_name . "'", "'" . (int) $new_page_parent . "'", "'".$page_type."'" , "'" . date("Y m d") . "'");
-                    $values_to_insert = array(
-                        "tables" => $table,
-                        "columns" => $columns,
-                        "values" => $values
-                    );
-                    $insert_new_page_details = $this->_queries->Insertvalues($values_to_insert, $option = "1");
-                    if ($insert_new_page_details) {
-                        $flag = 1;
-                        $message = array("message" => "Page {$page_name} was added.");
-                        array_push($message, $flag);
-                        $this->_message = $message;
-                    } else {
-                        $flag = 1;
-                        $message = array("message" => "pade was not added.");
-                        array_push($message, $flag);
-                        $this->_message = $message;
-                    }
+                $values = array("'" . $page_name . "'", "'" . (int) $new_page_parent . "'", "'" . $page_type . "'", "'" . date("Y m d") . "'");
+                $values_to_insert = array(
+                    "tables" => $table,
+                    "columns" => $columns,
+                    "values" => $values
+                );
+                $insert_new_page_details = $this->_queries->Insertvalues($values_to_insert, $option = "1");
+                if ($insert_new_page_details) {
+                    $flag = 1;
+                    $message = array("message" => "Page {$page_name} was added.");
+                    array_push($message, $flag);
+                    $this->_message = $message;
+                } else {
+                    $flag = 1;
+                    $message = array("message" => "pade was not added.");
+                    array_push($message, $flag);
+                    $this->_message = $message;
                 }
             }
         }
-
-        public
-                function RET_MESSAGE_TO() {
-            return $this->_message;
-        }
-
-        public
-                function RET_URL() {
-            return $this->_url;
-        }
-
     }
-    
+
+    public
+            function RET_MESSAGE_TO() {
+        return $this->_message;
+    }
+
+    public
+            function RET_URL() {
+        return $this->_url;
+    }
+
+}

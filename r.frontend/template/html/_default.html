@@ -17,6 +17,7 @@ and open the template in the editor.
         {{/if}}
         <link rel="stylesheet" href="{{$FRONTEND_CSS}}bootstrap.min.css" type="text/css"/>
      
+           <script src="{{$JQUERY}}"></script>
         {{if isset($JS)}}
         {{foreach $JS as $js}}
         <script type='text/javascript' src="{{$js}}"></script>
@@ -32,7 +33,6 @@ and open the template in the editor.
         
         
         
-           <script src="{{$JQUERY}}"></script>
         {{$BOOTSRAP_JS}}
         
         
