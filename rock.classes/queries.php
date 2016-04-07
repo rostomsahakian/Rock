@@ -84,6 +84,9 @@ class queries {
                     }
 
                     break;
+                    /*
+                     * Returns all data
+                     */
                 case "3":
 
                     $sql = "SELECT * FROM `" . $table . "` ORDER BY ord ASC";
@@ -403,7 +406,7 @@ class queries {
         }
     }
 
-    public function NavigationQuaries($id, $page_type, $self, $option = NULL) {
+    public function NavigationQuaries($id, $self, $option = NULL) {
         $nav = array();
         /*
          * Navigation options
@@ -417,7 +420,7 @@ class queries {
                  * Case 0 with id order
                  */
                 case "0":
-                    $sql = "SELECT * FROM `pages` WHERE `parent`= '" . $id . "' AND `type` = '" . $page_type . "' ";
+                    $sql = "SELECT * FROM `pages` WHERE `parent`= '" . $id . "' ";
                     $result = $this->_mysqli->query($sql);
                     if ($result) {
 
@@ -426,7 +429,7 @@ class queries {
                             $parent_id = $row['id'];
                             $type = $row['type'];
 
-                            $find_nav = $this->NavigationQuaries($parent_id, $type, $parent_id, "0");
+                            $find_nav = $this->NavigationQuaries($parent_id, $parent_id, "0");
                         }
                         return $this->_nav;
                     }

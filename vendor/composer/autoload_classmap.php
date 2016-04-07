@@ -7,7 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'BackendController' => $baseDir . '/rock.classes/BackendController.php',
-    'FrontendMenu' => $baseDir . '/rock.classes/FrontendMenu.php',
+    'Navigation' => $baseDir . '/rock.classes/Navigation.php',
     'Page' => $baseDir . '/rock.classes/Page.php',
     'Smarty' => $baseDir . '/rock.includes/smarty-3.1.29/libs/Smarty.class.php',
     'SmartyBC' => $baseDir . '/rock.includes/smarty-3.1.29/libs/SmartyBC.class.php',

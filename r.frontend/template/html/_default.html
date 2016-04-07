@@ -12,30 +12,38 @@ and open the template in the editor.
 
         {{if isset($CSS)}}
         {{foreach $CSS as $css}}
-        <link rel='stylesheet' href="{{$css}}" type="text/css"/>
+        <link rel='stylesheet' href="{{$css}}"/>
         {{/foreach}}
         {{/if}}
-        <link rel="stylesheet" href="{{$FRONTEND_CSS}}bootstrap.min.css" type="text/css"/>
-     
-           <script src="{{$JQUERY}}"></script>
+                <link rel="stylesheet" href="{{$FRONTEND_CSS}}bootstrap.min.css" type="text/css"/>
+                <link rel="stylesheet" href="{{$NAVCSS}}" />
+        <!--        <script src="{{$JQUERY}}"></script>-->
+        <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+        <script src="{{$NAVJS}}" type="text/javascript"></script>
+
+
         {{if isset($JS)}}
         {{foreach $JS as $js}}
-        <script type='text/javascript' src="{{$js}}"></script>
+        <script  src="{{$js}}"></script>
         {{/foreach}}
         {{/if}}
     </head>
     <body>
-        
-      
+
+        <div id='cssmenu'>
+            
+                {{MENU id=0}}
            
-            <!--PAGE CONTENT GO HERE-->
-            {{$PAGECONTENT}}
-        
-        
-        
-        {{$BOOTSRAP_JS}}
-        
-        
+        </div>
+
+        <!--PAGE CONTENT GO HERE-->
+        {{$PAGECONTENT}}
+
+
+
+        <!--        {{$BOOTSRAP_JS}}-->
+
+
         <footer></footer>
     </body>
 </html>

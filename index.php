@@ -1,8 +1,8 @@
 <?php
 
-error_reporting(E_ALL);
-
-ini_set('display_errors', '1');
+//error_reporting(E_ALL);
+//
+//ini_set('display_errors', '1');
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -127,10 +127,13 @@ if ($PAGEDATA->getInstance($id, $data_for_query)) {
             }
         }
     }
-    //var_dump($PAGEDATA);
+    
     switch ($PAGEDATA->type) {
         case "0": //Normal Page Type
+            
             $pagecontent = $PAGEDATA->body;
+            //$nav = $PAGEDATA->Navigation->showNavigation(0, NULL);
+            
             break;
     }
 } else {
@@ -138,6 +141,10 @@ if ($PAGEDATA->getInstance($id, $data_for_query)) {
     echo "404 , page not found";
     exit;
 }
+$root = realpath($_SERVER["DOCUMENT_ROOT"]);
+$navcss = "../r.frontend/css/styles_header.css";
+$navjs = "../r.frontend/js/script.js";
+
 
 
 $smarty->template_dir = THEME_DIR . '/' . THEME . '/html/';
@@ -148,14 +155,12 @@ $smarty->assign("CSS_INDEX", "file_path");
 $smarty->assign('FRONTEND_CSS', ABSOLUTH_PATH_FRONTEND_CSS);
 $smarty->assign("JQUERY", "https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js");
 $smarty->assign("BOOTSRAP_JS", '<script src="../rock.assets/js/bootstrap.min.js"></script> ');
-///$smarty->assign("NAV_MENU", $PAGEDATA->_naviagtion->MenuController());
+$smarty->assign("NAVCSS", $navcss);
+$smarty->assign("NAVJS", $navjs);
+        
+//  $id = 0;
+//    $smarty->assign("id" , $id);
 
 header('Content-type: text/html; Charset=utf-8');
+
 $smarty->display($template);
-
-
-
-
-//$PAGEDATA->BuildNavigation(0, NULL, NULL);
-
-$PAGEDATA->BuildNavForFrontEnd(0);
