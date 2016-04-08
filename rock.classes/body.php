@@ -35,9 +35,68 @@ class body {
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <?php
+                    /*
+                     * Control Modules
+                     */
+                    if (array_key_exists("Carousel Manager", $topNavBar['Module manager'])) {
+
+                        if (defined('CAROUSEL_MANAGER') && CAROUSEL_MANAGER === "0") {
+                            unset($topNavBar['Module manager']['Carousel Manager']);
+                        }
+                    }
+                    if(array_key_exists("Theme Manager", $topNavBar['Module manager'])){
+                        if (defined('THEME_MANAGER') && THEME_MANAGER === "0") {
+                            unset($topNavBar['Module manager']['Theme Manager']);
+                        }
+                    }
+                    if(array_key_exists("Forms Manager", $topNavBar['Module manager'])){
+                        if (defined('FORMS_MANAGER') && FORMS_MANAGER === "0") {
+                            unset($topNavBar['Module manager']['Forms Manager']);
+                        }
+                    }
+                    if(array_key_exists("Sells Report", $topNavBar['Reports'])){
+                        if (defined('REPORTS') && REPORTS === "0") {
+                            unset($topNavBar['Reports']['Sells Report']);
+                        }
+                    }
+                    if(array_key_exists("Google Analytic Report", $topNavBar['Reports'])){
+                        if (defined('GAR') && GAR === "0") {
+                            unset($topNavBar['Reports']['Google Analytic Report']);
+                        }
+                    }
+                    if(array_key_exists("Page manager", $topNavBar)){
+                        if (defined('PAGE_MANAGER') && PAGE_MANAGER === "0") {
+                            unset($topNavBar['Page manager']);
+                        }
+                    }
+                    if(count($topNavBar['Module manager']) == 0){
+                        unset($topNavBar['Module manager']);
+                    }
+                    if(count($topNavBar['Reports']) == 0){
+                        unset($topNavBar['Reports']);
+                    }
+
+
+
+
                     $this->_topNav = $topNavBar;
 
+
+
+
+
                     foreach ($this->_topNav as $key => $top_menu) {
+
+
+
+
+
+
+
+
+
+
+
                         if (is_array($top_menu)) {
                             ?>
                             <li class="dropdown">
@@ -151,18 +210,18 @@ class body {
                     $this->_forms->DoUpdateOrderForPages($order_processor_data);
                 }
                 if (isset($_REQUEST['do_delete_page'])) {
-                    $flag = 1;                
+                    $flag = 1;
                     $page_id = $_REQUEST['p_id'];
                     $parent_id = $_REQUEST['page_parent'];
                     $process_delete_data = array(
                         $page_id,
                         $parent_id
                     );
-                  $page_to_delete = $this->_forms->DoDeleteSelectedPage($process_delete_data);
-                  $page_to_delete = $this->_forms->RET_MESSAGE_TO();
-                  if($page_to_delete !=NULL){
-                      $message['message'] = $page_to_delete['message'];
-                  }
+                    $page_to_delete = $this->_forms->DoDeleteSelectedPage($process_delete_data);
+                    $page_to_delete = $this->_forms->RET_MESSAGE_TO();
+                    if ($page_to_delete != NULL) {
+                        $message['message'] = $page_to_delete['message'];
+                    }
                 }
 
                 /*
@@ -176,12 +235,11 @@ class body {
 
 
                 if (isset($_REQUEST['form']['add_new_page']['do_add_new_page'])) {
-                  
+
                     $do_add_new_page = $this->_forms->DoAddNewPage($_REQUEST, $data_for_side_bar);
                     $do_add_new_page = $this->_forms->RET_MESSAGE_TO();
                     if ($do_add_new_page != NULL) {
                         $message['message'] = $do_add_new_page['message'];
-
                     }
                 }
 
@@ -274,6 +332,19 @@ class body {
                 }
 
                 /*
+                 * Get Data for item page
+                 */
+                $this->queries->_res = NULL;
+                $get_data_for_items = $this->queries->GetData("products", "id", $page_id, "0");
+                if ($get_data_for_items) {
+                    $get_data_for_items = $this->queries->RetData();
+                } else {
+                    $get_data_for_items = array();
+                }
+
+
+
+                /*
                  * Edit or save page
                  * Get data from Request
                  */
@@ -344,7 +415,8 @@ class body {
                     "page_images" => $get_all_page_images,
                     "page_files" => $get_all_page_files,
                     "edit_save_page_data" => $page_data_array,
-                    "message" => $message
+                    "message" => (isset($message) ? $message : ""),
+                    "item_page_data" => $get_data_for_items,
                 );
 
 

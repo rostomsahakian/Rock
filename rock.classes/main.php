@@ -74,7 +74,7 @@ class main {
 			  integrity="sha256-IY2gCpIs4xnQTJzCIPlL3uUgSOwVQYD9M8t208V+7KA="
 			  crossorigin="anonymous"></script>',
                 "4" => '  <script src="' . ABSOLUTH_PATH_ADMIN . 'pages/pages.js"></script>',
-                "5" => '<script src="'.ABSOLUTH_PATH_JS.'ckeditor/ckeditor.js"></script>'
+                "5" => '<script src="' . ABSOLUTH_PATH_JS . 'ckeditor/ckeditor.js"></script>'
             ),
         );
 
@@ -111,7 +111,33 @@ class main {
                 )
             ),
             "Contact Manager" => "/rock.admin/?cmd=con_man&option=true",
-            "Modules Manager" => "/rock.admin/?cmd=con_man&option=true",
+            "Module manager" => array(
+                "Theme Manager" => array(
+                    "link" => "/rock.admin/?cmd=themes&option=true",
+                    "class" => "glyphicon glyphicon-duplicate",
+                    "badge" => ""
+                ),
+                "Forms Manager" => array(
+                    "link" => "/rock.admin/?cmd=forms&option=true",
+                    "class" => "glyphicon glyphicon-tasks",
+                    "badge" => ""
+                ),
+                "Upload Manager" => array(
+                    "link" => "/rock.admin/?cmd=upload_items&option=true",
+                    "class" => "glyphicon glyphicon-cloud-upload",
+                    "badge" => ""
+                ),
+                "Bulk Image Manager" => array(
+                    "link" => "/rock.admin/?cmd=bulk_image_upload&option=true",
+                    "class" => "glyphicon glyphicon-cloud-upload",
+                    "badge" => ""
+                ),
+                "Carousel Manager" => array(
+                    "link" => "/rock.admin/?cmd=carousel&option=true",
+                    "class" => "glyphicon glyphicon-play-circle",
+                    "badge" => ""
+                )
+            ),
             "Stuck Manager" => "/rock.admin/?cmd=con_man&option=true",
             "Reports" => array(
                 "Sells Report" => array(

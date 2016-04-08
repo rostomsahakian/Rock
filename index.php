@@ -142,9 +142,9 @@ if ($PAGEDATA->getInstance($id, $data_for_query)) {
     exit;
 }
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
-$navcss = "../r.frontend/css/styles_header.css";
+$navcss = "../r.frontend/css/styles.css";
 $navjs = "../r.frontend/js/script.js";
-
+$maincCSS = "../r.frontend/css/page_styles.css";
 
 
 $smarty->template_dir = THEME_DIR . '/' . THEME . '/html/';
@@ -157,9 +157,7 @@ $smarty->assign("JQUERY", "https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/j
 $smarty->assign("BOOTSRAP_JS", '<script src="../rock.assets/js/bootstrap.min.js"></script> ');
 $smarty->assign("NAVCSS", $navcss);
 $smarty->assign("NAVJS", $navjs);
-        
-//  $id = 0;
-//    $smarty->assign("id" , $id);
+$smarty->assign("MAINCSS", $maincCSS);
 
 header('Content-type: text/html; Charset=utf-8');
 

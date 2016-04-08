@@ -84,9 +84,9 @@ class queries {
                     }
 
                     break;
-                    /*
-                     * Returns all data
-                     */
+                /*
+                 * Returns all data
+                 */
                 case "3":
 
                     $sql = "SELECT * FROM `" . $table . "` ORDER BY ord ASC";
@@ -440,49 +440,89 @@ class queries {
                     $result = $this->_mysqli->query($sql);
                     if ($result) {
                         while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
-                            
+
                             $this->_nav[] = $row;
                         }
                         return $this->_nav;
-                        
-                    }else{
+                    } else {
                         return false;
                     }
             }
         }
     }
-    
-    public function DeleteServices ($to_delete, $option = NULL){
-        if($option !=NULL){
-            
-            switch($option){
-                
+
+    public function DeleteServices($to_delete, $option = NULL) {
+        if ($option != NULL) {
+
+            switch ($option) {
+
                 case "0":
                     $sql = "SELECT COUNT(id) AS number_pages FROM `pages`";
                     $result = $this->_mysqli->query($sql);
                     $row = $result->fetch_array(MYSQLI_ASSOC);
-                    
-                    if($row['number_pages'] < 2){
+
+                    if ($row['number_pages'] < 2) {
                         return false;
-                    }else{
-                        for($i = 0; $i <count($to_delete['tables']); $i++){
-                        $sql ="DELETE FROM `".$to_delete['tables'][$i]."`  WHERE `".$to_delete['fields'][$i]."` = '".$to_delete['value']."'";
-                        $result = $this->_mysqli->query($sql);
-                        
+                    } else {
+                        for ($i = 0; $i < count($to_delete['tables']); $i++) {
+                            $sql = "DELETE FROM `" . $to_delete['tables'][$i] . "`  WHERE `" . $to_delete['fields'][$i] . "` = '" . $to_delete['value'] . "'";
+                            $result = $this->_mysqli->query($sql);
                         }
-                        
-                        if($result){
+
+                        if ($result) {
                             return true;
                         }
-                        
                     }
                     break;
                 case "1":
-                    $sql ="DELETE FROM `".$to_delete['table']."` WHERE `".$to_delete['field1']."` = '".$to_delete['value1']."' AND `".$to_delete['field2']."` = '".$to_delete['value2']."'";
+                    $sql = "DELETE FROM `" . $to_delete['table'] . "` WHERE `" . $to_delete['field1'] . "` = '" . $to_delete['value1'] . "' AND `" . $to_delete['field2'] . "` = '" . $to_delete['value2'] . "'";
                     $result = $this->_mysqli->query($sql);
-                    if($result){
+                    if ($result) {
                         return true;
                     }
+                    break;
+            }
+        }
+    }
+
+    public function CreateTableServices(array $table_to_create, $option = NULL) {
+        if ($option != NULL) {
+            switch ($option) {
+                case "0":
+                    $sql = "SHOW TABLES LIKE '" . $table_to_create['tablename'] . "'";
+                    $Table_exists = $this->_mysqli->query($sql);
+                    $table_num = $Table_exists->num_rows;
+                    if ($table_num > 0) {
+                        return false;
+                    } else {
+
+                        $sql = "CREATE TABLE IF NOT EXISTS `" . $table_to_create['tablename'] . "`"
+                                . " ("
+                                . "id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, ";
+                        for ($i = 0; $i < count($table_to_create['f']); $i++) {
+
+                            $sql .= implode(" TEXT, ", $table_to_create['f'][$i]);
+                        }
+                        $sql.= " added_date DATETIME";
+
+                        $sql.= " )";
+                        $result = $this->_mysqli->query($sql);
+
+                        if ($result) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                    break;
+                case "1":
+                     $sql = "SHOW TABLES FROM rock_cmsdb LIKE '%".$table_to_create['patern']."%'";
+
+                    $table_res = $this->_mysqli->query($sql);
+                    while ($row = $table_res->fetch_array(MYSQLI_ASSOC)) {
+                        $this->_res[] = $row;
+                    }
+                   
                     break;
             }
         }

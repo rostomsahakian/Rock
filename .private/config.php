@@ -47,3 +47,19 @@ if(isset($DBVARS['theme'])&& $DBVARS['theme']){
     }
     define('THEME', $DBVARS['theme']);
 }
+
+
+###########################################
+/*
+ * FOR MODULES MANAGER
+ * 1 = on
+ * 0 = off
+ */
+
+define("CAROUSEL_MANAGER", "1");
+define("THEME_MANAGER", "1");
+define("FORMS_MANAGER", "1");
+define("REPORTS", "1");
+define("GAR", "1");
+define("PAGE_MANAGER", "1");
+//define("CAROUSEL_MANAGER", "0");

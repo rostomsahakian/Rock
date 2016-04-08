@@ -32,7 +32,12 @@ class commands {
             "action",
             "update_page_details",
             "insert_page_details",
-            "delete_page"
+            "delete_page",
+            "themes",
+            "carousel",
+            "forms",
+            "upload_items",
+            "bulk_image_upload",
         );
     }
 

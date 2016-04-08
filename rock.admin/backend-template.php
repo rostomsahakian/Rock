@@ -149,10 +149,17 @@
                                     }
                                 }
 
+                                foreach ($cmd['editor_data'] as $data_to_check) {
+                                    if ($data_to_check['type'] == '0' || $data_to_check['type'] == 0 || $data_to_check['type'] == '1' || $data_to_check['type'] == 1 || $data_to_check['type'] == '3' || $data_to_check['type'] == 3 || $data_to_check['type'] == '5' || $data_to_check['type'] == 5) {
+                                        $this->_forms->EditPageForm($cmd['editor_data'], $cmd['url_options'], $cmd['page_images'], $cmd['page_files'], $cmd['page_id']);
+                                    } else if ($data_to_check['type'] == "7" || $data_to_check['type'] == 7) {
+
+                                        $this->_forms->ItemPageForm($cmd['item_page_data'], $cmd['page_images']);
+                                    }
+                                }
 
 
 
-                                $this->_forms->EditPageForm($cmd['editor_data'], $cmd['url_options'], $cmd['page_images'], $cmd['page_files'], $cmd['page_id']);
                                 break;
                             /* ###################################
                              * Pages manu in main content section
@@ -232,10 +239,6 @@
                                 } else {
                                     return false;
                                 }
-
-
-
-
                                 /*
                                  * After form is processed
                                  */
@@ -263,7 +266,30 @@
                                  */
                                 $this->_forms->AddNewPagePopUp($cmd['pages']);
 
+                                break;
 
+                            /* ################################
+                             * Theme Manager
+                             */###############################
+                            case "themes":
+                                echo "template images goe here";
+                                break;
+                            /* ################################
+                             * Carousel Manager
+                             */###############################
+                            case "carousel":
+                                $this->_forms->CarouselForm($d);
+                                break;
+                            /* ###################
+                             * bulk_image_upload
+                             */##################
+                            case "bulk_image_upload":
+                                break;
+                            /* ###################
+                             * Bulk Item Uploader
+                             */##################
+                            case "upload_items":
+                                $this->_forms->CustomizedProductUploader(NULL);
                                 break;
                         }
                     }

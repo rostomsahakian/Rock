@@ -1,0 +1,11 @@
+{
+    "autoload": {
+        
+        "classmap":[
+            
+            "rock.includes",
+            "rock.classes",
+            "rock.admin"
+        ]
+    }
+}

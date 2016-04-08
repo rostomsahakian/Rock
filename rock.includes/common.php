@@ -29,21 +29,8 @@ function smarty_setup($cdir) {
     $smarty->compile_dir = ABSOLUTH_PATH_CACHE . $cdir;
     $smarty->left_delimiter = '{{';
     $smarty->right_delimiter = '}}';
-    ///$smarty->register_function('MENU', array($nav ,"showNavigation"));
-  
-    //$smarty->registerPlugin("function","VALUE", array($nav ,"test_smarty_function"));
+
     $smarty->registerPlugin("function","MENU", array($nav ,"showNavigation"));
     return $smarty;
 }
 
-
-
-//function print_current_date($params, $smarty)
-//{
-//  if(empty($params["format"])) {
-//    $format = "%b %e, %Y";
-//  } else {
-//    $format = $params["format"];
-//  }
-//  return strftime($format,time());
-//}

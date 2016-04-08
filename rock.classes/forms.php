@@ -27,6 +27,8 @@ class forms {
     public $_url;
     public $_message = array();
     public $_page_type = array();
+    public $_fields = array();
+    public $_more_inputs = array();
 
     public function __construct() {
         $this->_queries = new queries();
@@ -411,8 +413,7 @@ class forms {
 
 
                                         </div>
-                                        <?php
-                                        ?>
+                                        <?php ?>
                                         <!-- name and tile div ends-->
                                         <!--*****************-->
                                         <!-- type, parent, date div begins-->
@@ -556,11 +557,14 @@ class forms {
                                                                                 <?php
                                                                                 $check_short = '';
                                                                                 $check_long = '';
-                                                                                if ((isset($_REQUEST['form']['page_edit']['url_rewrite']) && $_REQUEST['form']['page_edit']['url_rewrite'] == "short") || $this->_editFormData['url_option'] == "short") {
+                                                                                $option_url = (isset($_REQUEST['form']['page_edit']['url_rewrite']) ? $_REQUEST['form']['page_edit']['url_rewrite'] : $this->_editFormData['url_option']);
+
+                                                                                if ($option_url == "short") {
 
                                                                                     $check_short = 'checked="checked"';
+                                                                                    $check_long = '';
                                                                                 } else {
-
+                                                                                    $check_short = '';
                                                                                     $check_long = 'checked="checked"';
                                                                                 }
                                                                                 ?>
@@ -1212,11 +1216,11 @@ class forms {
         $dir = ABSOLUTH_PATH_IMAGES;
 
         foreach ($_FILES as $k => $file) {
-            // Create directory if it does not exist
+// Create directory if it does not exist
             if (!is_dir(ABSOLUTH_PATH_IMAGE_FRONT_END . "page_id_" . $page_uid . "_images/")) {
                 mkdir(ABSOLUTH_PATH_IMAGE_FRONT_END . "page_id_" . $page_uid . "_images/");
             }
-            // $upload_file = ABSOLUTH_PATH_IMAGE_FRONT_END . "page_id_" . $page_uid . "_images/" . basename($file['name']["page_edit"]["uploadimage"]);
+// $upload_file = ABSOLUTH_PATH_IMAGE_FRONT_END . "page_id_" . $page_uid . "_images/" . basename($file['name']["page_edit"]["uploadimage"]);
 
             $upload_file_new_name = preg_replace('/^.*\.([^.]+)$/D', "image_" . $page_uid . "_" . ((int) $number + 1) . ".$1", basename($file['name']["page_edit"]["uploadimage"]));
 
@@ -1286,10 +1290,10 @@ class forms {
 
     public function Do_Upload_files($file_n, $path, $date_added, $page_uid, $page_type = NULL) {
 
-        // $dir = ABSOLUTH_PATH_FILE;
+// $dir = ABSOLUTH_PATH_FILE;
 
         foreach ($_FILES as $k => $file) {
-            // Create directory if it does not exist
+// Create directory if it does not exist
             if (!is_dir(ABSOLUTH_PATH_FILE_FRONT_END . "page_id_" . $page_uid . "_files/")) {
                 mkdir(ABSOLUTH_PATH_FILE_FRONT_END . "page_id_" . $page_uid . "_files/");
             }
@@ -1314,19 +1318,19 @@ class forms {
 
 
         if ($file["size"]['page_edit']['uploadfile'] > 5000000) {
-            //$message = array("File size is too large.");
-            // array_push($this->error_message, $message);
+//$message = array("File size is too large.");
+// array_push($this->error_message, $message);
             $uploadOk == 0;
         }
         if ($uploadFileType != "css" && $uploadFileType != "pdf" && $uploadFileType != "js" && $uploadFileType != "csv") {
-            //$message = array("File type is incorrect - file types allowed: .css, .pdf, .js, and .csv");
-            /// array_push($this->error_message, $message);
+//$message = array("File type is incorrect - file types allowed: .css, .pdf, .js, and .csv");
+/// array_push($this->error_message, $message);
             $uploadOk == 0;
         }
         if ($uploadOk == 0) {
 
-            //$message = array("Unable to upload file. Try again!");
-            /// array_push($this->error_message, $message);
+//$message = array("Unable to upload file. Try again!");
+/// array_push($this->error_message, $message);
         } else {
             if (file_exists("$path/$upload_file")) {
                 unlink("$path/$upload_file");
@@ -1378,7 +1382,7 @@ class forms {
         if (isset($values['option']) && $values['option'] != '' && $values['id'] == $values['url_page_id']) {
             $option = $values['option'];
             var_dump($values['id']);
-            //Update if different
+//Update if different
             $update_vars = array(
                 "'" . addslashes($option) . "'",
             );
@@ -1428,16 +1432,16 @@ class forms {
         if ($url_option['selected'] == "short") {
 
             if ($url_option['parent_id'] === 0 || $url_option['parent_id'] == "0") {
-                $url = '/'.preg_replace('/[^a-zA-Z0-9]/', '-',strtolower($url_option['page_name']));
+                $url = '/' . preg_replace('/[^a-zA-Z0-9]/', '-', strtolower($url_option['page_name']));
                 $this->_url = $url;
             } else {
-                $url = '/'.preg_replace('/[^a-zA-Z0-9]/', '-',strtolower($url_option['page_name']));
+                $url = '/' . preg_replace('/[^a-zA-Z0-9]/', '-', strtolower($url_option['page_name']));
                 $this->_url = $url;
             }
         } else {
             if ($url_option['parent_id'] === 0 || $url_option['parent_id'] == "0") {
 //                $url = '/' . str_replace(' ', '-', $url_option['page_name']);
-                $url = '/'.preg_replace('/[^a-zA-Z0-9,-]/', '-',strtolower($url_option['page_name']));
+                $url = '/' . preg_replace('/[^a-zA-Z0-9,-]/', '-', strtolower($url_option['page_name']));
                 $this->_url = $url;
             } else {
                 $table = "pages";
@@ -1458,8 +1462,8 @@ class forms {
                 }
                 $parent_url = implode("/", $a);
 //                $parent_url = '/' . str_replace(' ', '-', $parent_url);
-                $parent_url = '/'.preg_replace('/[^a-zA-Z0-9,-]/', '-', strtolower($parent_url));
-                $url = strtolower($parent_url . '/'.preg_replace('/[^a-zA-Z0-9,-]/', '-', $url_option['page_name']));
+                $parent_url = '/' . preg_replace('/[^a-zA-Z0-9,-]/', '-', strtolower($parent_url));
+                $url = strtolower($parent_url . '/' . preg_replace('/[^a-zA-Z0-9,-]/', '-', $url_option['page_name']));
                 $this->_url = $url;
             }
         }
@@ -1541,7 +1545,7 @@ class forms {
                                                 $page_types = $this->RetPageTypes();
                                                 foreach ($page_types as $v => $p_type) {
                                                     ?>
-                                                    <option value="<?= (isset($_REQUEST['form']['add_new_page']['page_type']) ? $_REQUEST['form']['add_new_page']['page_type']: $v ) ?>"><?= $p_type ?></option>
+                                                    <option value="<?= (isset($_REQUEST['form']['add_new_page']['page_type']) ? $_REQUEST['form']['add_new_page']['page_type'] : $v ) ?>"><?= $p_type ?></option>
 
                                                     <?php
                                                 }
@@ -1687,15 +1691,528 @@ class forms {
         public function RetPageTypes() {
             return $this->_page_type;
         }
-        
-        
-        
-        
-        
-        
-        
-        
-        
 
+        public function ItemPageForm(array $data, array $images = NULL) {
+
+            foreach ($data as $item) {
+                ?>
+                <div class="col-md-12" style="margin-top: 10px !important;">
+                    <?php
+                    if ($this->_flag == 1) {
+                        ?>
+                        <div class="list-group">
+                            <ul>
+                                <?php
+                                foreach ($this->error_message as $message) {
+
+                                    echo "<li class='list-group-item list-group-item-warning'><i class='glyphicon glyphicon-info-sign'></i>&nbsp;" . $message . "</li>";
+                                }
+                            }
+                            ?>
+                        </ul>
+                    </div>
+                </div>
+
+                <form method="post" id="pages_form" name="form[item_edit]" enctype="multipart/form-data">
+                    <div class="col-md-12">
+
+                        <div class="panel panel-default " style="padding: 10px;" >
+                            <div class="panel-heading bg-primary">Edit Item  <?= $item['model_number'] ?></div>
+                            <div class="panel-body" >
+
+                                <input type="hidden" name="form[item_edit][id]" value="<?= $item['id']; ?>"/>
+                                <div class="row">
+                                    <ul class="nav nav-tabs" role="tablist" id="tabs_editpage" >
+                                        <li class="active" aria-controls="items" role="tab" ><a href="#tabs-common-details" data-toggle="tab">Common Details</a></li> 
+                                        <li aria-controls="f_pass" role="tab" ><a href="#tabs-images" data-toggle="tab">Images</a></li>
+                                        <li aria-controls="items_se" role="tab" ><a href="#tabs-advanced-details" data-toggle="tab">Advanced Details</a></li>   
+
+                                        <!--add plugin tabs here-->
+
+                                    </ul>
+
+                                </div>
+                                <div class="tab-content">
+
+                                    <div class="tab-pane active" id="tabs-common-details">
+                                        <div class="panel-body">
+                                            <!--ROW-->
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>ID:</label>
+                                                        <input type="text" name="form[item_edit][db_id]" value="<?= $item['id'] ?>" disabled="disabled" class="form-control"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Model Number:</label>
+                                                        <input type="text" name="form[item_edit][model_number]" value="<?= isset($_REQUEST['form']['item_edit']['model_number']) ? $_REQUEST['form']['item_edit']['model_number'] : $item['model_number'] ?>"  class="form-control"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Category Name:</label>
+                                                        <input type="text" name="form[item_edit][category_name]" value="<?= $item['category_name'] ?>"  class="form-control"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--END ROW-->
+                                            <!--ROW-->
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Product Name:</label>
+                                                        <input type="text" name="form[item_edit][product_name]" value="<?= isset($_REQUEST['form']['item_edit']['product_name']) ? $_REQUEST['form']['item_edit']['product_name'] : $item['product_name'] ?>"  class="form-control"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Alias:</label>
+                                                        <input type="text" name="form[item_edit][alias]" value="<?= isset($_REQUEST['form']['item_edit']['alias']) ? $_REQUEST['form']['item_edit']['alias'] : $item['alias'] ?>"  class="form-control"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Color:</label>
+                                                        <input type="text" name="form[item_edit][color]" value="<?= isset($_REQUEST['form']['item_edit']['color']) ? $_REQUEST['form']['item_edit']['color'] : $item['color'] ?>"  class="form-control"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--END ROW-->
+                                            <!--ROW-->
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Description:</label>
+                                                        <textarea class="form-control" name="form[item_edit][description]"><?= (isset($_REQUEST['form']['item_edit']['description']) ? $_REQUEST['form']['item_edit']['description'] : $item['product_description']) ?></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Keywords:</label>
+                                                        <input type="text" name="form[item_edit][keywords]" value="<?= isset($_REQUEST['form']['item_edit']['keywords']) ? $_REQUEST['form']['item_edit']['keywords'] : $item['keywords'] ?>"  class="form-control"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Version:</label>
+                                                        <input type="text" name="form[item_edit][version]" value="<?= isset($_REQUEST['form']['item_edit']['version']) ? $_REQUEST['form']['item_edit']['version'] : $item['version'] ?>"  class="form-control"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--END ROW-->
+                                            <!--ROW-->
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Size:</label>
+                                                        <input type="text" name="form[item_edit][size]" value="<?= isset($_REQUEST['form']['item_edit']['size']) ? $_REQUEST['form']['item_edit']['size'] : $item['size'] ?>"  class="form-control"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="panel panel-default">
+                                                        <?php
+                                                        $status_icon = "";
+                                                        $status = (isset($_REQUEST['form']['item_edit']['status']) ? $_REQUEST['form']['item_edit']['status'] : $item['status']);
+                                                        if ($status == "1") {
+                                                            $status_icon = "glyphicon glyphicon-plus-sign btn btn-success btn-xs";
+                                                        } else {
+                                                            $status_icon = "glyphicon glyphicon-minus-sign btn btn-danger btn-xs";
+                                                        }
+                                                        ?>
+                                                        <div class="panel-heading"><i class="<?= $status_icon ?>"></i><span> Status</span></div>
+                                                        <div class="panel-body">
+
+                                                            <div class="form-group">
+                                                                <?php
+                                                                $enabled = '';
+                                                                $disabled = '';
+                                                                //$status = (isset($_REQUEST['form']['item_edit']['status']) ? $_REQUEST['form']['item_edit']['status'] : $item['status']);
+                                                                if ($status == "1") {
+
+                                                                    $enabled = 'checked="checked"';
+                                                                    $disabled = '';
+                                                                } else {
+                                                                    $enabled = '';
+                                                                    $disabled = 'checked="checked"';
+                                                                }
+                                                                ?>
+                                                                <table class="table table-hover">
+                                                                    <tr>
+                                                                        <td><span>Enabled</span></td>
+                                                                        <td><input type="radio" name="form[item_edit][status]" value="1" <?= $enabled; ?> class="form-control"/></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><span>Disable</span></td>
+                                                                        <?php ?>
+                                                                        <td><input type="radio" name="form[item_edit][status]" value="0" <?= $disabled; ?> class="form-control"/></td>
+                                                                    </tr>
+                                                                </table>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Date Added:</label>
+                                                        <input type="date" name="form[item_edit][date_added]" value="<?= isset($_REQUEST['form']['item_edit']['date_added']) ? $_REQUEST['form']['item_edit']['date_added'] : $item['date_added'] ?>"  class="form-control"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--END ROW-->
+                                            <!--ROW-->
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Added_by:</label>
+                                                        <input type="text" name="form[item_edit][added_by]" value="<?= isset($_REQUEST['form']['item_edit']['added_by']) ? $_REQUEST['form']['item_edit']['added_by'] : $item['added_by'] ?>"  class="form-control"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Edited By:</label>
+                                                        <input type="text" name="form[item_edit][edited_by]" value="<?= isset($_REQUEST['form']['item_edit']['edited_by']) ? $_REQUEST['form']['item_edit']['edited_by'] : $item['edited_by'] ?>"  class="form-control"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+
+                                                </div>
+                                            </div>
+                                            <!--END ROW-->
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane " id="tabs-images">
+                                        <div class="row">
+                                            <div class="col-md-4" style="margin-top:10px;">
+                                                <div class="panel panel-default">
+
+                                                    <div class="panel-heading"><span><i class="glyphicon glyphicon-picture"  ></i>&nbsp;Upload Images</span></div>
+                                                    <div class="panel-body">
+                                                        <input type="file" name="form[page_edit][uploadimage]"  class="btn btn-default btn-xs"/>
+
+                                                        <input type="submit" class="btn btn-danger btn-xs" name="form[page_edit][douploadimage]" value="Upload" style="margin-top: 10px;"/>
+                                                    </div>
+
+
+
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading">
+                                                            <i class="glyphicon glyphicon-cloud"></i><span> Images</span>
+                                                        </div>
+                                                        <div class="panel-body">
+                                                            <div class="row">
+                                                                <?php
+                                                                if ($images != NULL) {
+                                                                    foreach ($images as $image) {
+                                                                        ?>
+
+                                                                        <div class="col-xs-7 col-md-2">
+                                                                            <a href="<?= $image['image_path'] . $image['image_name'] ?>" target="_blank" class="thumbnail">
+                                                                                <img src="<?= $image['image_path'] . $image['image_name'] ?>" alt=" " title="">
+                                                                            </a>
+                                                                            <a  href="<?= $image['image_path'] . $image['image_name'] ?>" target="_blank"  class="caption">
+                                                                                <p style="font-size: 10px"><?= $image['image_name'] ?></p>
+
+
+
+
+
+                                                                            </a>
+                                                                        </div>
+                                                                        <?php
+                                                                    }
+                                                                } else {
+                                                                    ?>
+                                                                    <p>This page currently has no images.</p>
+                                                                <?php }
+                                                                ?>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane " id="tabs-advanced-details">
+                                        <!--Advanced edit part starts-->
+
+                                        <div class="col-md-12">
+                                            <div class="row" style="margin-top:5px; ">
+                                                <!-- Meta Data-->
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <div class="panel panel-default">
+                                                            <div class="panel-heading bg-primary">
+                                                                <label>MetaData</label>
+                                                            </div>
+                                                            <div class="panel-body">
+                                                                <label>keywords</label>
+                                                                <input type="text" name="form[page_edit][meta_keywords]" value="<?= (isset($_REQUEST['form']['page_edit']['meta_keywords']) ? $_REQUEST['form']['page_edit']['meta_keywords'] : htmlspecialchars($item['meta_keywords'])) ?>" class="form-control"/>
+                                                                <label>description</label>
+
+                                                                <input type="text" name="form[page_edit][meta_description]" value="<?= (isset($_REQUEST['form']['page_edit']['meta_description']) ? $_REQUEST['form']['page_edit']['meta_description'] : htmlspecialchars($item['meta_description'])) ?>" class="form-control"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--END MetaData-->
+
+                                                <!--other-->
+                                                <div class="col-md-4">
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading bg-primary">
+                                                            <label>Other</label>
+                                                        </div>
+                                                        <div class="panel-body">
+                                                            <div class="row">
+                                                                <div class="col-md-9 ">
+                                                                    <div class="form-group">
+                                                                        <label>Order of</label>
+                                                                        <select class="form-control" name="form[page_edit][page_vars][order_of_sub_pages]">
+                                                                            <?php
+                                                                            $arr = array('as shown in admin menu', 'alphabetically', 'by associated date');
+                                                                            foreach ($arr as $k => $v) {
+                                                                                if (isset($page_vars['order_of_sub_pages']) &&
+                                                                                        $page_vars['order_of_sub_pages'] == $k) {
+                                                                                    $selected = "selected='selected'";
+                                                                                } else {
+                                                                                    $selected = "";
+                                                                                }
+                                                                                ?>
+                                                                                <option value="<?= $k ?>" <?= $selected ?>>                                                                             
+                                                                                    <?= $v; ?>
+                                                                                </option>
+                                                                                <?php
+                                                                            }
+                                                                            ?>
+
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-9">
+                                                                    <div class="form-group">
+                                                                        <label>Sub-pages</label>
+                                                                        <select class="form-control" name="form[page_edit][page_vars][order_of_sub_pages_dir]">
+                                                                            <option value="0">ascending (a-z, 0-9)</option>
+                                                                            <?php
+                                                                            if (isset($page_vars['order_of_sub_pages_dir']) == '1') {
+                                                                                $sub_selected = 'selected="selected"';
+                                                                            } else {
+                                                                                $sub_selected = "";
+                                                                            }
+                                                                            ?>
+                                                                            <option value="1">descending (z-a, 9-0)</option>
+
+
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Update Item" name="form[item_edit][update_item]" class="btn btn-primary"/>
+                    </div>
+            </div>
+            </form>
+
+
+            <?php
+//                if (isset($_REQUEST['form']['item_edit']['update_item'])) {
+//                    var_dump($_REQUEST);
+//                }
+        }
     }
-    
+
+    /*
+     * Processes the item pages
+     */
+
+    public function DoProcessItempages(array $data) {
+        
+    }
+
+    /*
+     * Carousel Form
+     */
+
+    public function CarouselForm(array $data = NULL) {
+        ?>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <i class="glyphicon glyphicon-play-circle"></i><span>Carousel Setup</span>
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-md-4" style="margin-top:10px;">
+                            <div class="panel panel-default">
+
+                                <div class="panel-heading"><span><i class="glyphicon glyphicon-picture"  ></i>&nbsp;Upload Images</span></div>
+                                <div class="panel-body">
+                                    <input type="file" name="form[page_edit][uploadimage]"  class="btn btn-default btn-xs"/>
+
+                                    <input type="submit" class="btn btn-danger btn-xs" name="form[page_edit][douploadimage]" value="Upload" style="margin-top: 10px;"/>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <?php
+    }
+
+    public function CustomizedProductUploader(array $data = NULL) {
+
+
+        if (isset($_REQUEST['form']['table_columns']['create_f'])) {
+
+            $fields_for_table = $_REQUEST['form']['table_columns']['fields'];
+            $table_name = $_REQUEST['form']['table_columns']['table_name'];
+            if (empty($fields_for_table) || $table_name) {
+                $flag = 1;
+                $message = array("message" => "All fields are empty");
+                ///array_push($this->_message, $message);
+                $this->ReturnMessages($message, $flag);
+            } else {
+                $table = "rock_" . $table_name . "_brand";
+
+                $f = array();
+                $fields[] = explode(";", $fields_for_table);
+                for ($i = 0; $i < count($fields); $i++) {
+
+                    $f = array(
+                        $fields[$i]
+                    );
+                }
+                $create_table = array(
+                    "tablename" => $table,
+                    "f" => $f,
+                );
+                $create = $this->_queries->CreateTableServices($create_table, $option = "0");
+                if ($create) {
+                    var_dump("Tbale created");
+                } else {
+                    var_dump("Table exists");
+                }
+            }
+        }
+        ?>
+        <div class="col-lg-12">
+                      <div class="col-md-12" style="margin-top: 10px !important;">
+                    <?php
+                    if ($this->_flag == 1) {
+                        ?>
+                        <div class="list-group">
+                            <ul>
+                                <?php
+                                foreach ($this->error_message as $message) {
+
+                                    echo "<li class='list-group-item list-group-item-warning'><i class='glyphicon glyphicon-info-sign'></i>&nbsp;" . $message . "</li>";
+                                }
+                            }
+                            ?>
+                        </ul>
+                    </div>
+                </div>
+            <div class="row">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <i class="glyphicon glyphicon-floppy-open"></i>&nbsp;<span>Items Uploads Manager</span>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <form method="post" name="form[table_columns]">
+                                    <div class="form-group">
+                                        <label><span style="color:#E21A2C">**</span>Table Name <em>(Make sure the name of the table matches the same as the <strong>brand name</strong>)</em></label>
+                                        <input type="text" name="form[table_columns][table_name]" value="<?= (isset($_REQUEST['form']['table_columns']['table_name']) ? $_REQUEST['form']['table_columns']['table_name'] : '') ?>" class="form-control" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Please Enter the Name of fields that the CSV File has separated by (;) . (i.e. model_number; price; etc. **IMPORTANT DO NOT INCLUDE FILED NAME ID the system will generate one)</label>
+                                        <input type="text" value="<?= (isset($_REQUEST['form']['table_columns']['fields']) ? $_REQUEST['form']['table_columns']['fields'] : '') ?>" name="form[table_columns][fields]" class="form-control"/>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="submit" value="Click to Create Fields" name="form[table_columns][create_f]"  class="btn btn-success"/>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>    
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-lg-12" style="margin-top: 10px;">
+            <div class="row">
+                <div class="panel panel-default">
+                    <div class="panel panel-heading">
+                        <label>Your Brand Tables</label>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+
+                            <form method="post" name="form[brands]">
+                                <select name="form[brands][tables]">
+                                    <?php
+                                    $value = array(
+                                        "patern" => "rock_"
+                                    );
+                                    $this->_queries->_res = NULL;
+                                    $see_tables = $this->_queries->CreateTableServices($value, $option = "1");
+                                    $see_tables = $this->_queries->RetData();
+
+                                    foreach ($see_tables as $brand_tables) {
+                                        if ($brand_tables['Tables_in_rock_cmsdb (%rock_%)'] != '') {
+                                            ?>
+                                            <option value="<?= $brand_tables['Tables_in_rock_cmsdb (%rock_%)'] ?>"><?= $brand_tables['Tables_in_rock_cmsdb (%rock_%)'] ?></option>
+                                            <?php
+                                        } else {
+                                            ?>
+                                            <option value="--none--">--No Brand Tables--</option>
+                                            <?php
+                                        }
+                                    }
+                                    ?>
+
+
+
+                                </select>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>    
+        <?php
+    }
+
+}
