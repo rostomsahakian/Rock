@@ -341,6 +341,18 @@ class body {
                 } else {
                     $get_data_for_items = array();
                 }
+                                /*
+                 * Get Data for social media
+                 */
+                $this->queries->_res = NULL;
+                $get_data_for_social_media = $this->queries->GetData("social_media", NULL, NULL, "7");
+              
+                if ($get_data_for_social_media) {
+                    $get_data_for_social_media = $this->queries->RetData();
+                   
+                } else {
+                    $get_data_for_social_media = array();
+                }
 
 
 
@@ -417,6 +429,7 @@ class body {
                     "edit_save_page_data" => $page_data_array,
                     "message" => (isset($message) ? $message : ""),
                     "item_page_data" => $get_data_for_items,
+                    "social_media" => $get_data_for_social_media
                 );
 
 

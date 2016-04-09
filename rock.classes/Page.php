@@ -40,6 +40,7 @@ class Page {
     public $_top_level = array();
     public $_sub_level = array();
     public $Navigation;
+    public $_social_media = array();
 
     public function __construct() {
         $this->queries = new queries();
@@ -152,6 +153,16 @@ class Page {
                 $this->vars = $page_info['vars'];
             }
         }
+    }
+    
+    public function SetSocialMedia(){
+        $this->queries->_res = NULL;
+        $this->_social_media = $this->queries->GetData("social_media", "status", 1, $option ="0");
+        $this->_social_media = $this->queries->RetData();
+    }
+    
+    public function getSocialMedia(){
+        return $this->_social_media;
     }
 
 }

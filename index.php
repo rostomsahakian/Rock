@@ -145,6 +145,8 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 $navcss = "../r.frontend/css/styles.css";
 $navjs = "../r.frontend/js/script.js";
 $maincCSS = "../r.frontend/css/page_styles.css";
+$PAGEDATA->SetSocialMedia();
+$smarty->assign("SOCIALMEDIA", $PAGEDATA->getSocialMedia());
 
 
 $smarty->template_dir = THEME_DIR . '/' . THEME . '/html/';
@@ -153,6 +155,7 @@ $smarty->assign('PAGEDATA', $PAGEDATA);
 $smarty->assign('METADATA', $metadata);
 $smarty->assign("CSS_INDEX", "file_path");
 $smarty->assign('FRONTEND_CSS', ABSOLUTH_PATH_FRONTEND_CSS);
+$smarty->assign("OWL_CAR" ,ABSOLUTH_PATH_OWL_CAR);
 $smarty->assign("JQUERY", "https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js");
 $smarty->assign("BOOTSRAP_JS", '<script src="../rock.assets/js/bootstrap.min.js"></script> ');
 $smarty->assign("NAVCSS", $navcss);

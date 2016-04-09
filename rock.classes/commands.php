@@ -38,6 +38,7 @@ class commands {
             "forms",
             "upload_items",
             "bulk_image_upload",
+            "social_media",
         );
     }
 

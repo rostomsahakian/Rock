@@ -30,9 +30,11 @@ define("ABSOLUTH_PATH_FILE_BACKEND", "../rock.files/");
 define("ABSOLUTH_PATH_FILE_FRONT_END", "../r.frontend/files/");
 define("ABSOLUTH_PATH_IMAGE_FRONT_END", "../r.frontend/images/");
 define("ABSOLUTH_PATH_FRONTEND_CSS", "../r.frontend/css/");
+define("ABSOLUTH_PATH_OWL_CAR", "../r.frontend/owl.carousel/owl-carousel/");
 define("ABSOLUTH_PATH_CACHE", "../rock.cache/");
 define("DATE_ADDED", date("F j,Y, g:i a"));
 define("THEME_DIR",SCRIPTBASE.'public_html/r.frontend');
+define("ABSOLUTH_PATH_FONT_AWESOME", "../rock.assets/font-awesome-4.5.0/css/");
 
 if(isset($DBVARS['theme'])&& $DBVARS['theme']){
     define("THEME" , $DBVARS['theme']);
@@ -62,4 +64,4 @@ define("FORMS_MANAGER", "1");
 define("REPORTS", "1");
 define("GAR", "1");
 define("PAGE_MANAGER", "1");
-//define("CAROUSEL_MANAGER", "0");
+define("SOCIAL_MEDIA", "1");

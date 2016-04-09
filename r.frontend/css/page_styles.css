@@ -9,7 +9,7 @@ and open the template in the editor.
 */
 @import url(http://fonts.googleapis.com/css?family=Montserrat:400,700);
 body{
-       font-family: Montserrat, sans-serif !important;
+    font-family: Montserrat, sans-serif !important;
 }
 .rock-top-banner{
     /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,e5e5e5+74 */
@@ -18,24 +18,24 @@ body{
     background: -webkit-linear-gradient(top,  #ffffff 0%,#e5e5e5 74%); /* Chrome10-25,Safari5.1-6 */
     background: linear-gradient(to bottom,  #ffffff 0%,#e5e5e5 74%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e5e5e5',GradientType=0 ); /* IE6-9 */
-   
+
 }
 .rock-top-banner ul li{
-     height: 10px !important;
+    height: 10px !important;
 }
 .rock-top-banner li a{
-     min-height: 20px !important;
-   font-family: Montserrat, sans-serif;
-   font-size: 12px !important;
-   font-weight: bold;
-   color: #000 !important;
+    min-height: 20px !important;
+    font-family: Montserrat, sans-serif;
+    font-size: 12px !important;
+    font-weight: bold;
+    color: #000 !important;
 }
 .rock-top-banner li a:hover{
-     min-height: 20px !important;
-   font-family: Montserrat, sans-serif;
-   font-size: 12px !important;
-   font-weight: bold;
-   color: #3e3e3e !important;
+    min-height: 20px !important;
+    font-family: Montserrat, sans-serif;
+    font-size: 12px !important;
+    font-weight: bold;
+    color: #3e3e3e !important;
 }
 
 .rock-nav-bar-container{
@@ -45,27 +45,41 @@ body{
 
 }
 .rock-mid-bar-container{
-  margin-top: 70px !important; 
-  min-height: 70px !important;
+    margin-top: 70px !important; 
+    min-height: 70px !important;
 }
 .rock-search-btn{
     background-color: #E21A2C !important;
 }
 .rock-search-btn input[type="submit"]{
-   font-size: 13px;
-   font-weight: bold;
-   
+    font-size: 13px;
+    font-weight: bold;
+
 }
 .rock-breadcrumb a{
     font-size: 10px !important;
-      
+
 }
 
 .rock-shopping-cart{
     margin-top: 10px !important;
 }
 .rock-shopping-cart a{
-    
+
     color: #000;
     font-size: 13px;
+}
+.rock-main-container{
+    min-height: 1000px !important;
+    background-color: #fff;
+    -webkit-box-shadow: 0px 0px 6px 0px rgba(50, 50, 50, 1);
+    -moz-box-shadow:    0px 0px 6px 0px rgba(50, 50, 50, 1);
+    box-shadow:         0px 0px 6px 0px rgba(50, 50, 50, 1);
+}
+.rock-home-carousel{
+    padding: 5px;
+}
+.rock-background-color-manager{
+    background-repeat:repeat;
+    background-image: url(../images/kindajean/kindajean.png);
 }

@@ -291,6 +291,13 @@
                             case "upload_items":
                                 $this->_forms->CustomizedProductUploader(NULL);
                                 break;
+                            /*##########################
+                             * Social Media Manager
+                             */#########################
+                            case "social_media":
+                                
+                                $this->_forms->SocialMediaForm($cmd['social_media']);
+                                break;
                         }
                     }
                     ?>

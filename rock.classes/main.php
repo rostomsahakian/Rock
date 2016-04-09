@@ -63,7 +63,8 @@ class main {
             "css_links" => array(
                 "1" => '<link href="' . ABSOLUTH_PATH_CSS . 'bootstrap.min.css" rel="stylesheet">',
                 "2" => '<link rel="stylesheet" type="text/css" href="' . ABSOLUTH_PATH_CSS . 'styles.css"/>',
-                "3" => '<link rel="stylesheet" href="' . ABSOLUTH_PATH_JS . 'dist/themes/default/style.min.css" />'
+                "3" => '<link rel="stylesheet" href="' . ABSOLUTH_PATH_JS . 'dist/themes/default/style.min.css" />',
+                "4" => '<link rel="stylesheet" href="' . ABSOLUTH_PATH_FONT_AWESOME. 'font-awesome.min.css" />'
             ),
             "js_links" => array(
                 "1" => '    <!-- jQuery (necessary for Bootstrap\'s JavaScript plugins) -->
@@ -135,6 +136,11 @@ class main {
                 "Carousel Manager" => array(
                     "link" => "/rock.admin/?cmd=carousel&option=true",
                     "class" => "glyphicon glyphicon-play-circle",
+                    "badge" => ""
+                ),
+                "Social Media" => array(
+                    "link" => "/rock.admin/?cmd=social_media&option=true",
+                    "class" => "fa fa-facebook-square",
                     "badge" => ""
                 )
             ),

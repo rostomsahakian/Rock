@@ -90,7 +90,7 @@ class queries {
                 case "3":
 
                     $sql = "SELECT * FROM `" . $table . "` ORDER BY ord ASC";
-
+                    
                     $result = $this->_mysqli->query($sql);
 
                     if ($result) {
@@ -213,6 +213,21 @@ class queries {
                         return false;
                     }
                     break;
+                case "7":
+                    $sql = "SELECT * FROM `" . $table . "`";
+
+                    $result = $this->_mysqli->query($sql);
+
+                    if ($result) {
+                        while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+
+                            $this->_res[] = $row;
+                        }
+                        return true;
+                    } else {
+                        return FALSE;
+                    }
+                    break;
             }
         }
     }
@@ -291,6 +306,29 @@ class queries {
                     $sql .= "WHERE `" . $data['field2'] . "` = '" . $data['value2'] . "'";
 
                     $result = $this->_mysqli->query($sql);
+                    if ($result) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                    break;
+                case "4":
+
+                    for ($i = 0; $i < count($data['values']); $i++) {
+                        $sql = "UPDATE `" . $data['table'] . "` SET  ";
+                        for ($j = 0; $j < count($data['fields']); $j++) {
+                            $sql .= "`" . $data['fields'][$j] . "`";
+                            $sql .= " = " . $data['values'][$i][$j];
+                        }
+                        $sql .= " WHERE `" . $data['field2'] . "` = '" . $data['value2'][$i]['id'] . "'";
+                         $result = $this->_mysqli->query($sql);
+                    }
+                   
+
+
+
+
+
                     if ($result) {
                         return true;
                     } else {
@@ -395,6 +433,31 @@ class queries {
 
 
                     $result = $this->_mysqli->query($sql);
+                    if ($result) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+
+                    break;
+                case "2":
+                    for ($i = 0; $i < count($data['values']); $i++) {
+                        $sql = "INSERT INTO `" . $data['tables']['table1'] . "`";
+                        $sql .= " ( ";
+
+                        $sql .= implode(",", $data['columns']);
+                        $sql .= " ) ";
+                        $sql .= " VALUES ";
+                        $sql .= " ( ";
+                        $sql .= implode(",", $data['values'][$i]);
+
+                        $sql .= " ) ";
+
+
+                        $result = $this->_mysqli->query($sql);
+                       
+                       
+                    }
                     if ($result) {
                         return true;
                     } else {
@@ -516,13 +579,13 @@ class queries {
                     }
                     break;
                 case "1":
-                     $sql = "SHOW TABLES FROM rock_cmsdb LIKE '%".$table_to_create['patern']."%'";
+                    $sql = "SHOW TABLES FROM rock_cmsdb LIKE '%" . $table_to_create['patern'] . "%'";
 
                     $table_res = $this->_mysqli->query($sql);
                     while ($row = $table_res->fetch_array(MYSQLI_ASSOC)) {
                         $this->_res[] = $row;
                     }
-                   
+
                     break;
             }
         }
