@@ -90,7 +90,7 @@ class queries {
                 case "3":
 
                     $sql = "SELECT * FROM `" . $table . "` ORDER BY ord ASC";
-                    
+
                     $result = $this->_mysqli->query($sql);
 
                     if ($result) {
@@ -228,6 +228,60 @@ class queries {
                         return FALSE;
                     }
                     break;
+                case "8":
+                    $sql = "SELECT DISTINCT `" . $fields . "` FROM `" . $table . "`";
+                    $result = $this->_mysqli->query($sql);
+
+                    if ($result) {
+                        while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+                            $this->_res[] = $row;
+                        }
+                        return true;
+                    } else {
+                        return false;
+                    }
+                    break;
+
+                case "9":
+                    //$fields =array();
+                    //$value = array();
+                    $sql = "SELECT `" . $fields['field1'] . "`, `" . $fields['field2'] . "` FROM `" . $table . "` WHERE `" . $fields['field1'] . "` = '" . $value['value1'] . "' AND `" . $fields['field3'] . "` = '" . $value['value2'] . "'";
+                    $result = $this->_mysqli->query($sql);
+
+                    if ($result) {
+                        while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+
+                            $this->_res[] = $row;
+                        }
+                        return true;
+                    } else {
+                        return false;
+                    }
+                    break;
+                case "10":
+                    for ($i = 0; $i < count($value); $i++) {
+                        $sql = "SELECT DISTINCT `" . $fields['field1'] . "` FROM `" . $table . "` WHERE `" . $fields['field2'] . "` = '" . $value[$i] . "'";
+
+                        $result = $this->_mysqli->query($sql);
+
+                        echo "<br/>";
+                        var_dump($sql);
+                        echo "<br/>";
+                    }
+                    if ($result) {
+                        while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+                            echo "<br/>";
+                            var_dump($row);
+                            echo "<br/>";
+                            $this->_res[] = $row;
+                        }
+
+                        return true;
+                    } else {
+                        return false;
+                    }
+
+                    break;
             }
         }
     }
@@ -321,13 +375,28 @@ class queries {
                             $sql .= " = " . $data['values'][$i][$j];
                         }
                         $sql .= " WHERE `" . $data['field2'] . "` = '" . $data['value2'][$i]['id'] . "'";
-                         $result = $this->_mysqli->query($sql);
+                        $result = $this->_mysqli->query($sql);
                     }
-                   
+
+                    if ($result) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                    break;
+                case "5":
+
+                    for ($i = 0; $i < count($data['values']); $i++) {
+                        $sql = "UPDATE `" . $data['table'] . "` SET  ";
+                        for ($j = 0; $j < count($data['fields']); $j++) {
+                            $sql .= "`" . $data['fields'][$j] . "`";
+                            $sql .= " = " . $data['values'][$i];
+                            $sql .= " WHERE `" . $data['field2'] . "` = '" . $data['value2'][$i] . "'";
+                        }
 
 
-
-
+                        $result = $this->_mysqli->query($sql);
+                    }
 
                     if ($result) {
                         return true;
@@ -431,7 +500,7 @@ class queries {
 
                     $sql .= " ) ";
 
-
+                    //var_dump($sql);
                     $result = $this->_mysqli->query($sql);
                     if ($result) {
                         return true;
@@ -455,8 +524,27 @@ class queries {
 
 
                         $result = $this->_mysqli->query($sql);
-                       
-                       
+                    }
+                    if ($result) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+
+                    break;
+                case "3":
+                    for ($i = 0; $i < count($data['values']); $i++) {
+                        $sql = "INSERT INTO `" . $data['tables']['table1'] . "`";
+                        $sql .= " ( ";
+
+                        $sql .= trim(implode(",", $data['columns']));
+                        $sql .= " ) ";
+                        $sql .= " VALUES ";
+                        $sql .= " ( ";
+                        $sql .= trim(implode(", ", $data['values'][$i]));
+
+                        $sql .= " ) ";
+                        $result = $this->_mysqli->query($sql);
                     }
                     if ($result) {
                         return true;
@@ -552,31 +640,32 @@ class queries {
         if ($option != NULL) {
             switch ($option) {
                 case "0":
-                    $sql = "SHOW TABLES LIKE '" . $table_to_create['tablename'] . "'";
-                    $Table_exists = $this->_mysqli->query($sql);
-                    $table_num = $Table_exists->num_rows;
-                    if ($table_num > 0) {
-                        return false;
-                    } else {
+//                    $sql = "SHOW TABLES LIKE '" . $table_to_create['tablename'] . "'";
+//                    $Table_exists = $this->_mysqli->query($sql);
+//                    $table_num = $Table_exists->num_rows;
+//                    if ($table_num > 0) {
+//                        return false;
+//                    } else {
 
-                        $sql = "CREATE TABLE IF NOT EXISTS `" . $table_to_create['tablename'] . "`"
-                                . " ("
-                                . "id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, ";
-                        for ($i = 0; $i < count($table_to_create['f']); $i++) {
+                    $sql = "CREATE TABLE IF NOT EXISTS `" . $table_to_create['tablename'] . "`"
+                            . " ("
+                            . "id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, ";
+                    for ($i = 0; $i < count($table_to_create['f']); $i++) {
 
-                            $sql .= implode(" TEXT, ", $table_to_create['f'][$i]);
-                        }
-                        $sql.= " added_date DATETIME";
-
-                        $sql.= " )";
-                        $result = $this->_mysqli->query($sql);
-
-                        if ($result) {
-                            return true;
-                        } else {
-                            return false;
-                        }
+                        $sql .= implode(", ", $table_to_create['f'][$i]);
                     }
+                    $sql.= " ,added_date DATETIME, brand_id INT NOT NULL";
+
+                    $sql.= " )";
+
+                    $result = $this->_mysqli->query($sql);
+
+                    if ($result) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+//                    }
                     break;
                 case "1":
                     $sql = "SHOW TABLES FROM rock_cmsdb LIKE '%" . $table_to_create['patern'] . "%'";

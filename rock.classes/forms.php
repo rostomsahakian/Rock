@@ -29,10 +29,12 @@ class forms {
     public $_page_type = array();
     public $_fields = array();
     public $_more_inputs = array();
+    public $_uploads;
 
     public function __construct() {
         $this->_queries = new queries();
         $this->_pages_instance = new Page();
+        $this->_uploads = new uploads();
     }
 
     public function BackEndLoginForm() {
@@ -309,7 +311,7 @@ class forms {
                 }
                 $this->_editFormData['id'] = $page_data[0]['id'];
                 $this->_editFormData['parent'] = $page_data[0]['parent'];
-                $this->_editFormData['type'] = 0;
+                $this->_editFormData['type'] = $page_data[0]['type'];
                 $this->_editFormData['body'] = $page_data[0]['body'];
                 $this->_editFormData['name'] = $page_data[0]['name'];
                 $this->_editFormData['ord'] = $page_data[0]['ord'];
@@ -594,7 +596,88 @@ class forms {
 
                                             </div>
                                         </div>
+                                        <?php
+                                        if ($this->_editFormData['type'] == "3") {
 
+                                            if (isset($_REQUEST['form']['page_edit']['dolinkbrand'])) {
+                                                $brand_id = isset($_REQUEST['form']['page_edit']['brand_name']) ? $_REQUEST['form']['page_edit']['brand_name'] : NULL;
+                                                $brand_table = isset($_REQUEST['form']['page_edit']['table_name']) ? $_REQUEST['form']['page_edit']['table_name'] : NULL;
+                                                $brand_name = isset($_REQUEST['form']['page_edit']['b_real_name']) ? $_REQUEST['form']['page_edit']['b_real_name'] : NULL;
+                                                $choice = isset($_REQUEST['form']['page_edit']['choice']) ? $_REQUEST['form']['page_edit']['choice'] : 'gender';
+                                                $brand_data = array(
+                                                    "id" => $brand_id,
+                                                    "table" => "brands",
+                                                    "parent" => $this->_editFormData['id'],
+                                                    "choice" => $choice,
+                                                    "brand_name" => $brand_name
+                                                );
+                                                $this->GetAllBrandInfo($brand_data);
+                                            }
+                                            ?>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading"><i class="fa fa-link"></i>&nbsp; Link your brand</div>
+                                                        <div class="panel-body">
+
+                                                            <div class="form-group">
+                                                                <select name="form[page_edit][brand_name]" class="form-control">
+                                                                    <?php
+                                                                    $value = array(
+                                                                        "patern" => "rock_"
+                                                                    );
+                                                                    $this->_queries->_res = NULL;
+                                                                    $see_brands = $this->_queries->GetData("brands", NULL, NULL, $option = "7");
+                                                                    $see_brands = $this->_queries->RetData();
+
+                                                                    foreach ($see_brands as $brands) {
+
+                                                                        if (count($brands) > 0) {
+                                                                            ?>
+                                                                            <option value="<?= $brands['id'] ?>"><?= $brands['brand'] ?></option>
+                                                                            <?php
+                                                                        } else {
+                                                                            ?>
+                                                                            <option value="--none--">--No Brand Tables--</option>
+                                                                            <?php
+                                                                        }
+                                                                    }
+                                                                    ?>
+                                                                </select>
+
+                                                                <div class="form-group">
+                                                                    <table class="table">
+                                                                        <tr>
+                                                                            <?php
+                                                                            $checked_1 = '';
+                                                                            $checked_2 = '';
+                                                                            $choice_value = (isset($_REQUEST['form']['page_edit']['choice']) ? isset($_REQUEST['form']['page_edit']['choice']) : '');
+                                                                            if ($choice_value == "category") {
+                                                                                $checked_1 = 'checked="checked"';
+                                                                                $checked_2 = '';
+                                                                            } else {
+                                                                                $checked_1 = '';
+                                                                                $checked_2 = 'checked="checked"';
+                                                                            }
+                                                                            ?>
+
+                                                                            <td>By Category <input type="radio" name="form[page_edit][choice]" value="category" <?= $checked_1 ?> /></td>
+                                                                            <td>By Gender <input type="radio" name="form[page_edit][choice]" value="gender"  <?= $checked_2 ?>/> </td>
+                                                                        </tr>
+
+                                                                    </table>
+                                                                </div>
+                                                                <div class="form-group" style="margin-top:10px;">
+
+                                                                    <input type="submit" name="form[page_edit][dolinkbrand]" value="Link band" class="btn btn-success btn-xs"/>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <?php } ?>
                                         <!-- page body text-->
                                         <div class="row">
                                             <div class="col-md-12">
@@ -832,7 +915,7 @@ class forms {
                     <div class="row">
                         <div class="col-lg-4">
                             <div class="form-group">
-
+                                <input type="hidden" value="<?= $this->_editFormData['type'] ?>" name="form[page_edit][type]"/>
                                 <input type="submit" name="form[page_edit][action]" value="<?= $edit ? 'Update Page Details' : 'Insert Page Details' ?>" class="btn btn-primary"/>
 
 
@@ -1125,6 +1208,7 @@ class forms {
      */
 
     public function UpdatePages(array $page_form_data, $type = NULL) {
+        var_dump($page_form_data);
         if ($type != NULL) {
             switch ($type) {
                 case "update_page_details":
@@ -1290,7 +1374,7 @@ class forms {
      */
 
     public function Do_Upload_files($file_n, $path, $date_added, $page_uid, $page_type = NULL) {
-        
+
         foreach ($_FILES as $k => $file) {
 // Create directory if it does not exist
             if (!is_dir(ABSOLUTH_PATH_FILE_FRONT_END . "page_id_" . $page_uid . "_files/")) {
@@ -1323,7 +1407,7 @@ class forms {
             $uploadOk == 0;
         }
         if ($uploadOk == 0) {
-
+            
         } else {
             if (file_exists("$path/$upload_file")) {
                 unlink("$path/$upload_file");
@@ -1425,16 +1509,19 @@ class forms {
         if ($url_option['selected'] == "short") {
 
             if ($url_option['parent_id'] === 0 || $url_option['parent_id'] == "0") {
-                $url = '/' . preg_replace('/[^a-zA-Z0-9]/', '-', strtolower($url_option['page_name']));
+                $clear_url_spaces = str_replace(" ", "-", $url_option['page_name']);
+                $url = '/' . preg_replace('/[^a-zA-Z0-9,-]/', '-', strtolower($clear_url_spaces));
                 $this->_url = $url;
             } else {
-                $url = '/' . preg_replace('/[^a-zA-Z0-9]/', '-', strtolower($url_option['page_name']));
+                $clear_url_spaces = str_replace(" ", "-", $url_option['page_name']);
+                $url = '/' . preg_replace('/[^a-zA-Z0-9,-]/', '-', strtolower($clear_url_spaces));
                 $this->_url = $url;
             }
         } else {
             if ($url_option['parent_id'] === 0 || $url_option['parent_id'] == "0") {
 //                $url = '/' . str_replace(' ', '-', $url_option['page_name']);
-                $url = '/' . preg_replace('/[^a-zA-Z0-9,-]/', '-', strtolower($url_option['page_name']));
+                $clear_url_spaces = str_replace(" ", "-", $url_option['page_name']);
+                $url = '/' . preg_replace('/[^a-zA-Z0-9,-]/', '-', strtolower($clear_url_spaces));
                 $this->_url = $url;
             } else {
                 $table = "pages";
@@ -1455,8 +1542,10 @@ class forms {
                 }
                 $parent_url = implode("/", $a);
 //                $parent_url = '/' . str_replace(' ', '-', $parent_url);
-                $parent_url = '/' . preg_replace('/[^a-zA-Z0-9,-]/', '-', strtolower($parent_url));
-                $url = strtolower($parent_url . '/' . preg_replace('/[^a-zA-Z0-9,-]/', '-', $url_option['page_name']));
+                $clear_parent_spaces = str_replace(" ", "-", $parent_url);
+                $parent_url = '/' . preg_replace('/[^a-zA-Z0-9,-]/', '-', strtolower($clear_parent_spaces));
+                $clear_url_s = str_replace(" ", "-", $url_option['page_name']);
+                $url = strtolower($parent_url . '/' . preg_replace('/[^a-zA-Z0-9,-]/', '-', $clear_url_s));
                 $this->_url = $url;
             }
         }
@@ -2120,36 +2209,25 @@ class forms {
 
     public function CustomizedProductUploader(array $data = NULL) {
 
+        if (isset($_REQUEST['form']['uploads']['douploadfile'])) {
 
-        if (isset($_REQUEST['form']['table_columns']['create_f'])) {
+            $file = $_REQUEST['form']['uploads']['douploadfile'];
+            $table_name = $_REQUEST['form']['uploads']['table_name'];
+            if (empty($table_name) || empty($file)) {
 
-            $fields_for_table = $_REQUEST['form']['table_columns']['fields'];
-            $table_name = $_REQUEST['form']['table_columns']['table_name'];
-            if (empty($fields_for_table) || $table_name) {
                 $flag = 1;
                 $message = array("message" => "All fields are empty");
-                ///array_push($this->_message, $message);
                 $this->ReturnMessages($message, $flag);
             } else {
-                $table = "rock_" . $table_name . "_brand";
 
-                $f = array();
-                $fields[] = explode(";", $fields_for_table);
-                for ($i = 0; $i < count($fields); $i++) {
+                $this->_uploads->UploadFileFunction($file);
+                $this->_uploads->ReturnFileHeaders($table_name);
 
-                    $f = array(
-                        $fields[$i]
-                    );
-                }
-                $create_table = array(
-                    "tablename" => $table,
-                    "f" => $f,
-                );
-                $create = $this->_queries->CreateTableServices($create_table, $option = "0");
-                if ($create) {
-                    var_dump("Tbale created");
-                } else {
-                    var_dump("Table exists");
+
+                foreach ($this->_uploads->RetMessageTo() as $messages) {
+                    $flag = 1;
+                    $message = array("message" => $messages);
+                    $this->ReturnMessages($message, $flag);
                 }
             }
         }
@@ -2171,77 +2249,79 @@ class forms {
                     </ul>
                 </div>
             </div>
-            <div class="row">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <i class="glyphicon glyphicon-floppy-open"></i>&nbsp;<span>Items Uploads Manager</span>
-                    </div>
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <form method="post" name="form[table_columns]">
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="glyphicon glyphicon-floppy-open"></i>&nbsp;<span>Items Uploads Manager</span>
+                </div>
+                <div class="panel-body">
+
+                    <div class="col-md-5">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><span><i class="glyphicon glyphicon-file" ></i>&nbsp;Upload Files</span></div>
+                            <div class="panel-body">
+                                <form name="form[uploads]" method="post" enctype="multipart/form-data">
                                     <div class="form-group">
                                         <label><span style="color:#E21A2C">**</span>Table Name <em>(Make sure the name of the table matches the same as the <strong>brand name</strong>)</em></label>
-                                        <input type="text" name="form[table_columns][table_name]" value="<?= (isset($_REQUEST['form']['table_columns']['table_name']) ? $_REQUEST['form']['table_columns']['table_name'] : '') ?>" class="form-control" />
+                                        <input type="text" name="form[uploads][table_name]" value="<?= (isset($_REQUEST['form']['uploads']['table_name']) ? $_REQUEST['form']['uploads']['table_name'] : '') ?>" class="form-control" />
                                     </div>
-                                    <div class="form-group">
-                                        <label>Please Enter the Name of fields that the CSV File has separated by (;) . (i.e. model_number; price; etc. **IMPORTANT DO NOT INCLUDE FILED NAME ID the system will generate one)</label>
-                                        <input type="text" value="<?= (isset($_REQUEST['form']['table_columns']['fields']) ? $_REQUEST['form']['table_columns']['fields'] : '') ?>" name="form[table_columns][fields]" class="form-control"/>
 
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="submit" value="Click to Create Fields" name="form[table_columns][create_f]"  class="btn btn-success"/>
-                                    </div>
+                                    <input type="file" name="form[uploads][uploadfile]"   class="btn btn-default btn-xs"/>
+
+                                    <input type="submit" class="btn btn-success btn-xs" name="form[uploads][douploadfile]" value="Upload" style="margin-top: 10px;"/>
                                 </form>
                             </div>
-                        </div>    
+                        </div>
                     </div>
+
+                    <div class="col-lg-12" style="margin-top: 10px;">
+
+                        <div class="panel panel-default">
+                            <div class="panel panel-heading">
+                                <label>Your Brand Tables</label>
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-group">
+
+                                    <form method="post" name="form[brands]">
+                                        <select name="form[brands][tables]">
+                                            <?php
+                                            $value = array(
+                                                "patern" => "rock_"
+                                            );
+                                            $this->_queries->_res = NULL;
+                                            $see_tables = $this->_queries->CreateTableServices($value, $option = "1");
+                                            $see_tables = $this->_queries->RetData();
+
+                                            foreach ($see_tables as $brand_tables) {
+                                                if ($brand_tables['Tables_in_rock_cmsdb (%rock_%)'] != '') {
+                                                    ?>
+                                                    <option value="<?= $brand_tables['Tables_in_rock_cmsdb (%rock_%)'] ?>"><?= $brand_tables['Tables_in_rock_cmsdb (%rock_%)'] ?></option>
+                                                    <?php
+                                                } else {
+                                                    ?>
+                                                    <option value="--none--">--No Brand Tables--</option>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
+
+
+
+                                        </select>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
 
 
-        <div class="col-lg-12" style="margin-top: 10px;">
-            <div class="row">
-                <div class="panel panel-default">
-                    <div class="panel panel-heading">
-                        <label>Your Brand Tables</label>
-                    </div>
-                    <div class="panel-body">
-                        <div class="form-group">
-
-                            <form method="post" name="form[brands]">
-                                <select name="form[brands][tables]">
-                                    <?php
-                                    $value = array(
-                                        "patern" => "rock_"
-                                    );
-                                    $this->_queries->_res = NULL;
-                                    $see_tables = $this->_queries->CreateTableServices($value, $option = "1");
-                                    $see_tables = $this->_queries->RetData();
-
-                                    foreach ($see_tables as $brand_tables) {
-                                        if ($brand_tables['Tables_in_rock_cmsdb (%rock_%)'] != '') {
-                                            ?>
-                                            <option value="<?= $brand_tables['Tables_in_rock_cmsdb (%rock_%)'] ?>"><?= $brand_tables['Tables_in_rock_cmsdb (%rock_%)'] ?></option>
-                                            <?php
-                                        } else {
-                                            ?>
-                                            <option value="--none--">--No Brand Tables--</option>
-                                            <?php
-                                        }
-                                    }
-                                    ?>
 
 
-
-                                </select>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>    
         <?php
     }
 
@@ -2827,6 +2907,145 @@ class forms {
         </div>
         </form>
         <?php
+    }
+
+    public function GetAllBrandInfo(array $brand_data_request = NULL) {
+
+
+        if ($brand_data_request != NULL) {
+            /*
+             * First we get the table name
+             * 2nd we will get all the data from that table
+             * 3rd create a page in pages with parent id as the id of the page being set
+             * the page will be called brand_nam_catagories
+             * categories will have children
+             * for example if the gender if availble
+             * +gender
+             *      +catagories
+             *          -items
+             * 
+             * i.e 
+             * Men
+             *  Accesoires
+             *      bags
+             */
+            $this->_queries->_res = NULL;
+            $get_brand_info = $this->_queries->GetData($brand_data_request['table'], "id", $brand_data_request['id'], $option = "0");
+            $get_brand_info = $this->_queries->RetData();
+
+            foreach ($get_brand_info as $brand_info) {
+                
+            }
+            $this->_queries->_res = NULL;
+            $get_all_data_for_brand = $this->_queries->GetData($brand_info['table_name'], $brand_data_request['choice'], NULL, "8");
+            $get_all_data_for_brand = $this->_queries->RetData();
+
+            foreach ($get_all_data_for_brand as $cat_data) {
+
+                $for_categories[] = $cat_data[$brand_data_request['choice']];
+
+                /*
+                 * Check if the data is there (prevent duplication)
+                 * select from pages where name = cate-choice and parent is equel to id of the page
+                 */
+                $columns = array(
+                    "field1" => "name",
+                    "field2" => "id",
+                    "field3" => "parent"
+                );
+                $values_to_check = array(
+                    "value1" => $cat_data[$brand_data_request['choice']],
+                    "value2" => $brand_data_request['parent']
+                );
+                $table_to_check = "pages";
+
+                $this->_queries->_res = NULL;
+                $check_db_for_sub_pages = $this->_queries->GetData($table_to_check, $columns, $values_to_check, $option = "9");
+                $check_db_for_sub_pages = $this->_queries->RetData();
+
+                if (count($check_db_for_sub_pages) > 0) {
+                    //var_dump($check_db_for_sub_pages);
+                    continue;
+                } else {
+
+
+                    /*
+                     * Now Create the catergory if not already based on user selection
+                     * if gender
+                     * then first create the catgories page
+                     * 
+                     */
+
+
+
+                    $columns = array(
+                        "name",
+                        "parent",
+                        "cdate",
+                        "title",
+                        "type"
+                    );
+                    $values = array(
+                        "'" . $cat_data[$brand_data_request['choice']] . "'",
+                        "'" . $brand_data_request['parent'] . "'",
+                        "'" . date("Y,m,d") . "'",
+                        "'" . $brand_info['brand'] . " " . $cat_data[$brand_data_request['choice']] . "'",
+                        "'" . "5" . "'"
+                    );
+                    $tabel = array(
+                        "table1" => "pages"
+                    );
+                    $values_to_add_a_page = array(
+                        "tables" => $tabel,
+                        "columns" => $columns,
+                        "values" => $values
+                    );
+                    $do_add_catagroy = $this->_queries->Insertvalues($values_to_add_a_page, $option = "1");
+                    if ($do_add_catagroy) {
+
+
+
+                        var_dump("pages added");
+                    } else {
+                        var_dump("unbale to add");
+                    }
+                }
+            }
+            /*
+             * Now Create the sub-catergory if not already based on user selection
+             * foreach category see if it has any subcategories
+             * 
+             */
+            if ($brand_data_request['choice'] == "gender") {
+
+
+
+                $this->_queries->_res = NULL;
+                $get_all_data_for_cat = $this->_queries->GetData($brand_info['table_name'], "category", NULL, "8");
+                $get_all_data_for_cat = $this->_queries->RetData();
+
+                foreach ($get_all_data_for_cat as $sub_cat) {
+                    // var_dump($sub_cat['category']);
+                    $categories[] = $sub_cat['category'];
+
+                    $columns = array(
+                        "field1" => "category",
+                        "field2" => "gender"
+                    );
+
+
+                    $this->_queries->_res = NULL;
+                    $get_all_data_for_sub_cat = $this->_queries->GetData($brand_info['table_name'], $columns, $for_categories, "10");
+                    $get_all_data_for_sub_cat = $this->_queries->RetData();
+                }
+                foreach ($get_all_data_for_sub_cat as $sub_sub_cat) {
+
+                    echo "<br/>{$sub_sub_cat['category']}<br/> ";
+                }
+            } else {
+                
+            }
+        }
     }
 
 }

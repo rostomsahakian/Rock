@@ -194,4 +194,5 @@ return array(
     'main' => $baseDir . '/rock.classes/main.php',
     'queries' => $baseDir . '/rock.classes/queries.php',
     'test' => $baseDir . '/rock.classes/test.php',
+    'uploads' => $baseDir . '/rock.classes/uploads.php',
 );
