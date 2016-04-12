@@ -40,7 +40,12 @@ class queries {
                 case "0":
 
                     $sql = "SELECT * FROM `" . $table . "` WHERE `" . $fields . "`= '" . $value . "'";
+//                    echo "<br/>";
+//                    echo "<br/>From GETDATA";
+//                    var_dump($sql);
+                    //echo "<br/>";
                     $result = $this->_mysqli->query($sql);
+
                     if ($result) {
                         while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
 
@@ -243,11 +248,12 @@ class queries {
                     break;
 
                 case "9":
-                    //$fields =array();
-                    //$value = array();
+
                     $sql = "SELECT `" . $fields['field1'] . "`, `" . $fields['field2'] . "` FROM `" . $table . "` WHERE `" . $fields['field1'] . "` = '" . $value['value1'] . "' AND `" . $fields['field3'] . "` = '" . $value['value2'] . "'";
                     $result = $this->_mysqli->query($sql);
-
+//                    echo "<br/>";
+//                    var_dump($sql);
+//                    echo "<br/>";
                     if ($result) {
                         while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
 
@@ -259,20 +265,17 @@ class queries {
                     }
                     break;
                 case "10":
-                    for ($i = 0; $i < count($value); $i++) {
-                        $sql = "SELECT DISTINCT `" . $fields['field1'] . "` FROM `" . $table . "` WHERE `" . $fields['field2'] . "` = '" . $value[$i] . "'";
 
-                        $result = $this->_mysqli->query($sql);
+                    $sql = "SELECT DISTINCT `" . $fields['field1'] . "` FROM `" . $table . "` WHERE `" . $fields['field2'] . "` = '" . $value . "'";
 
-                        echo "<br/>";
-                        var_dump($sql);
-                        echo "<br/>";
-                    }
+//                    echo "<br/>";
+//                    var_dump($sql);
+//                    echo "<br/>";
+                    $result = $this->_mysqli->query($sql);
+
                     if ($result) {
                         while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
-                            echo "<br/>";
-                            var_dump($row);
-                            echo "<br/>";
+
                             $this->_res[] = $row;
                         }
 
@@ -453,6 +456,31 @@ class queries {
                         $this->GetData($data['table'], $data['field'], $data['value'], $option = "0");
                     }
                     break;
+
+                case "3":
+                    if ($data['value1'] != 0 || $data['value1'] != "0") {
+                        
+                        $sql = "SELECT * FROM `" . $data['table'] . "` WHERE `" . $data['field1'] . "` = '" . $data['value1'] . "'";
+
+                        $result = $this->_mysqli->query($sql);
+                        $row = $result->fetch_array(MYSQLI_ASSOC);
+
+                        if ($row['parent'] != 0 || $row['parent'] != "0") {
+                            // $data['value1'] = $row['id'];
+                            $this->_res[] = $row;
+
+                            $new_data = array(
+                                "table" => "pages",
+                                "field1" => "id",
+                                "value1" => $row['parent']
+                            );
+                            $this->findParent($new_data, $option = "3");
+                        }
+
+                        return $this->_res;
+                    } else {
+                       $this->GetData("pages", $data['field2'], "0", $option = "0");
+                    }
             }
         }
     }
@@ -465,7 +493,6 @@ class queries {
                             . "`" . $data['fields']['field3'] . "` = '" . $data['values']['value1'] . "' AND "
                             . "`" . $data['fields']['field1'] . "` != '" . $data['values']['value2'] . "'"
                             . " ORDER by `" . $data['fields']['field4'] . "` , `" . $data['fields']['field2'] . "` ";
-                    // var_dump($sql);
 
                     $result = $this->_mysqli->query($sql);
                     while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
@@ -499,8 +526,9 @@ class queries {
                     $sql .= implode(",", $data['values']);
 
                     $sql .= " ) ";
-
-                    //var_dump($sql);
+                    echo "<br/>";
+                    var_dump($sql);
+                    echo "<br/>";
                     $result = $this->_mysqli->query($sql);
                     if ($result) {
                         return true;

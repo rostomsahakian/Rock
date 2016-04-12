@@ -59,6 +59,7 @@ class Page {
         } else if ($id != 0 && $this->queries->GetData($data['table'], $data['fields'], $data['value'], $data['option'])) {
 
             $this->data = $this->queries->RetData();
+            
             foreach ($this->data as $page_info) {
                 $this->id = $page_info['id'];
                 $this->name = $page_info['name'];

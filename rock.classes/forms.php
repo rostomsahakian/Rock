@@ -331,7 +331,7 @@ class forms {
                     $this->_editFormData['url_page_id'] = $url_options[0]['page_id'];
                 }
 
-
+                $_SESSION['id'] = $this->_editFormData['id'];
 
 
                 $page_vars = array();
@@ -430,7 +430,7 @@ class forms {
 
                                                         foreach ($page_type as $k => $p_type) {
 
-                                                            var_dump($k);
+                                                            // var_dump($k);
                                                             ?>
                                                             <option value="<?= (isset($_REQUEST['form']['page_edit']['type']) ? $_REQUEST['form']['page_edit']['type'] : $k) ?>"><?= $p_type ?></option>
                                                             <!-- insert plugin page types here-->
@@ -597,19 +597,25 @@ class forms {
                                             </div>
                                         </div>
                                         <?php
-                                        if ($this->_editFormData['type'] == "3") {
+                                        /*
+                                         * If page type is categories == 9 then do it per designer 
+                                         * else if page type is 5 
+                                         */
+                                        if ($this->_editFormData['type'] == "9") {
 
                                             if (isset($_REQUEST['form']['page_edit']['dolinkbrand'])) {
                                                 $brand_id = isset($_REQUEST['form']['page_edit']['brand_name']) ? $_REQUEST['form']['page_edit']['brand_name'] : NULL;
                                                 $brand_table = isset($_REQUEST['form']['page_edit']['table_name']) ? $_REQUEST['form']['page_edit']['table_name'] : NULL;
                                                 $brand_name = isset($_REQUEST['form']['page_edit']['b_real_name']) ? $_REQUEST['form']['page_edit']['b_real_name'] : NULL;
                                                 $choice = isset($_REQUEST['form']['page_edit']['choice']) ? $_REQUEST['form']['page_edit']['choice'] : 'gender';
+
                                                 $brand_data = array(
                                                     "id" => $brand_id,
                                                     "table" => "brands",
                                                     "parent" => $this->_editFormData['id'],
                                                     "choice" => $choice,
-                                                    "brand_name" => $brand_name
+                                                    "brand_name" => $brand_name,
+                                                    "page_name" => $this->_editFormData['name']
                                                 );
                                                 $this->GetAllBrandInfo($brand_data);
                                             }
@@ -677,6 +683,58 @@ class forms {
                                                     </div>
                                                 </div>
                                             </div>
+                                            <?php
+                                        } else if ($this->_editFormData['type'] == "3") {
+                                            /*
+                                             * If page type is 3 it is category so lets say we have mens it should show all mens products by categories
+                                             */
+                                            if (isset($_REQUEST['form']['page_edit']['dogetcats'])) {
+                                                $selection = $_REQUEST['form']['page_edit']['get_cats'];
+                                                $selection_parent_id = $this->_editFormData['id'];
+
+                                                $data_for_function_get_by_category = array(
+                                                    "selection" => $selection,
+                                                    "parent_id" => $selection_parent_id
+                                                );
+                                                /*
+                                                 * Call the function
+                                                 */
+                                                $this->GetProductsBycategory($data_for_function_get_by_category);
+                                            }
+                                            ?>
+
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading"><span>Set Products</span></div>
+                                                        <div class="panel-body">
+                                                            <div class="form-group">
+                                                                <select name="form[page_edit][get_cats]">
+                                                                    <?php
+                                                                    $this->_queries->_res = NULL;
+                                                                    $get_cats_form_all = $this->_queries->GetData("all_products", "gender", NULL, $option = "8");
+                                                                    $get_cats_form_all = $this->_queries->RetData();
+                                                                    if ($get_cats_form_all != NULL) {
+                                                                        foreach ($get_cats_form_all as $unique_cats) {
+                                                                            ?>
+
+                                                                            <option value="<?= $unique_cats['gender'] ?>"><?= $unique_cats['gender'] ?></option>
+                                                                            <?php
+                                                                        }
+                                                                    }
+                                                                    ?>
+                                                                </select>
+                                                                <div class="form-group" style="margin-top:10px;">
+
+                                                                    <input type="submit" name="form[page_edit][dogetcats]" value="Link Categories" class="btn btn-success btn-xs"/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>  
+                                                </div>  
+                                            </div>
+
+
                                         <?php } ?>
                                         <!-- page body text-->
                                         <div class="row">
@@ -1092,8 +1150,8 @@ class forms {
 
             $page_id = $delete_data[0];
             $parent = $delete_data[1];
-            var_dump($page_id);
-            var_dump($parent);
+            //var_dump($page_id);
+            //var_dump($parent);
             $tables = array("pages", "page_file", "page_images", "url_options");
             $fields = array("id", "page_id", "page_id", "page_id");
             $values = $page_id;
@@ -1208,7 +1266,7 @@ class forms {
      */
 
     public function UpdatePages(array $page_form_data, $type = NULL) {
-        var_dump($page_form_data);
+        //var_dump($page_form_data);
         if ($type != NULL) {
             switch ($type) {
                 case "update_page_details":
@@ -1297,7 +1355,7 @@ class forms {
 
 
         $number = $get_number_of_images['row_count'];
-        var_dump($number);
+        //var_dump($number);
         $dir = ABSOLUTH_PATH_IMAGES;
 
         foreach ($_FILES as $k => $file) {
@@ -1458,7 +1516,7 @@ class forms {
     public function ReWriteUrl(array $values) {
         if (isset($values['option']) && $values['option'] != '' && $values['id'] == $values['url_page_id']) {
             $option = $values['option'];
-            var_dump($values['id']);
+            //var_dump($values['id']);
             //Update if different
             $update_vars = array(
                 "'" . addslashes($option) . "'",
@@ -1510,18 +1568,20 @@ class forms {
 
             if ($url_option['parent_id'] === 0 || $url_option['parent_id'] == "0") {
                 $clear_url_spaces = str_replace(" ", "-", $url_option['page_name']);
-                $url = '/' . preg_replace('/[^a-zA-Z0-9,-]/', '-', strtolower($clear_url_spaces));
+                $remove_ands = str_replace("&", "and", $clear_url_spaces);
+                $url = '/' . preg_replace('/[^a-zA-Z0-9,-\/]/', '-', strtolower($remove_ands));
                 $this->_url = $url;
             } else {
                 $clear_url_spaces = str_replace(" ", "-", $url_option['page_name']);
-                $url = '/' . preg_replace('/[^a-zA-Z0-9,-]/', '-', strtolower($clear_url_spaces));
+                $remove_ands = str_replace("&", "and", $clear_url_spaces);
+                $url = '/' . preg_replace('/[^a-zA-Z0-9,-\/]/', '-', strtolower($remove_ands));
                 $this->_url = $url;
             }
         } else {
             if ($url_option['parent_id'] === 0 || $url_option['parent_id'] == "0") {
-//                $url = '/' . str_replace(' ', '-', $url_option['page_name']);
                 $clear_url_spaces = str_replace(" ", "-", $url_option['page_name']);
-                $url = '/' . preg_replace('/[^a-zA-Z0-9,-]/', '-', strtolower($clear_url_spaces));
+                $remove_ands = str_replace("&", "and", $clear_url_spaces);
+                $url = '/' . preg_replace('/[^a-zA-Z0-9,-\/]/', '-', strtolower($remove_ands));
                 $this->_url = $url;
             } else {
                 $table = "pages";
@@ -1533,6 +1593,7 @@ class forms {
                     "field" => $field,
                     "value" => $value
                 );
+                $this->_queries->_parent = NULL;
                 $find_parent_name = $this->_queries->findParent($find_parent_name_data, $option = "1");
                 $find_parent_name = array_reverse($find_parent_name);
                 $a = array();
@@ -1541,11 +1602,12 @@ class forms {
                     array_push($a, $new_parent_url);
                 }
                 $parent_url = implode("/", $a);
-//                $parent_url = '/' . str_replace(' ', '-', $parent_url);
                 $clear_parent_spaces = str_replace(" ", "-", $parent_url);
-                $parent_url = '/' . preg_replace('/[^a-zA-Z0-9,-]/', '-', strtolower($clear_parent_spaces));
+                $remove_parent_ands = str_replace("&", "and", $clear_parent_spaces);
+                $parent_url = '/' . preg_replace('/[^a-zA-Z0-9,-\/]/', '-', strtolower($remove_parent_ands));
                 $clear_url_s = str_replace(" ", "-", $url_option['page_name']);
-                $url = strtolower($parent_url . '/' . preg_replace('/[^a-zA-Z0-9,-]/', '-', $clear_url_s));
+                $remove_long_ands = str_replace("&", "and", $clear_url_s);
+                $url = strtolower($parent_url . '/' . preg_replace('/[^a-zA-Z0-9,-\/]/', '-', $remove_long_ands));
                 $this->_url = $url;
             }
         }
@@ -1604,7 +1666,7 @@ class forms {
                                                 if ($paren_list != NULL) {
 
                                                     foreach ($paren_list as $p_list) {
-                                                        var_dump($p_list);
+                                                        //  var_dump($p_list);
                                                         ?>
                                                         <option value="<?= (isset($_REQUEST['form']['add_new_page']['page_parent'])) ? $_REQUEST['form']['add_new_page']['page_parent'] : $p_list['id'] ?>"><?= $p_list['name'] ?></option>
 
@@ -1722,6 +1784,46 @@ class forms {
                         "values" => $values
                     );
                     $insert_new_page_details = $this->_queries->Insertvalues($values_to_insert, $option = "1");
+                    /*
+                     * Select the name of this page where parent is equal to parent
+                     */
+                    $table_for_url_query = "pages";
+                    $fields_for_url_query = array(
+                        "field1" => "name",
+                        "field2" => "id",
+                        "field3" => "parent"
+                    );
+                    $values_for_query_url = array(
+                        "value1" => $page_name,
+                        "value2" => $new_page_parent
+                    );
+                    $this->_queries->_res = NULL;
+                    $get_page_info_for_url = $this->_queries->GetData($table_for_url_query, $fields_for_url_query, $values_for_query_url, $option = "9");
+                    $get_page_info_for_url = $this->_queries->RetData();
+                    foreach ($get_page_info_for_url as $data_for_url) {
+                        
+                    }
+                    $add_url_option = array(
+                        "selected" => "long",
+                        "parent_id" => $new_page_parent,
+                        "page_name" => $data_for_url['name']
+                    );
+                    $url_for_page = $this->URL_RE_WRITER($add_url_option);
+                    $url_for_page = $this->RET_URL();
+                    $table_to_insert_url = array("table1" => "page_urls");
+                    $columns_to_insert = array("`page_id`", "`long_url`");
+
+                    $values_to_insert_url_table = array("'" . $data_for_url['id'] . "'", "'" . $url_for_page . "'");
+
+                    $values_to_insert_in_url = array(
+                        "tables" => $table_to_insert_url,
+                        "columns" => $columns_to_insert,
+                        "values" => $values_to_insert_url_table
+                    );
+                    $insert_new_page_url = $this->_queries->Insertvalues($values_to_insert_in_url, $option = "1");
+
+
+
                     if ($insert_new_page_details) {
                         $flag = 1;
                         $message = array("message" => "Page {$page_name} was added.");
@@ -1729,7 +1831,7 @@ class forms {
                         $this->_message = $message;
                     } else {
                         $flag = 1;
-                        $message = array("message" => "pade was not added.");
+                        $message = array("message" => "page was not added.");
                         array_push($message, $flag);
                         $this->_message = $message;
                     }
@@ -1760,6 +1862,7 @@ class forms {
                 "3" => "Category",
                 "5" => "Sub-Category",
                 "7" => "Item-Page",
+                "9" => "Designers"
             );
 
 
@@ -2373,7 +2476,7 @@ class forms {
 
             $table = "social_media";
 
-            $image_path = "../r.frontend/social_media/social_media_by_alfredo/";
+            $image_path = "/r.frontend/social_media/social_media_by_alfredo/";
             $table = array("table1" => "social_media");
             $columns = array("`url`", "`image_url`", "`image_name`", "`status`");
             $facebook = array("'" . $facebook_url . "'", "'" . $image_path . "'", "'" . $facebook_icon . "'", "'" . $facebook_status . "'");
@@ -2509,17 +2612,17 @@ class forms {
                                         ?>
                                         <tr>
                                             <td style="width:100px;">                                               
-                                                <img src="../r.frontend/social_media/social_media_by_alfredo/faceboo_color.png" alt="" width="25" height="25"/>                                          
+                                                <img src="/r.frontend/social_media/social_media_by_alfredo/faceboo_color.png" alt="" width="25" height="25"/>                                          
                                                 <input type="radio" name="form[social][facebook_icons]" value="faceboo_color.png" <?= $checked_1 ?>  />                                                
                                             </td>
 
                                             <td style="width:100px;"> 
-                                                <img src="../r.frontend/social_media/social_media_by_alfredo/facebook.png" alt="" width="25" height="25"/>
+                                                <img src="/r.frontend/social_media/social_media_by_alfredo/facebook.png" alt="" width="25" height="25"/>
                                                 <input type="radio" name="form[social][facebook_icons]" value="facebook.png" <?= $checked_2 ?> />
                                             </td>
 
                                             <td style="width:100px;"> 
-                                                <img src="../r.frontend/social_media/social_media_by_alfredo/facebook_circle.png" alt="" width="25" height="25"/> 
+                                                <img src="/r.frontend/social_media/social_media_by_alfredo/facebook_circle.png" alt="" width="25" height="25"/> 
                                                 <input type="radio" name="form[social][facebook_icons]" value="facebook_circle.png" <?= $checked_3 ?>  />
                                             </td>
                                         </tr>
@@ -2575,17 +2678,17 @@ class forms {
                                         ?>
                                         <tr>
                                             <td style="width:100px;">                                               
-                                                <img src="../r.frontend/social_media/social_media_by_alfredo/twitter_color.png" alt="" width="25" height="25"/>
+                                                <img src="/r.frontend/social_media/social_media_by_alfredo/twitter_color.png" alt="" width="25" height="25"/>
                                                 <input type="radio" name="form[social][twitter_icons]" value="twitter_color.png" <?= $checked_1 ?>  />                                                
                                             </td>
 
                                             <td style="width:100px;"> 
-                                                <img src="../r.frontend/social_media/social_media_by_alfredo/twitter.png" alt="" width="25" height="25"/>
+                                                <img src="/r.frontend/social_media/social_media_by_alfredo/twitter.png" alt="" width="25" height="25"/>
                                                 <input type="radio" name="form[social][twitter_icons]" value="twitter.png" <?= $checked_2 ?>   />
                                             </td>
 
                                             <td style="width:100px;"> 
-                                                <img src="../r.frontend/social_media/social_media_by_alfredo/twitter_circle.png" alt="" width="25" height="25"/> 
+                                                <img src="/r.frontend/social_media/social_media_by_alfredo/twitter_circle.png" alt="" width="25" height="25"/> 
                                                 <input type="radio" name="form[social][twitter_icons]" value="twitter_circle.png" <?= $checked_3 ?>  />
                                             </td>
                                         </tr>
@@ -2646,17 +2749,17 @@ class forms {
                                         ?>
                                         <tr>
                                             <td style="width:100px;">                                               
-                                                <img src="../r.frontend/social_media/social_media_by_alfredo/instagram_color.png" alt="" width="25" height="25"/>                                          
+                                                <img src="/r.frontend/social_media/social_media_by_alfredo/instagram_color.png" alt="" width="25" height="25"/>                                          
                                                 <input type="radio" name="form[social][instagram_icons]" value="instagram_color.png" <?= $checked_1 ?>  />                                                
                                             </td>
 
                                             <td style="width:100px;"> 
-                                                <img src="../r.frontend/social_media/social_media_by_alfredo/instagram.png" alt="" width="25" height="25"/>
+                                                <img src="/r.frontend/social_media/social_media_by_alfredo/instagram.png" alt="" width="25" height="25"/>
                                                 <input type="radio" name="form[social][instagram_icons]" value="instagram.png" <?= $checked_2 ?>  />
                                             </td>
 
                                             <td style="width:100px;"> 
-                                                <img src="../r.frontend/social_media/social_media_by_alfredo/instagram_circle.png" alt="" width="25" height="25"/> 
+                                                <img src="/r.frontend/social_media/social_media_by_alfredo/instagram_circle.png" alt="" width="25" height="25"/> 
                                                 <input type="radio" name="form[social][instagram_icons]" value="instagram_circle.png" <?= $checked_3 ?>   />
                                             </td>
                                         </tr>
@@ -2716,17 +2819,17 @@ class forms {
                                         ?>
                                         <tr>
                                             <td style="width:100px;">                                               
-                                                <img src="../r.frontend/social_media/social_media_by_alfredo/youtube_color.png" alt="" width="25" height="25"/>                                          
+                                                <img src="/r.frontend/social_media/social_media_by_alfredo/youtube_color.png" alt="" width="25" height="25"/>                                          
                                                 <input type="radio" name="form[social][youtube_icons]" value="youtube_color.png"  <?= $checked_1 ?> />                                                
                                             </td>
 
                                             <td style="width:100px;"> 
-                                                <img src="../r.frontend/social_media/social_media_by_alfredo/youtube.png" alt="" width="25" height="25"/>
+                                                <img src="/r.frontend/social_media/social_media_by_alfredo/youtube.png" alt="" width="25" height="25"/>
                                                 <input type="radio" name="form[social][youtube_icons]" value="youtube.png" <?= $checked_2 ?>   />
                                             </td>
 
                                             <td style="width:100px;"> 
-                                                <img src="../r.frontend/social_media/social_media_by_alfredo/youtube_circle.png" alt="" width="25" height="25"/> 
+                                                <img src="/r.frontend/social_media/social_media_by_alfredo/youtube_circle.png" alt="" width="25" height="25"/> 
                                                 <input type="radio" name="form[social][youtube_icons]" value="youtube_circle.png"  <?= $checked_3 ?>  />
                                             </td>
                                         </tr>
@@ -2785,17 +2888,17 @@ class forms {
                                         ?>
                                         <tr>
                                             <td style="width:100px;">                                               
-                                                <img src="../r.frontend/social_media/social_media_by_alfredo/linkedin_color.png" alt="" width="25" height="25"/>                                          
+                                                <img src="/r.frontend/social_media/social_media_by_alfredo/linkedin_color.png" alt="" width="25" height="25"/>                                          
                                                 <input type="radio" name="form[social][linkedin_icons]" value="linkedin_color.png"  <?= $checked_1 ?>  />                                                
                                             </td>
 
                                             <td style="width:100px;"> 
-                                                <img src="../r.frontend/social_media/social_media_by_alfredo/linedin.png" alt="" width="25" height="25"/>
+                                                <img src="/r.frontend/social_media/social_media_by_alfredo/linedin.png" alt="" width="25" height="25"/>
                                                 <input type="radio" name="form[social][linkedin_icons]" value="linedin.png" <?= $checked_2 ?>  />
                                             </td>
 
                                             <td style="width:100px;"> 
-                                                <img src="../r.frontend/social_media/social_media_by_alfredo/linkedin_circle.png" alt="" width="25" height="25"/> 
+                                                <img src="/r.frontend/social_media/social_media_by_alfredo/linkedin_circle.png" alt="" width="25" height="25"/> 
                                                 <input type="radio" name="form[social][linkedin_icons]" value="linkedin_circle.png" <?= $checked_3 ?>   />
                                             </td>
                                         </tr>
@@ -2858,17 +2961,17 @@ class forms {
                                         ?>
                                         <tr>
                                             <td style="width:100px;">                                               
-                                                <img src="../r.frontend/social_media/social_media_by_alfredo/google_plus_color.png" alt="" width="25" height="25"/>                                          
+                                                <img src="/r.frontend/social_media/social_media_by_alfredo/google_plus_color.png" alt="" width="25" height="25"/>                                          
                                                 <input type="radio" name="form[social][google_icons]" value="google_plus_color.png" <?= $checked_1 ?>   />                                                
                                             </td>
 
                                             <td style="width:100px;"> 
-                                                <img src="../r.frontend/social_media/social_media_by_alfredo/google_plus.png" alt="" width="25" height="25"/>
+                                                <img src="/r.frontend/social_media/social_media_by_alfredo/google_plus.png" alt="" width="25" height="25"/>
                                                 <input type="radio" name="form[social][google_icons]" value="google_plus.png" <?= $checked_2 ?>   />
                                             </td>
 
                                             <td style="width:100px;"> 
-                                                <img src="../r.frontend/social_media/social_media_by_alfredo/google_plus_circle.png" alt="" width="25" height="25"/> 
+                                                <img src="/r.frontend/social_media/social_media_by_alfredo/google_plus_circle.png" alt="" width="25" height="25"/> 
                                                 <input type="radio" name="form[social][google_icons]" value="google_plus_circle.png" <?= $checked_3 ?>   />
                                             </td>
                                         </tr>
@@ -2929,6 +3032,7 @@ class forms {
              *  Accesoires
              *      bags
              */
+
             $this->_queries->_res = NULL;
             $get_brand_info = $this->_queries->GetData($brand_data_request['table'], "id", $brand_data_request['id'], $option = "0");
             $get_brand_info = $this->_queries->RetData();
@@ -2962,7 +3066,7 @@ class forms {
                 $this->_queries->_res = NULL;
                 $check_db_for_sub_pages = $this->_queries->GetData($table_to_check, $columns, $values_to_check, $option = "9");
                 $check_db_for_sub_pages = $this->_queries->RetData();
-
+                $sub_page_parents[] = $check_db_for_sub_pages;
                 if (count($check_db_for_sub_pages) > 0) {
                     //var_dump($check_db_for_sub_pages);
                     continue;
@@ -3019,31 +3123,317 @@ class forms {
             if ($brand_data_request['choice'] == "gender") {
 
 
+                $columns = array(
+                    "field1" => "category",
+                    "field2" => "gender"
+                );
 
-                $this->_queries->_res = NULL;
-                $get_all_data_for_cat = $this->_queries->GetData($brand_info['table_name'], "category", NULL, "8");
-                $get_all_data_for_cat = $this->_queries->RetData();
-
-                foreach ($get_all_data_for_cat as $sub_cat) {
-                    // var_dump($sub_cat['category']);
-                    $categories[] = $sub_cat['category'];
-
-                    $columns = array(
-                        "field1" => "category",
-                        "field2" => "gender"
-                    );
+                /*
+                 * SUB-Category 
+                 */
+                foreach ($for_categories as $sc) {
 
 
                     $this->_queries->_res = NULL;
-                    $get_all_data_for_sub_cat = $this->_queries->GetData($brand_info['table_name'], $columns, $for_categories, "10");
+                    $get_all_data_for_sub_cat = $this->_queries->GetData($brand_info['table_name'], $columns, $sc, "10");
                     $get_all_data_for_sub_cat = $this->_queries->RetData();
-                }
-                foreach ($get_all_data_for_sub_cat as $sub_sub_cat) {
 
-                    echo "<br/>{$sub_sub_cat['category']}<br/> ";
+                    $sub_categories[] = $get_all_data_for_sub_cat;
+
+                    $columns_for_finding_parents = array(
+                        "field1" => "name",
+                        "field2" => "id",
+                        "field3" => "parent"
+                    );
+                    $table_to_find_parent = "pages";
+
+                    $values_to_find_parent = array(
+                        "value1" => $sc,
+                        "value2" => $brand_data_request['parent']
+                    );
+
+                    $this->_queries->_res = NULL;
+                    $get_sub_parents = $this->_queries->GetData($table_to_find_parent, $columns_for_finding_parents, $values_to_find_parent, "9");
+                    $get_sub_parents = $this->_queries->RetData();
+                    $sub_p [] = $get_sub_parents;
+
+                    /*
+                     * Insert into pages values 
+                     * parent page id of top
+                     */
+
+
+                    for ($i = 0; $i < count($get_all_data_for_sub_cat); $i++) {
+                        var_dump($get_all_data_for_sub_cat[$i]);
+                        $columns_to_sub = array(
+                            "name",
+                            "parent",
+                            "cdate",
+                            "title",
+                            "type"
+                        );
+                        $values_to_sub = array(
+                            "'" . $get_all_data_for_sub_cat[$i]['category'] . "'",
+                            "'" . $get_sub_parents[0]['id'] . "'",
+                            "'" . date("Y,m,d") . "'",
+                            "'" . $brand_info['brand'] . " " . $get_all_data_for_sub_cat[$i]['category'] . "'",
+                            "'" . "5" . "'"
+                        );
+                        $tabel_to_sub = array(
+                            "table1" => "pages"
+                        );
+                        $values_to_add_a_sub_page = array(
+                            "tables" => $tabel_to_sub,
+                            "columns" => $columns_to_sub,
+                            "values" => $values_to_sub
+                        );
+                        $do_add_sub_catagroy = $this->_queries->Insertvalues($values_to_add_a_sub_page, $option = "1");
+                        if ($do_add_sub_catagroy) {
+
+
+
+                            var_dump("pages added");
+                        } else {
+                            var_dump("unbale to add");
+                        }
+                        /*
+                         * Select the name of this page where parent is equal to parent
+                         */
+                        $table_for_url_query = "pages";
+                        $fields_for_url_query = array(
+                            "field1" => "name",
+                            "field2" => "id",
+                            "field3" => "parent"
+                        );
+
+                        $values_for_query_url = array(
+                            "value1" => $get_all_data_for_sub_cat[$i]['category'],
+                            "value2" => $get_sub_parents[0]['id']
+                        );
+
+                        echo "<br/>";
+                        var_dump($values_for_query_url);
+
+                        $this->_queries->_res = NULL;
+                        $get_page_info_for_url = $this->_queries->GetData($table_for_url_query, $fields_for_url_query, $values_for_query_url, $option = "9");
+                        $get_page_info_for_url = $this->_queries->RetData();
+
+                        foreach ($get_page_info_for_url as $data_for_url) {
+
+
+                            $add_url_option = array(
+                                "selected" => "long",
+                                "parent_id" => $get_sub_parents[0]['id'],
+                                "page_name" => $get_all_data_for_sub_cat[$i]['category']
+                            );
+                            $url_for_page = $this->URL_RE_WRITER($add_url_option);
+                            $url_for_page = $this->RET_URL();
+                            $table_to_insert_url = array("table1" => "page_urls");
+                            $columns_to_insert = array("`page_id`", "`long_url`");
+
+                            $values_to_insert_url_table = array("'" . $data_for_url['id'] . "'", "'" . $url_for_page . "'");
+
+                            $values_to_insert_in_url = array(
+                                "tables" => $table_to_insert_url,
+                                "columns" => $columns_to_insert,
+                                "values" => $values_to_insert_url_table
+                            );
+                            $insert_new_page_url = $this->_queries->Insertvalues($values_to_insert_in_url, $option = "1");
+                        }
+                    }
                 }
             } else {
-                
+                $columns_by_gender = array(
+                    "field1" => "gender",
+                    "field2" => "category"
+                );
+
+                /*
+                 * SUB-Category 
+                 */
+                foreach ($for_categories as $sg) {
+
+
+                    $this->_queries->_res = NULL;
+                    $get_all_data_for_sub_gender = $this->_queries->GetData($brand_info['table_name'], $columns_by_gender, $sg, "10");
+                    $get_all_data_for_sub_gender = $this->_queries->RetData();
+
+                    $sub_gender[] = $get_all_data_for_sub_gender;
+                    var_dump($sub_gender);
+                    $columns_for_finding_parents_gender = array(
+                        "field1" => "name",
+                        "field2" => "id",
+                        "field3" => "parent"
+                    );
+                    $table_to_find_parent_gender = "pages";
+
+                    $values_to_find_parent_gender = array(
+                        "value1" => $sg,
+                        "value2" => $brand_data_request['parent']
+                    );
+
+                    $this->_queries->_res = NULL;
+                    $get_sub_parents_gender = $this->_queries->GetData($table_to_find_parent_gender, $columns_for_finding_parents_gender, $values_to_find_parent_gender, "9");
+                    $get_sub_parents_gender = $this->_queries->RetData();
+                    $sub_p_gender [] = $get_sub_parents_gender;
+
+                    /*
+                     * Insert into pages values 
+                     * parent page id of top
+                     */
+
+
+                    for ($i = 0; $i < count($get_all_data_for_sub_gender); $i++) {
+                        var_dump($get_all_data_for_sub_gender[$i]);
+                        $columns_to_gender = array(
+                            "name",
+                            "parent",
+                            "cdate",
+                            "title",
+                            "type"
+                        );
+                        $values_to_gender = array(
+                            "'" . $get_all_data_for_sub_gender[$i]['gender'] . "'",
+                            "'" . $get_sub_parents_gender[0]['id'] . "'",
+                            "'" . date("Y,m,d") . "'",
+                            "'" . $brand_info['brand'] . " " . $get_all_data_for_sub_gender[$i]['gender'] . "'",
+                            "'" . "5" . "'"
+                        );
+                        $tabel_to_gender = array(
+                            "table1" => "pages"
+                        );
+                        $values_to_add_a_sub_gender = array(
+                            "tables" => $tabel_to_gender,
+                            "columns" => $columns_to_gender,
+                            "values" => $values_to_gender
+                        );
+                        $do_add_sub_catagroy_gender = $this->_queries->Insertvalues($values_to_add_a_sub_gender, $option = "1");
+                        if ($do_add_sub_catagroy_gender) {
+
+
+
+                            var_dump("pages added");
+                        } else {
+                            var_dump("unbale to add");
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public function GetProductsBycategory(array $data = NULL) {
+
+        if ($data != NULL) {
+
+            /*
+             * If data is not empty
+             * Select distinct categories where gender is = to selection
+             */
+
+
+
+
+            $columns = array(
+                "field1" => "category",
+                "field2" => "gender"
+            );
+            $this->_queries->_res = NULL;
+            $get_all_cat_names = $this->_queries->GetData("all_products", $columns, $data['selection'], "10");
+            $get_all_cat_names = $this->_queries->RetData();
+
+
+            foreach ($get_all_cat_names as $category_name) {
+
+
+                $check_if_exists_in_table = array(
+                    "field1" => "name",
+                    "field2" => "id",
+                    "field3" => "parent"
+                );
+                $check_if_exists_in_table_values = array(
+                    "value1" => $category_name['category'],
+                    "value2" => $data['parent_id']
+                );
+                $this->_queries->_res = NULL;
+                $check_pages_table = $this->_queries->GetData("pages", $check_if_exists_in_table, $check_if_exists_in_table_values, $option = "9");
+                $check_pages_table = $this->_queries->RetData();
+
+                if (count($check_pages_table) > 0) {
+
+                    var_dump(count($check_pages_table));
+                } else {
+
+
+                    $columns_for_catagory = array(
+                        "name",
+                        "parent",
+                        "cdate",
+                        "title",
+                        "type"
+                    );
+                    $values_for_catagory = array(
+                        "'" . $category_name['category'] . "'",
+                        "'" . $data['parent_id'] . "'",
+                        "'" . date("Y,m,d") . "'",
+                        "'" . $data['selection'] . " | " . $category_name['category'] . "'",
+                        "'" . "5" . "'"
+                    );
+                    $tabel_for_catagory = array(
+                        "table1" => "pages"
+                    );
+                    $values_to_add_for_catagory_pages = array(
+                        "tables" => $tabel_for_catagory,
+                        "columns" => $columns_for_catagory,
+                        "values" => $values_for_catagory
+                    );
+                    $do_add_categories_to_pages = $this->_queries->Insertvalues($values_to_add_for_catagory_pages, $option = "1");
+
+                    /*
+                     * Select the name of this page where parent is equal to parent
+                     */
+                    $table_for_url_query = "pages";
+                    $fields_for_url_query = array(
+                        "field1" => "name",
+                        "field2" => "id",
+                        "field3" => "parent"
+                    );
+
+                    $values_for_query_url = array(
+                        "value1" => $category_name['category'],
+                        "value2" => $data['parent_id']
+                    );
+
+                    echo "<br/>";
+                    var_dump($values_for_query_url);
+
+                    $this->_queries->_res = NULL;
+                    $get_page_info_for_url = $this->_queries->GetData($table_for_url_query, $fields_for_url_query, $values_for_query_url, $option = "9");
+                    $get_page_info_for_url = $this->_queries->RetData();
+
+                    foreach ($get_page_info_for_url as $data_for_url) {
+
+
+                        $add_url_option = array(
+                            "selected" => "long",
+                            "parent_id" => $data['parent_id'],
+                            "page_name" => $category_name['category']
+                        );
+                        $url_for_page = $this->URL_RE_WRITER($add_url_option);
+                        $url_for_page = $this->RET_URL();
+                        $table_to_insert_url = array("table1" => "page_urls");
+                        $columns_to_insert = array("`page_id`", "`long_url`");
+
+                        $values_to_insert_url_table = array("'" . $data_for_url['id'] . "'", "'" . $url_for_page . "'");
+
+                        $values_to_insert_in_url = array(
+                            "tables" => $table_to_insert_url,
+                            "columns" => $columns_to_insert,
+                            "values" => $values_to_insert_url_table
+                        );
+                        $insert_new_page_url = $this->_queries->Insertvalues($values_to_insert_in_url, $option = "1");
+                    }
+                }
             }
         }
     }

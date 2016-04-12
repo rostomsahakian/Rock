@@ -150,7 +150,7 @@
                                 }
 
                                 foreach ($cmd['editor_data'] as $data_to_check) {
-                                    if ($data_to_check['type'] == '0' || $data_to_check['type'] == 0 || $data_to_check['type'] == '1' || $data_to_check['type'] == 1 || $data_to_check['type'] == '3' || $data_to_check['type'] == 3 || $data_to_check['type'] == '5' || $data_to_check['type'] == 5) {
+                                    if ($data_to_check['type'] == '0' || $data_to_check['type'] == 0 || $data_to_check['type'] == '1' || $data_to_check['type'] == 1 || $data_to_check['type'] == '3' || $data_to_check['type'] == 3 || $data_to_check['type'] == '5' || $data_to_check['type'] == 5 || $data_to_check['type'] == '9' || $data_to_check['type'] == 9) {
                                         $this->_forms->EditPageForm($cmd['editor_data'], $cmd['url_options'], $cmd['page_images'], $cmd['page_files'], $cmd['page_id']);
                                     } else if ($data_to_check['type'] == "7" || $data_to_check['type'] == 7) {
 

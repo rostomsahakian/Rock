@@ -10,7 +10,8 @@
  */
 include_once 'rock.includes/common.php';
 $page = isset($_REQUEST['page']) ? $_REQUEST['page'] : '';
-$id = isset($_REQUEST['id']) ? (int) $_REQUEST['id'] : 0;
+
+$id = isset($_REQUEST['id']) ? (int) $_REQUEST['id'] : $_SESSION['id'];
 $page = str_replace('-', ' ', $page);
 $page = explode("/", $page);
 
@@ -20,6 +21,7 @@ foreach ($page as $page_name) {
 
 //$page = substr($page_name, 12);
 $page = $page_name;
+
 $PAGEDATA = new Page();
 
 if (!$id) {
@@ -59,14 +61,15 @@ if (!$id) {
             }
         }
     }
-} else if ($id) {
-
+} else if ($id != 0) {
+   
     $data_for_query = array(
         "table" => "pages",
         "fields" => "id",
         "value" => $id,
         "option" => "0");
 }
+
 
 if ($PAGEDATA->getInstance($id, $data_for_query)) {
 
@@ -127,13 +130,25 @@ if ($PAGEDATA->getInstance($id, $data_for_query)) {
             }
         }
     }
-    
+
     switch ($PAGEDATA->type) {
         case "0": //Normal Page Type
-            
             $pagecontent = $PAGEDATA->body;
-            //$nav = $PAGEDATA->Navigation->showNavigation(0, NULL);
-            
+            break;
+        case "1": //Normal Page Type
+            $pagecontent = $PAGEDATA->body;
+            break;
+        case "3": //Normal Page Type
+            $pagecontent = $PAGEDATA->body;
+            break;
+        case "5": //Normal Page Type
+            $pagecontent = $PAGEDATA->body;
+            break;
+        case "7": //Normal Page Type
+            $pagecontent = $PAGEDATA->body;
+            break;
+        case "9": //Normal Page Type
+            $pagecontent = $PAGEDATA->body;
             break;
     }
 } else {
@@ -142,9 +157,9 @@ if ($PAGEDATA->getInstance($id, $data_for_query)) {
     exit;
 }
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
-$navcss = "../r.frontend/css/styles.css";
-$navjs = "../r.frontend/js/script.js";
-$maincCSS = "../r.frontend/css/page_styles.css";
+$navcss = "/r.frontend/css/styles.css";
+$navjs = "/r.frontend/js/script.js";
+$maincCSS = "/r.frontend/css/page_styles.css";
 $PAGEDATA->SetSocialMedia();
 $smarty->assign("SOCIALMEDIA", $PAGEDATA->getSocialMedia());
 
@@ -155,7 +170,7 @@ $smarty->assign('PAGEDATA', $PAGEDATA);
 $smarty->assign('METADATA', $metadata);
 $smarty->assign("CSS_INDEX", "file_path");
 $smarty->assign('FRONTEND_CSS', ABSOLUTH_PATH_FRONTEND_CSS);
-$smarty->assign("OWL_CAR" ,ABSOLUTH_PATH_OWL_CAR);
+$smarty->assign("OWL_CAR", ABSOLUTH_PATH_OWL_CAR);
 $smarty->assign("JQUERY", "https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js");
 $smarty->assign("BOOTSRAP_JS", '<script src="../rock.assets/js/bootstrap.min.js"></script> ');
 $smarty->assign("NAVCSS", $navcss);

@@ -292,6 +292,19 @@ class uploads {
                         "values" => $data_value
                     );
 
+
+                    $table_to_insert_all_products = array("table1" => "all_products");
+                    $data_to_insert_all_products = array(
+                        "tables" => $table_to_insert_all_products,
+                        "columns" => $header_array,
+                        "values" => $data_value
+                    );
+
+
+
+
+
+                    $insert_new_data_into_all_table = $this->_queries->Insertvalues($data_to_insert_all_products, $option = "3");
                     $insert_new_data_into_table = $this->_queries->Insertvalues($data_to_insert, $option = "3");
                     if ($insert_new_data_into_table) {
                         $rows_effected = (int) $row - 1;
@@ -330,14 +343,18 @@ class uploads {
 
                                     continue;
                                 } else {
-                                    $sql = "UPDATE `" . $new_table_name. "` SET `item_name` = '" . $data[1] . "' WHERE `model_number` ='" . $data[9] . "'";
+                                    $sql = "UPDATE `" . $new_table_name . "` SET `item_name` = '" . $data[1] . "' WHERE `model_number` ='" . $data[9] . "'";
                                     $result = $this->_mysqli->query($sql);
+                                    $sql_all = "UPDATE `all_products` SET `item_name` = '" . $data[1] . "' WHERE `model_number` ='" . $data[9] . "'";
+                                    $result_all = $this->_mysqli->query($sql_all);
                                 }
 
 
                                 if ($row['item_image_url'] != $data[2]) {
                                     $sql = "UPDATE `" . $new_table_name . "` SET `item_image_url` = '" . $data[2] . "' WHERE `model_number` ='" . $data[9] . "'";
                                     $result = $this->_mysqli->query($sql);
+                                    $sql_all = "UPDATE `all_products` SET `item_name` = '" . $data[2] . "' WHERE `model_number` ='" . $data[9] . "'";
+                                    $result_all = $this->_mysqli->query($sql_all);
                                 }
 
 
@@ -345,23 +362,31 @@ class uploads {
                                 if ($row['price'] != $data[3]) {
                                     $sql = "UPDATE `" . $new_table_name . "` SET `price` = '" . $data[3] . "' WHERE `model_number` ='" . $data[9] . "'";
                                     $result = $this->_mysqli->query($sql);
+                                    $sql_all = "UPDATE `all_products` SET `item_name` = '" . $data[3] . "' WHERE `model_number` ='" . $data[9] . "'";
+                                    $result_all = $this->_mysqli->query($sql_all);
                                 }
 
                                 if ($row['gender'] != $data[5]) {
                                     $sql = "UPDATE `" . $new_table_name . "` SET `gender` = '" . $data[5] . "' WHERE `model_number` ='" . $data[9] . "'";
                                     $result = $this->_mysqli->query($sql);
+                                    $sql_all = "UPDATE `all_products` SET `item_name` = '" . $data[5] . "' WHERE `model_number` ='" . $data[9] . "'";
+                                    $result_all = $this->_mysqli->query($sql_all);
                                 }
 
                                 if ($row['description'] != $data[6]) {
                                     $sql = "UPDATE `" . $new_table_name . "` SET `description` = '" . $data[6] . "' WHERE `model_number` ='" . $data[9] . "'";
                                     $result = $this->_mysqli->query($sql);
+                                    $sql_all = "UPDATE `all_products` SET `item_name` = '" . $data[6] . "' WHERE `model_number` ='" . $data[9] . "'";
+                                    $result_all = $this->_mysqli->query($sql_all);
                                 }
 
 
 
                                 if ($row['color'] != $data[7]) {
-                                    $sql = "UPDATE `" . $new_table_name. "` SET `color` = '" . $data[7] . "' WHERE `model_number` ='" . $data[9] . "'";
+                                    $sql = "UPDATE `" . $new_table_name . "` SET `color` = '" . $data[7] . "' WHERE `model_number` ='" . $data[9] . "'";
                                     $result = $this->_mysqli->query($sql);
+                                    $sql_all = "UPDATE `all_products` SET `item_name` = '" . $data[7] . "' WHERE `model_number` ='" . $data[9] . "'";
+                                    $result_all = $this->_mysqli->query($sql_all);
                                 }
 
 
@@ -369,6 +394,8 @@ class uploads {
                                 if ($row['size'] != $data[8]) {
                                     $sql = "UPDATE `" . $new_table_name . "` SET `size` = '" . $data[8] . "' WHERE `model_number` ='" . $data[9] . "'";
                                     $result = $this->_mysqli->query($sql);
+                                    $sql_all = "UPDATE `all_products` SET `item_name` = '" . $data[8] . "' WHERE `model_number` ='" . $data[9] . "'";
+                                    $result_all = $this->_mysqli->query($sql_all);
                                 }
 
 
@@ -376,18 +403,24 @@ class uploads {
                                 if ($row['model_number'] != $data[9]) {
                                     $sql = "UPDATE `" . $new_table_name . "` SET `model_number` = '" . $data[9] . "' WHERE `model_number` ='" . $data[9] . "'";
                                     $result = $this->_mysqli->query($sql);
+                                    $sql_all = "UPDATE `all_products` SET `item_name` = '" . $data[9] . "' WHERE `model_number` ='" . $data[9] . "'";
+                                    $result_all = $this->_mysqli->query($sql_all);
                                 }
 
 
                                 if ($row['category'] != $data[10]) {
                                     $sql = "UPDATE `" . $new_table_name . "` SET `category` = '" . $data[10] . "' WHERE `model_number` ='" . $data[9] . "'";
                                     $result = $this->_mysqli->query($sql);
+                                    $sql_all = "UPDATE `all_products` SET `item_name` = '" . $data[10] . "' WHERE `model_number` ='" . $data[9] . "'";
+                                    $result_all = $this->_mysqli->query($sql_all);
                                 }
 
 
                                 if ($row['status'] != $data[11]) {
                                     $sql = "UPDATE `" . $new_table_name . "` SET `status` = '" . $data[11] . "' WHERE `model_number` ='" . $data[9] . "'";
                                     $result = $this->_mysqli->query($sql);
+                                    $sql_all = "UPDATE `all_products` SET `item_name` = '" . $data[11] . "' WHERE `model_number` ='" . $data[9] . "'";
+                                    $result_all = $this->_mysqli->query($sql_all);
                                 }
 
 
@@ -395,12 +428,16 @@ class uploads {
                                 if ($row['version'] != $data[12]) {
                                     $sql = "UPDATE `" . $new_table_name . "` SET `version` = '" . $data[12] . "' WHERE `model_number` ='" . $data[9] . "'";
                                     $result = $this->_mysqli->query($sql);
+                                    $sql_all = "UPDATE `all_products` SET `item_name` = '" . $data[12] . "' WHERE `model_number` ='" . $data[9] . "'";
+                                    $result_all = $this->_mysqli->query($sql_all);
                                 }
 
 
                                 if ($row['year'] != $data[13]) {
                                     $sql = "UPDATE `" . $new_table_name . "` SET `year` = '" . $data[13] . "' WHERE `model_number` ='" . $data[9] . "'";
                                     $result = $this->_mysqli->query($sql);
+                                    $sql_all = "UPDATE `all_products` SET `item_name` = '" . $data[13] . "' WHERE `model_number` ='" . $data[9] . "'";
+                                    $result_all = $this->_mysqli->query($sql_all);
                                 }
                             } else {
 
@@ -409,6 +446,13 @@ class uploads {
                                         . "version, year, added_date) VALUES ('" . $data[1] . "','" . $data[2] . "','" . $data[3] . "','" . $data[5] . "','" . $data[6] . "','" . $data[7] . "',"
                                         . "'" . $data[8] . "','" . $data[9] . "','" . $data[10] . "','" . $data[11] . "','" . $data[12] . "','" . $data[13] . "', '" . date("Y, m,d") . "', '" . $this->_brand_info . "')";
                                 $result = $this->_mysqli->query($sql);
+
+
+                                $sql_all = "INSERT INTO `all_products` (item_name, item_image_url, price, gender, description, color, size, model_number, category, status,"
+                                        . "version, year, added_date) VALUES ('" . $data[1] . "','" . $data[2] . "','" . $data[3] . "','" . $data[5] . "','" . $data[6] . "','" . $data[7] . "',"
+                                        . "'" . $data[8] . "','" . $data[9] . "','" . $data[10] . "','" . $data[11] . "','" . $data[12] . "','" . $data[13] . "', '" . date("Y, m,d") . "', '" . $this->_brand_info . "')";
+                                $result_all = $this->_mysqli->query($sql_all);
+
                                 if ($result) {
                                     array_push($this->_message, "New data inserted");
                                 } else {
