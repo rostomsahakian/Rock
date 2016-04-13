@@ -77,7 +77,53 @@ if ($PAGEDATA->getInstance($id, $data_for_query)) {
 
         $template = THEME_DIR . '/' . THEME . '/html' . $PAGEDATA->template . '.html';
     } else if (file_exists(THEME_DIR . '/' . THEME . '/html/_default.html')) {
-        $template = THEME_DIR . '/' . THEME . '/html/_default.html';
+        
+        
+        
+        
+       
+        
+    switch ($PAGEDATA->type) {
+        case "0": //Normal Page Type
+            $template = THEME_DIR . '/' . THEME . '/html/_default.php';
+            $page_title = $PAGEDATA->title;
+            $page_name = $PAGEDATA->name;
+            $page_meta = $PAGEDATA->description;
+            $pagecontent = $PAGEDATA->body;
+            $page_extra_data = $PAGEDATA->SetItemData();
+            $page_extra_data = $PAGEDATA->_front_items;
+             include $template;
+            break;
+        case "1": //Sub-menu
+            
+             $template = THEME_DIR . '/' . THEME . '/html/_default.php';
+             include $template;
+            break;
+        case "3": //Category
+            
+             $template = THEME_DIR . '/' . THEME . '/html/categories.php';
+            $pagecontent= $PAGEDATA->SetItemData();
+            $pagecontent = $PAGEDATA->_front_items;
+             include $template;
+
+            break;
+        case "5": //Sub-category
+            
+             $template = THEME_DIR . '/' . THEME . '/html/_categories.html';
+             
+            $pagecontent = $PAGEDATA->SetItemData();
+            break;
+        case "7": //item page
+             $template = THEME_DIR . '/' . THEME . '/html/_item.html';
+            $pagecontent = $PAGEDATA->body;
+            break;
+        case "9": //Designer page
+            
+             $template = THEME_DIR . '/' . THEME . '/html/_designers.html';
+            $pagecontent = $PAGEDATA->body;
+            break;
+    }
+        
     } else {
         $d = array();
         $dir = new DirectoryIterator(THEME_DIR . '/' . THEME . '/html/');
@@ -109,7 +155,7 @@ if ($PAGEDATA->getInstance($id, $data_for_query)) {
     }
 
 
-    $smarty = smarty_setup('pages');
+//    $smarty = smarty_setup('pages');
     if ($PAGEDATA->_files != NULL) {
         //var_dump($PAGEDATA->_files);
 
@@ -120,63 +166,43 @@ if ($PAGEDATA->getInstance($id, $data_for_query)) {
             if ($files['file_extension'] == "css") {
                 $css[] = $files['file_path'] . $files['file_name'];
 
-                $smarty->assign('CSS', $css);
+//                $smarty->assign('CSS', $css);
             } else if ($files['file_extension'] == "js") {
 
                 $js[] = $files['file_path'] . $files['file_name'];
-                $smarty->assign('JS', $js);
+//                $smarty->assign('JS', $js);
             } else {
                 $files = array();
             }
         }
     }
 
-    switch ($PAGEDATA->type) {
-        case "0": //Normal Page Type
-            $pagecontent = $PAGEDATA->body;
-            break;
-        case "1": //Normal Page Type
-            $pagecontent = $PAGEDATA->body;
-            break;
-        case "3": //Normal Page Type
-            $pagecontent = $PAGEDATA->body;
-            break;
-        case "5": //Normal Page Type
-            $pagecontent = $PAGEDATA->body;
-            break;
-        case "7": //Normal Page Type
-            $pagecontent = $PAGEDATA->body;
-            break;
-        case "9": //Normal Page Type
-            $pagecontent = $PAGEDATA->body;
-            break;
-    }
 } else {
 
     echo "404 , page not found";
     exit;
 }
-$root = realpath($_SERVER["DOCUMENT_ROOT"]);
-$navcss = "/r.frontend/css/styles.css";
-$navjs = "/r.frontend/js/script.js";
-$maincCSS = "/r.frontend/css/page_styles.css";
-$PAGEDATA->SetSocialMedia();
-$smarty->assign("SOCIALMEDIA", $PAGEDATA->getSocialMedia());
-
-
-$smarty->template_dir = THEME_DIR . '/' . THEME . '/html/';
-$smarty->assign('PAGECONTENT', $pagecontent);
-$smarty->assign('PAGEDATA', $PAGEDATA);
-$smarty->assign('METADATA', $metadata);
-$smarty->assign("CSS_INDEX", "file_path");
-$smarty->assign('FRONTEND_CSS', ABSOLUTH_PATH_FRONTEND_CSS);
-$smarty->assign("OWL_CAR", ABSOLUTH_PATH_OWL_CAR);
-$smarty->assign("JQUERY", "https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js");
-$smarty->assign("BOOTSRAP_JS", '<script src="../rock.assets/js/bootstrap.min.js"></script> ');
-$smarty->assign("NAVCSS", $navcss);
-$smarty->assign("NAVJS", $navjs);
-$smarty->assign("MAINCSS", $maincCSS);
-
-header('Content-type: text/html; Charset=utf-8');
-
-$smarty->display($template);
+//$root = realpath($_SERVER["DOCUMENT_ROOT"]);
+//$navcss = "/r.frontend/css/styles.css";
+//$navjs = "/r.frontend/js/script.js";
+//$maincCSS = "/r.frontend/css/page_styles.css";
+//$PAGEDATA->SetSocialMedia();
+//$smarty->assign("SOCIALMEDIA", $PAGEDATA->getSocialMedia());
+//
+//
+//$smarty->template_dir = THEME_DIR . '/' . THEME . '/html/';
+//$smarty->assign('PAGECONTENT', $pagecontent);
+//$smarty->assign('PAGEDATA', $PAGEDATA);
+//$smarty->assign('METADATA', $metadata);
+//$smarty->assign("CSS_INDEX", "file_path");
+//$smarty->assign('FRONTEND_CSS', ABSOLUTH_PATH_FRONTEND_CSS);
+//$smarty->assign("OWL_CAR", ABSOLUTH_PATH_OWL_CAR);
+//$smarty->assign("JQUERY", "https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js");
+//$smarty->assign("BOOTSRAP_JS", '<script src="../rock.assets/js/bootstrap.min.js"></script> ');
+//$smarty->assign("NAVCSS", $navcss);
+//$smarty->assign("NAVJS", $navjs);
+//$smarty->assign("MAINCSS", $maincCSS);
+//
+//header('Content-type: text/html; Charset=utf-8');
+//
+//$smarty->display($template);

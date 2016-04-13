@@ -285,6 +285,58 @@ class queries {
                     }
 
                     break;
+                case "11":
+
+                    $sql = "SELECT * FROM `" . $table . "` WHERE `" . $fields['field1'] . "` = '" . $value['value1'] . "' AND `" . $fields['field3'] . "` = '" . $value['value2'] . "'";
+                    $result = $this->_mysqli->query($sql);
+//                    echo "<br/>";
+//                    var_dump($sql);
+//                    echo "<br/>";
+                    if ($result) {
+                        while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+
+                            $this->_res[] = $row;
+                        }
+                        return true;
+                    } else {
+                        return false;
+                    }
+                    break;
+                case "12":
+
+                    $sql = "SELECT DISTINCT `" . $fields['field1'] . "`, `" . $fields['field2'] . "` FROM `" . $table . "` WHERE `" . $fields['field3'] . "` = '" . $value . "'";
+
+//                    echo "<br/>";
+//                    var_dump($sql);
+//                    echo "<br/>";
+                    $result = $this->_mysqli->query($sql);
+
+                    if ($result) {
+                        while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+
+                            $this->_res[] = $row;
+                        }
+
+                        return true;
+                    } else {
+                        return false;
+                    }
+
+                    break;
+                case "13":
+                    $sql ="SELECT DISTINCT `".$fields['field1']."`  FROM `".$table."` WHERE `".$fields['field2']."` = '".$value."' ORDER BY RAND() LIMIT 1";
+                    
+                    $result = $this->_mysqli->query($sql);
+                    if($result){
+                        while($row = $result->fetch_array(MYSQLI_ASSOC)){
+                            
+                            $this->_res[] = $row;
+                        }
+                        return true;
+                    }else{
+                        return false;
+                    }
+                    break;
             }
         }
     }
@@ -459,7 +511,7 @@ class queries {
 
                 case "3":
                     if ($data['value1'] != 0 || $data['value1'] != "0") {
-                        
+
                         $sql = "SELECT * FROM `" . $data['table'] . "` WHERE `" . $data['field1'] . "` = '" . $data['value1'] . "'";
 
                         $result = $this->_mysqli->query($sql);
@@ -479,7 +531,7 @@ class queries {
 
                         return $this->_res;
                     } else {
-                       $this->GetData("pages", $data['field2'], "0", $option = "0");
+                        $this->GetData("pages", $data['field2'], "0", $option = "0");
                     }
             }
         }

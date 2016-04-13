@@ -74,7 +74,7 @@ class Navigation {
 
                     <li id="page_<?= $page['id'] ?>">
 
-                        <a href="<?= $this->RetUrl(); ?>" ><?= htmlspecialchars($page['name']) ?></a>
+                        <a href="<?= $this->RetUrl(); ?>?id=<?= $page['id'] ?>" ><?= htmlspecialchars($page['name']) ?></a>
 
                         <?php
                         $this->showNavigation($page['id'], $this->BuildNavigation(0));

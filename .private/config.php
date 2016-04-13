@@ -13,7 +13,7 @@ $DBVARS =array(
     'db_name' => "rock_cmsdb",
     'theme' =>'template'
 );
-
+define("TEMPLATE_H_F_PATH","/home/dynamoelectric/public_html/dev.rock/public_html/r.frontend/template/");
 define("DB_USERNAME", "rockadmin");
 define("DB_PASSWORD", "RockRoll1234#");
 define("DB_HOST", "localhost");
@@ -27,8 +27,8 @@ define("ABSOLUTH_PATH_IMAGES", "../rock.assets/r.images/");
 define("ABSOLUTH_PATH_JS", "../rock.assets/js/");
 define("ABSOLUTH_PATH_ADMIN" , "../rock.admin/");
 define("ABSOLUTH_PATH_FILE_BACKEND", "../rock.files/");
-define("ABSOLUTH_PATH_FILE_FRONT_END", "/r.frontend/files/");
-define("ABSOLUTH_PATH_IMAGE_FRONT_END", "/r.frontend/images/");
+define("ABSOLUTH_PATH_FILE_FRONT_END", "../r.frontend/files/");
+define("ABSOLUTH_PATH_IMAGE_FRONT_END", "../r.frontend/images/");
 define("ABSOLUTH_PATH_FRONTEND_CSS", "/r.frontend/css/");
 define("ABSOLUTH_PATH_OWL_CAR", "/r.frontend/owl.carousel/owl-carousel/");
 define("ABSOLUTH_PATH_CACHE", "../rock.cache/");

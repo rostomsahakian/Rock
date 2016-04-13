@@ -41,10 +41,12 @@ class Page {
     public $_sub_level = array();
     public $Navigation;
     public $_social_media = array();
+    public $_items;
+    public $_front_items = array();
 
     public function __construct() {
         $this->queries = new queries();
-        
+        $this->_items = new items();
          
     }
 
@@ -165,5 +167,23 @@ class Page {
     public function getSocialMedia(){
         return $this->_social_media;
     }
+    
+    
+    public function SetItemData(){
+        $page_data = array(
+            "id" => $this->id,
+            "type" => $this->type,
+            "parent" => $this->parent,
+            "name" => $this->name
+        );
+        $this->_items->GetItemsFromDB($page_data);
+        
+        foreach ($this->_items as $items){
+            $this->_front_items = $items;
+        }
+        
+    }
+ 
+   
 
 }
