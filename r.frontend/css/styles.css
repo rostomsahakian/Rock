@@ -71,7 +71,7 @@
   width: 8px;
   height: 2px;
   display: block;
-  background: #dddddd;
+  background: #fff;
   content: '';
 }
 #cssmenu > ul > li.has-sub > a:before {
@@ -81,7 +81,7 @@
   display: block;
   width: 2px;
   height: 8px;
-  background: #dddddd;
+  background: #fff;
   content: '';
   -webkit-transition: all .75s ease;
   -moz-transition: all .75s ease;
@@ -134,7 +134,7 @@
   text-decoration: none;
   color: #dddddd;
   font-weight: 400;
-  background: #333333;
+  background: #000;
 }
 #cssmenu ul ul li:last-child > a,
 #cssmenu ul ul li.last-item > a {

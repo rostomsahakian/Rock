@@ -142,7 +142,7 @@ class uploads {
                 1 => "item_name VARCHAR (300)", //(VARCHAR 500)
                 2 => "item_image_url VARCHAR (300)", //(VARCHAR 500)
                 3 => "price VARCHAR (100)", //(VARCHAR 100)
-                //4 => "brand ", // (VARCHAR 100)
+                4 => "brand VARCHAR (300) ", // (VARCHAR 100)
                 5 => "gender VARCHAR (35)", // (VARCHAR 35)
                 6 => "description TEXT", //(TEXT)
                 7 => "color VARCHAR (20)", //(VARCHAR 20)
@@ -227,6 +227,7 @@ class uploads {
                             1 => "item_name",
                             2 => "item_image_url",
                             3 => "price",
+                            4 => "brand",
                             5 => "gender",
                             6 => "description",
                             7 => "color",
@@ -246,6 +247,7 @@ class uploads {
                         $insert_csv['item_name'] = $csv_data[$i][0][1];
                         $insert_csv['item_image_url'] = $csv_data[$i][0][2];
                         $insert_csv['price'] = $csv_data[$i][0][3];
+                        $insert_csv['brand'] = $csv_data[$i][0][4];
                         $insert_csv['gender'] = $csv_data[$i][0][5];
                         $insert_csv['description'] = $csv_data[$i][0][6];
                         $insert_csv['color'] = $csv_data[$i][0][7];
@@ -261,20 +263,21 @@ class uploads {
 
 
                         $data_for_insertion = array(
-                            "'" . $insert_csv['item_name'] . "'",
-                            "'" . $insert_csv['item_image_url'] . "'",
-                            "'" . $insert_csv['price'] . "'",
-                            "'" . $insert_csv['gender'] . "'",
-                            "'" . $insert_csv['description'] . "'",
-                            "'" . $insert_csv['color'] . "'",
-                            "'" . $insert_csv['size'] . "'",
-                            "'" . $insert_csv['model_number'] . "'",
-                            "'" . $insert_csv['category'] . "'",
-                            "'" . $insert_csv['status'] . "'",
-                            "'" . $insert_csv['version'] . "'",
-                            "'" . $insert_csv['year'] . "'",
+                            "'" . trim($insert_csv['item_name']) . "'",
+                            "'" . trim($insert_csv['item_image_url']). "'",
+                            "'" . trim($insert_csv['price']). "'",
+                            "'" . trim($insert_csv['brand']). "'",
+                            "'" . trim($insert_csv['gender']). "'",
+                            "'" . trim($insert_csv['description']). "'",
+                            "'" . trim($insert_csv['color']). "'",
+                            "'" . trim($insert_csv['size']). "'",
+                            "'" . trim($insert_csv['model_number']). "'",
+                            "'" . trim($insert_csv['category']). "'",
+                            "'" . $insert_csv['status']. "'",
+                            "'" . trim($insert_csv['version']). "'",
+                            "'" . trim($insert_csv['year']). "'",
                             "'" . $insert_csv['added_date'] . "'",
-                            "'" . $insert_csv['brand_id'] . "'"
+                            "'" . trim($insert_csv['brand_id']) . "'"
                         );
 
 
@@ -365,6 +368,12 @@ class uploads {
                                     $sql_all = "UPDATE `all_products` SET `item_name` = '" . $data[3] . "' WHERE `model_number` ='" . $data[9] . "'";
                                     $result_all = $this->_mysqli->query($sql_all);
                                 }
+                                if ($row['brand'] != $data[4]) {
+                                    $sql = "UPDATE `" . $new_table_name . "` SET `price` = '" . $data[4] . "' WHERE `model_number` ='" . $data[9] . "'";
+                                    $result = $this->_mysqli->query($sql);
+                                    $sql_all = "UPDATE `all_products` SET `item_name` = '" . $data[4] . "' WHERE `model_number` ='" . $data[9] . "'";
+                                    $result_all = $this->_mysqli->query($sql_all);
+                                }
 
                                 if ($row['gender'] != $data[5]) {
                                     $sql = "UPDATE `" . $new_table_name . "` SET `gender` = '" . $data[5] . "' WHERE `model_number` ='" . $data[9] . "'";
@@ -442,14 +451,14 @@ class uploads {
                             } else {
 
 
-                                $sql = "INSERT INTO `" . $new_table_name . "` (item_name, item_image_url, price, gender, description, color, size, model_number, category, status,"
-                                        . "version, year, added_date) VALUES ('" . $data[1] . "','" . $data[2] . "','" . $data[3] . "','" . $data[5] . "','" . $data[6] . "','" . $data[7] . "',"
+                                $sql = "INSERT INTO `" . $new_table_name . "` (item_name, item_image_url, price, brand, gender, description, color, size, model_number, category, status,"
+                                        . "version, year, added_date) VALUES ('" . $data[1] . "','" . $data[2] . "','" . $data[3] . "','" . $data[4] . "','" . $data[5] . "','" . $data[6] . "','" . $data[7] . "',"
                                         . "'" . $data[8] . "','" . $data[9] . "','" . $data[10] . "','" . $data[11] . "','" . $data[12] . "','" . $data[13] . "', '" . date("Y, m,d") . "', '" . $this->_brand_info . "')";
                                 $result = $this->_mysqli->query($sql);
 
 
                                 $sql_all = "INSERT INTO `all_products` (item_name, item_image_url, price, gender, description, color, size, model_number, category, status,"
-                                        . "version, year, added_date) VALUES ('" . $data[1] . "','" . $data[2] . "','" . $data[3] . "','" . $data[5] . "','" . $data[6] . "','" . $data[7] . "',"
+                                        . "version, year, added_date) VALUES ('" . $data[1] . "','" . $data[2] . "','" . $data[3] . "','" . $data[4] . "','" . $data[5] . "','" . $data[6] . "','" . $data[7] . "',"
                                         . "'" . $data[8] . "','" . $data[9] . "','" . $data[10] . "','" . $data[11] . "','" . $data[12] . "','" . $data[13] . "', '" . date("Y, m,d") . "', '" . $this->_brand_info . "')";
                                 $result_all = $this->_mysqli->query($sql_all);
 

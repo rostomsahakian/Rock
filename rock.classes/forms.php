@@ -1775,9 +1775,9 @@ class forms {
 
 
                     $table = array("table1" => "pages");
-                    $columns = array("`name`", "`parent`", "`type`", "`edate`");
-
-                    $values = array("'" . $page_name . "'", "'" . (int) $new_page_parent . "'", "'" . $page_type . "'", "'" . date("Y m d") . "'");
+                    $columns = array("`name`", "`alias`", "`parent`", "`type`", "`edate`");
+                    $page_alias = trim(strtolower($page_name));
+                    $values = array("'" . $page_name . "'", "'" . $page_alias . "'", "'" . (int) $new_page_parent . "'", "'" . $page_type . "'", "'" . date("Y m d") . "'");
                     $values_to_insert = array(
                         "tables" => $table,
                         "columns" => $columns,
@@ -3084,13 +3084,16 @@ class forms {
 
                     $columns = array(
                         "name",
+                        "alias",
                         "parent",
                         "cdate",
                         "title",
                         "type"
                     );
+                    $page_alias = trim(strtolower($cat_data[$brand_data_request['choice']]));
                     $values = array(
                         "'" . $cat_data[$brand_data_request['choice']] . "'",
+                        "'" . $page_alias . "'",
                         "'" . $brand_data_request['parent'] . "'",
                         "'" . date("Y,m,d") . "'",
                         "'" . $brand_info['brand'] . " " . $cat_data[$brand_data_request['choice']] . "'",
@@ -3167,13 +3170,16 @@ class forms {
                         var_dump($get_all_data_for_sub_cat[$i]);
                         $columns_to_sub = array(
                             "name",
+                            "alias",
                             "parent",
                             "cdate",
                             "title",
                             "type"
                         );
+                        $page_alias = trim(strtolower($get_all_data_for_sub_cat[$i]['category']));
                         $values_to_sub = array(
                             "'" . $get_all_data_for_sub_cat[$i]['category'] . "'",
+                            "'" . $page_alias . "'",
                             "'" . $get_sub_parents[0]['id'] . "'",
                             "'" . date("Y,m,d") . "'",
                             "'" . $brand_info['brand'] . " " . $get_all_data_for_sub_cat[$i]['category'] . "'",
@@ -3287,13 +3293,16 @@ class forms {
                         var_dump($get_all_data_for_sub_gender[$i]);
                         $columns_to_gender = array(
                             "name",
+                            "alias",
                             "parent",
                             "cdate",
                             "title",
                             "type"
                         );
+                        $page_alias = trim(strtolower($get_all_data_for_sub_gender[$i]['gender']));
                         $values_to_gender = array(
                             "'" . $get_all_data_for_sub_gender[$i]['gender'] . "'",
+                            "'" . $page_alias . "'",
                             "'" . $get_sub_parents_gender[0]['id'] . "'",
                             "'" . date("Y,m,d") . "'",
                             "'" . $brand_info['brand'] . " " . $get_all_data_for_sub_gender[$i]['gender'] . "'",
@@ -3367,13 +3376,16 @@ class forms {
 
                     $columns_for_catagory = array(
                         "name",
+                        "alias",
                         "parent",
                         "cdate",
                         "title",
                         "type"
                     );
+                    $page_alias = trim(strtolower($category_name['category']));
                     $values_for_catagory = array(
                         "'" . $category_name['category'] . "'",
+                        "'" . $page_alias . "'",
                         "'" . $data['parent_id'] . "'",
                         "'" . date("Y,m,d") . "'",
                         "'" . $data['selection'] . " | " . $category_name['category'] . "'",

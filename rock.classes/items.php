@@ -164,13 +164,13 @@ class items {
                      * Sub Categories
                      */
                     case "5":
-                        var_dump($data);
+                       
                         break;
                     /*
                      * 
                      */
                     case "7":
-                        var_dump($data);
+                        
                         break;
                 }
             }

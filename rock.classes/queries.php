@@ -40,10 +40,6 @@ class queries {
                 case "0":
 
                     $sql = "SELECT * FROM `" . $table . "` WHERE `" . $fields . "`= '" . $value . "'";
-//                    echo "<br/>";
-//                    echo "<br/>From GETDATA";
-//                    var_dump($sql);
-                    //echo "<br/>";
                     $result = $this->_mysqli->query($sql);
 
                     if ($result) {
@@ -251,9 +247,6 @@ class queries {
 
                     $sql = "SELECT `" . $fields['field1'] . "`, `" . $fields['field2'] . "` FROM `" . $table . "` WHERE `" . $fields['field1'] . "` = '" . $value['value1'] . "' AND `" . $fields['field3'] . "` = '" . $value['value2'] . "'";
                     $result = $this->_mysqli->query($sql);
-//                    echo "<br/>";
-//                    var_dump($sql);
-//                    echo "<br/>";
                     if ($result) {
                         while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
 
@@ -268,9 +261,6 @@ class queries {
 
                     $sql = "SELECT DISTINCT `" . $fields['field1'] . "` FROM `" . $table . "` WHERE `" . $fields['field2'] . "` = '" . $value . "'";
 
-//                    echo "<br/>";
-//                    var_dump($sql);
-//                    echo "<br/>";
                     $result = $this->_mysqli->query($sql);
 
                     if ($result) {
@@ -289,9 +279,6 @@ class queries {
 
                     $sql = "SELECT * FROM `" . $table . "` WHERE `" . $fields['field1'] . "` = '" . $value['value1'] . "' AND `" . $fields['field3'] . "` = '" . $value['value2'] . "'";
                     $result = $this->_mysqli->query($sql);
-//                    echo "<br/>";
-//                    var_dump($sql);
-//                    echo "<br/>";
                     if ($result) {
                         while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
 
@@ -305,10 +292,6 @@ class queries {
                 case "12":
 
                     $sql = "SELECT DISTINCT `" . $fields['field1'] . "`, `" . $fields['field2'] . "` FROM `" . $table . "` WHERE `" . $fields['field3'] . "` = '" . $value . "'";
-
-//                    echo "<br/>";
-//                    var_dump($sql);
-//                    echo "<br/>";
                     $result = $this->_mysqli->query($sql);
 
                     if ($result) {
@@ -560,6 +543,23 @@ class queries {
                     }
 
                     break;
+                    
+                case 2:
+                    $sql= "SELECT * FROM `".$data['table']."` WHERE `".$data['field']."` = '".$data['value']."'";
+                    $result = $this->_mysqli->query($sql);
+                    $num_rows = $result->num_rows;
+                    if($num_rows > 0){
+                        while($row = $result->fetch_array(MYSQLI_ASSOC)){
+                            
+                            $this->_res[] = $row;
+                            $data['value'] = $row['id'];
+                            $this->findChildren($data, $option= 2);
+                        }
+                        
+                    }else{
+                        return false;
+                    }
+                    break;
             }
         }
     }
@@ -578,9 +578,9 @@ class queries {
                     $sql .= implode(",", $data['values']);
 
                     $sql .= " ) ";
-                    echo "<br/>";
-                    var_dump($sql);
-                    echo "<br/>";
+//                    echo "<br/>";
+//                    var_dump($sql);
+//                    echo "<br/>";
                     $result = $this->_mysqli->query($sql);
                     if ($result) {
                         return true;

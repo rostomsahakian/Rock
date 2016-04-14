@@ -50,14 +50,14 @@
 //            foreach ($css as $styles) {
 //                
         ?>
-        <link rel = 'stylesheet' href = "//<?= $styles ?>" />
-        //<?php
+    
+        <?php
 //            }
 //            foreach ($js as $javascripts) {
 //                
         ?>
-        <script  src="//<?= $javascripts ?>"></script>
-        //<?php
+      
+        <?php
 //            }
 //        }
         ?>
@@ -186,9 +186,18 @@
             <div class="row">
                 <div class="container">
                     <ol class="breadcrumb rock-breadcrumb">
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">Library</a></li>
-                        <li class="active">Data</li>
+                        <?php
+                   
+                            
+                            
+                            ?>
+                          <li ></li>
+                        <?php
+                        
+                        
+                        ?>
+                   
+                      
                     </ol>
                 </div>
             </div>
