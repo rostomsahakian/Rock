@@ -335,7 +335,7 @@ class body {
                  * Get Data for item page
                  */
                 $this->queries->_res = NULL;
-                $get_data_for_items = $this->queries->GetData("products", "id", $page_id, "0");
+                $get_data_for_items = $this->queries->GetData("products", "product_id", $page_id, "0");
                 if ($get_data_for_items) {
                     $get_data_for_items = $this->queries->RetData();
                 } else {

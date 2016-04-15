@@ -288,7 +288,7 @@ class forms {
         }
     }
 
-    public function EditPageForm(array $page_data = NULL, array $url_options = NULL, array $images = NULL, array $files = NULL, $page_id) {
+    public function EditPageForm(array $page_data = NULL, array $url_options = NULL, array $images = NULL, array $files = NULL, $page_id, array $sub_pages_data=NULL) {
 
         /*
          * Check if the page id isset by user
@@ -372,6 +372,7 @@ class forms {
                                         <li aria-controls="f_pass" role="tab" ><a href="#tabs-advanced-options" data-toggle="tab">Advanced Options</a></li>
                                         <li aria-controls="f_pass" role="tab" ><a href="#tabs-images" data-toggle="tab">Images</a></li>
                                         <li aria-controls="f_pass" role="tab" ><a href="#tabs-files" data-toggle="tab">Files</a></li>
+                                        <li aria-controls="f_pass" role="tab" ><a href="#sub-pages" data-toggle="tab">Sub-pages</a></li>
                                         <!--add plugin tabs here-->
                                         <li class=""> </li>
                                     </ul>
@@ -964,8 +965,59 @@ class forms {
                                         </div>
                                     </div>
 
-                                    <!--END Files Tab-->
+                                    <!--END Files Tab->
                                     <!--****-->
+                                    <!--****-->
+                                    <!--Sub-pages Tab -->
+                                    <!--Sub-pages part starts-->
+                                    <?php
+                                    ?>
+
+                                    <div class="tab-pane" id="sub-pages">
+                                        <div class="col-md-12">
+                                            <div class="row" style="margin-top:5px; ">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading"><span>Sub-Pages</span></div>
+                                                    <div class="panel-body">
+                                                        <?php
+                                                        $data = array(
+                                                            "table" => "pages",
+                                                            "field" => "parent",
+                                                            "value" => $this->_editFormData['id']
+                                                        );
+                                                        $this->_queries->_res = NULL;
+                                                        $find_count_sub_children = $this->_queries->findChildren($data, $option = 2);
+                                                        $find_count_sub_children = $this->_queries->RetData();
+
+                                                        $num_sub_pages = count($find_count_sub_children);
+
+                                                        echo $num_sub_pages;
+                                                        if ($num_sub_pages != "0") {
+
+                                                            $this->ListAllPagesOnMainContent($sub_pages_data, $this->_editFormData['id']);
+                                                        } else if ($num_sub_pages == "0" && $this->_editFormData['type'] == "5") {
+                                                            /*
+                                                             * Find products from all products where columns match
+                                                             * 1.parent name
+                                                             * 2.category
+                                                             * 3.gender
+                                                             */
+
+                                                            $all_products = $this->ListAllItemsFromDB($this->_editFormData['name'], $this->_editFormData['parent']);
+
+                                                            $list_items_details_form = $this->ListItemsDetailsForm($all_products, $this->_editFormData['name']);
+                                                        }
+                                                        ?>
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <?php
+                                    ?>
+                                    <!--Sub pages ends-->
                                 </div>
                             </div>
                         </div>
@@ -993,7 +1045,8 @@ class forms {
         }
     }
 
-    public function ListAllPagesOnMainContent(array $list_pages) {
+    public function ListAllPagesOnMainContent(array $list_pages, $parent) {
+
         $this->_list_pages = $list_pages;
         ?>
         <div class="col-lg-12">
@@ -1028,68 +1081,119 @@ class forms {
                             <th>Name</th>
                             <th>Parent</th>
                             <th>Title</th>
-                            <th>Author</th>
-                            <th>Date</th>
+                            <th>Type</th>
+                            <th>Children</th>
                             <th>Actions</th>
                             <?php
                             foreach ($this->_list_pages as $do_list_pages) {
-                                ?>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <?= $do_list_pages['id'] ?>
-                                </td>
-                                <td>
-                                    <?php
+
+
+
+
+                                if ($do_list_pages['parent'] == $parent) {
+                                    ?>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <?= $do_list_pages['id'] ?>
+                                    </td>
+                                    <td>
+                                        <?php
 //                                    if(isset($_REQUEST['new_order']) && isset($_REQUEST['page_id']) && $_REQUEST['page_id'] == $do_list_pages['id']){
 //                                        $do_list_pages['ord'] = $_REQUEST['new_order'];
 //                                    }
-                                    ?>
-                                    <form  method="post">
-                                        <input  type="text"  style="width: 25px; text-align:center;" name="new_order" value="<?= (isset($do_list_pages['ord']) && $do_list_pages['ord'] != '') ? $do_list_pages['ord'] : 0; ?>"/>
-                                        <input type="hidden" name="page_id" value="<?= $do_list_pages['id'] ?>"/>
-                                        <input type="hidden" name="old_order" value="<?= $do_list_pages['ord'] ?>" />
-                                        <input type="hidden" name="parent" value="<?= $do_list_pages['parent'] ?>"/>
-                                        <input type="hidden" name="cmd" value="choose_edit_page"/>
-                                        <input type="submit"  name="do_update_order" class="btn btn-default btn-xs" value="update"/>
-                                    </form>
+                                        ?>
+                                        <form  method="post">
+                                            <input  type="text"  style="width: 25px; text-align:center;" name="new_order" value="<?= (isset($do_list_pages['ord']) && $do_list_pages['ord'] != '') ? $do_list_pages['ord'] : 0; ?>"/>
+                                            <input type="hidden" name="page_id" value="<?= $do_list_pages['id'] ?>"/>
+                                            <input type="hidden" name="old_order" value="<?= $do_list_pages['ord'] ?>" />
+                                            <input type="hidden" name="parent" value="<?= $do_list_pages['parent'] ?>"/>
+                                            <input type="hidden" name="cmd" value="choose_edit_page"/>
+                                            <input type="submit"  name="do_update_order" class="btn btn-default btn-xs" value="update"/>
+                                        </form>
 
-                                </td>
-                                <td>
-                                    <?= $do_list_pages['name'] ?>
-                                </td>
-                                <td>
-                                    <?= $do_list_pages['parent'] ?>
-                                </td>
-                                <td>
-                                    <?= $do_list_pages['title'] ?>
-                                </td>
+                                    </td>
+                                    <td>
+                                        <?= $do_list_pages['name'] ?>
+                                    </td>
+                                    <td>
+                                        <?= $do_list_pages['parent'] ?>
+                                    </td>
+                                    <td>
+                                        <?= $do_list_pages['title'] ?>
+                                    </td>
 
-                                <td>
-                                    Admin
-                                </td>
-                                <td>
-                                    <?= $do_list_pages['cdate'] ?>
-                                </td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <form  method="post">
-                                                <input type="hidden" name="p_id" value="<?= $do_list_pages['id'] ?>"/>
-                                                <input type="hidden" name="page_parent" value="<?= $do_list_pages['parent'] ?>"/>
-                                                <input type="hidden" name="cmd" value="choose_edit_page"/>
-                                                <input type="submit"  name="do_delete_page" class="btn btn-danger btn-xs" value="Delete"/>
-                                            </form>
+                                    <td>
+                                        <?php
+                                        if ($do_list_pages['type'] == "0") {
+
+                                            $page_type = "Home page";
+                                        } else if ($do_list_pages['type'] == "1") {
+
+                                            $page_type = "Sub-Menu";
+                                        } else if ($do_list_pages['type'] == "3") {
+
+                                            $page_type = "Category";
+                                        } else if ($do_list_pages['type'] == "5") {
+
+                                            $page_type = "Sub-Category";
+                                        } else if ($do_list_pages['type'] == "9") {
+
+                                            $page_type = "Designer";
+                                        }
+                                        echo $page_type;
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        $data = array(
+                                            "table" => "pages",
+                                            "field" => "parent",
+                                            "value" => $do_list_pages['id']
+                                        );
+                                        $this->_queries->_res = NULL;
+                                        $find_count_sub_children = $this->_queries->findChildren($data, $option = 2);
+                                        $find_count_sub_children = $this->_queries->RetData();
+
+                                        $num = count($find_count_sub_children);
+
+
+                                        if ($num != "0" && $do_list_pages['type'] != "5") {
+                                            echo $num;
+                                        } else if ($do_list_pages['type'] == "5" && $num == "0") {
+
+                                            $num = $this->ListAllItemsFromDB($do_list_pages['name'], $do_list_pages['parent']);
+                                            echo count($num);
+                                        } else if ($num == "0" && $do_list_pages['type'] != "5") {
+                                            $num = "0";
+                                            echo $num;
+                                        } else {
+                                            echo $num;
+                                        }
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <form  method="post">
+                                                    <input type="hidden" name="p_id" value="<?= $do_list_pages['id'] ?>"/>
+                                                    <input type="hidden" name="page_parent" value="<?= $do_list_pages['parent'] ?>"/>
+                                                    <input type="hidden" name="cmd" value="choose_edit_page"/>
+                                                    <input type="submit"  name="do_delete_page" class="btn btn-danger btn-xs" value="Delete"/>
+                                                </form>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <a href="?cmd=edit_page&option=edit&page_id=<?= $do_list_pages['id'] ?>" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-pencil"></i></a>
+                                            </div>
                                         </div>
-                                        <div class="col-md-2">
-                                            <a href="?cmd=edit_page&option=edit&page_id=<?= $do_list_pages['id'] ?>" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-pencil"></i></a>
-                                        </div>
-                                    </div>
-                                </td>
+                                    </td>
 
 
-                            </tr>
-                        <?php } ?>
+                                </tr>
+                                <?php
+                            }
+                        }
+                        ?>
                     </table>
 
                 </div>
@@ -1266,7 +1370,7 @@ class forms {
      */
 
     public function UpdatePages(array $page_form_data, $type = NULL) {
-        //var_dump($page_form_data);
+//var_dump($page_form_data);
         if ($type != NULL) {
             switch ($type) {
                 case "update_page_details":
@@ -1355,7 +1459,7 @@ class forms {
 
 
         $number = $get_number_of_images['row_count'];
-        //var_dump($number);
+//var_dump($number);
         $dir = ABSOLUTH_PATH_IMAGES;
 
         foreach ($_FILES as $k => $file) {
@@ -1668,7 +1772,7 @@ class forms {
                                                     foreach ($paren_list as $p_list) {
                                                         //  var_dump($p_list);
                                                         ?>
-                                                        <option value="<?= (isset($_REQUEST['form']['add_new_page']['page_parent'])) ? $_REQUEST['form']['add_new_page']['page_parent'] : $p_list['id'] ?>"><?= $p_list['name'] ?></option>
+                                                        <option value="<?= (isset($_REQUEST['form']['add_new_page']['page_parent'])) ? $_REQUEST['form']['add_new_page']['page_parent'] : $p_list['id'] ?>"><?= $p_list['name'] . "  ->" . $p_list['type'] ?></option>
 
                                                         <?php
                                                     }
@@ -1773,7 +1877,6 @@ class forms {
                 }
                 if ($flag == 0) {
 
-
                     $table = array("table1" => "pages");
                     $columns = array("`name`", "`alias`", "`parent`", "`type`", "`edate`");
                     $page_alias = trim(strtolower($page_name));
@@ -1784,6 +1887,7 @@ class forms {
                         "values" => $values
                     );
                     $insert_new_page_details = $this->_queries->Insertvalues($values_to_insert, $option = "1");
+
                     /*
                      * Select the name of this page where parent is equal to parent
                      */
@@ -1822,6 +1926,26 @@ class forms {
                     );
                     $insert_new_page_url = $this->_queries->Insertvalues($values_to_insert_in_url, $option = "1");
 
+                    /*
+                     * If page type is 7 (item page add data to product table as well
+                     */
+                    foreach ($get_page_info_for_url as $data_for_item) {
+                        
+                    }
+                    if ($page_type == "7") {
+                        $table_for_item = array("table1" => "products");
+
+                        $columns_for_item = array("`product_id`", "`parent`");
+
+                        $values_for_item = array("'" . $data_for_item['id'] . "'", "'" . $data_for_item['parent'] . "'");
+
+                        $values_to_insert_in_product_table = array(
+                            "tables" => $table_for_item,
+                            "columns" => $columns_for_item,
+                            "values" => $values_for_item
+                        );
+                        $insert_new_item_page_details = $this->_queries->Insertvalues($values_to_insert_in_product_table, $option = "1");
+                    }
 
 
                     if ($insert_new_page_details) {
@@ -1857,12 +1981,13 @@ class forms {
         public function DefinePageTypes() {
 
             $page_type = array(
-                "0" => "Normal",
+                "0" => "Home Page",
                 "1" => "Sub-Menu",
                 "3" => "Category",
                 "5" => "Sub-Category",
                 "7" => "Item-Page",
-                "9" => "Designers"
+                "9" => "Designers",
+                "11" => "Top Level"
             );
 
 
@@ -1877,7 +2002,27 @@ class forms {
             return $this->_page_type;
         }
 
-        public function ItemPageForm(array $data, array $images = NULL) {
+        public function ItemPageForm(array $data = NULL, array $images = NULL) {
+
+            if (isset($_REQUEST['form']['item_edit']['update_item'])) {
+
+                $model_number = isset($_REQUEST['form']['item_edit']['db_id'])?$_REQUEST['form']['item_edit']['db_id']:'';
+                $model_number = isset($_REQUEST['form']['item_edit']['model_number'])?$_REQUEST['form']['item_edit']['model_number']:'';
+                $category_name = isset($_REQUEST['form']['item_edit']['categroy'])?$_REQUEST['form']['item_edit']['categroy']:'';
+                $parent = isset($_REQUEST['form']['item_edit']['parent'])?$_REQUEST['form']['item_edit']['parent']:'';
+                $product_name = isset($_REQUEST['form']['item_edit']['product_name'])?$_REQUEST['form']['item_edit']['product_name']:'';
+                $alias = isset($_REQUEST['form']['item_edit']['alias'])?$_REQUEST['form']['item_edit']['alias']:'';
+                $color = isset($_REQUEST['form']['item_edit']['color'])?$_REQUEST['form']['item_edit']['color']:'';
+                $product_description = isset($_REQUEST['form']['item_edit']['product_description'])?$_REQUEST['form']['item_edit']['product_description']:'';
+                $keywords = isset($_REQUEST['form']['item_edit']['keywords'])?$_REQUEST['form']['item_edit']['keywords']:'';
+                $version = isset($_REQUEST['form']['item_edit']['version'])?$_REQUEST['form']['item_edit']['version']:'';
+                $size = isset($_REQUEST['form']['item_edit']['size'])?$_REQUEST['form']['item_edit']['size']:'';
+                $status = isset($_REQUEST['form']['item_edit']['status'])?$_REQUEST['form']['item_edit']['status']:'';
+                $meta_keywords = isset($_REQUEST['form']['item_edit']['mata_keywords'])?$_REQUEST['form']['item_edit']['mata_keywords']:'';
+                $meta_description = isset($_REQUEST['form']['item_edit']['meta_description'])?$_REQUEST['form']['item_edit']['meta_description']:'';
+                $price = isset($_REQUEST['form']['item_edit']['price'])?$_REQUEST['form']['item_edit']['price']:'';
+                $date_added = date('Y,m,d');
+            }
 
             foreach ($data as $item) {
                 ?>
@@ -1926,7 +2071,7 @@ class forms {
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>ID:</label>
-                                                        <input type="text" name="form[item_edit][db_id]" value="<?= $item['id'] ?>" disabled="disabled" class="form-control"/>
+                                                        <input type="text" name="form[item_edit][db_id]" value="<?= $item['product_id'] ?>" disabled="disabled" class="form-control"/>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
@@ -1938,7 +2083,15 @@ class forms {
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Category Name:</label>
-                                                        <input type="text" name="form[item_edit][category_name]" value="<?= $item['category_name'] ?>"  class="form-control"/>
+                                                        <?php
+                                                        $this->_queries->_res = NULL;
+                                                        $get_cat_name = $this->_queries->GetData("pages", "id", $item['parent'], "0");
+                                                        $get_cat_name = $this->_queries->RetData();
+                                                        foreach ($get_cat_name as $category) {
+                                                            
+                                                        }
+                                                        ?>
+                                                        <input type="text" name="form[item_edit][category_name]" value="<?= $category['name'] ?>"  class="form-control" disabled="disabled"/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -2041,8 +2194,8 @@ class forms {
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div class="form-group">
-                                                        <label>Date Added:</label>
-                                                        <input type="date" name="form[item_edit][date_added]" value="<?= isset($_REQUEST['form']['item_edit']['date_added']) ? $_REQUEST['form']['item_edit']['date_added'] : $item['date_added'] ?>"  class="form-control"/>
+                                                        <label>Price:</label>
+                                                        <input type="date" name="form[item_edit][price]" value="<?= isset($_REQUEST['form']['item_edit']['price']) ? $_REQUEST['form']['item_edit']['price'] : $item['price'] ?>"  class="form-control"/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -2052,7 +2205,7 @@ class forms {
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Added_by:</label>
-                                                        <input type="text" name="form[item_edit][added_by]" value="<?= isset($_REQUEST['form']['item_edit']['added_by']) ? $_REQUEST['form']['item_edit']['added_by'] : $item['added_by'] ?>"  class="form-control"/>
+                                                        <input type="text" name="form[item_edit][added-date]" value="<?= isset($_REQUEST['form']['item_edit']['added_date']) ? $_REQUEST['form']['item_edit']['added_date'] : $item['added_date'] ?>"  class="form-control"/>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
@@ -2138,10 +2291,10 @@ class forms {
                                                             </div>
                                                             <div class="panel-body">
                                                                 <label>keywords</label>
-                                                                <input type="text" name="form[page_edit][meta_keywords]" value="<?= (isset($_REQUEST['form']['page_edit']['meta_keywords']) ? $_REQUEST['form']['page_edit']['meta_keywords'] : htmlspecialchars($item['meta_keywords'])) ?>" class="form-control"/>
+                                                                <input type="text" name="form[page_edit][meta_keywords]" value="<?= (isset($_REQUEST['form']['page_edit']['meta_keywords']) ? $_REQUEST['form']['page_edit']['meta_keywords'] : isset($item['meta_keywords']) ? $item['meta_keywords'] : "") ?>" class="form-control"/>
                                                                 <label>description</label>
 
-                                                                <input type="text" name="form[page_edit][meta_description]" value="<?= (isset($_REQUEST['form']['page_edit']['meta_description']) ? $_REQUEST['form']['page_edit']['meta_description'] : htmlspecialchars($item['meta_description'])) ?>" class="form-control"/>
+                                                                <input type="text" name="form[page_edit][meta_description]" value="<?= (isset($_REQUEST['form']['page_edit']['meta_description']) ? $_REQUEST['form']['page_edit']['meta_description'] : isset($item['meta_description'])? : "") ?>" class="form-control"/>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -2223,9 +2376,6 @@ class forms {
 
 
             <?php
-//                if (isset($_REQUEST['form']['item_edit']['update_item'])) {
-//                    var_dump($_REQUEST);
-//                }
         }
     }
 
@@ -3447,6 +3597,117 @@ class forms {
                     }
                 }
             }
+        }
+    }
+
+    public function ListAllItemsFromDB($page_name, $page_parent) {
+        /*
+         * 1. find parent name
+         * 2. i
+         */
+
+        $data = array(
+            "table" => "pages",
+            "select" => "name",
+            "field" => "id",
+            "value" => $page_parent
+        );
+        $this->_queries->_parent = NULL;
+        $get_parents = $this->_queries->findParent($data, $option = "1");
+
+        if (is_array($get_parents)) {
+
+
+            $gender = $get_parents[0]['name'];
+            $brand = $get_parents[1]['name'];
+            $fields = array(
+                "field1" => "brand",
+                "field2" => "category",
+                "field3" => "gender"
+            );
+            $values = array(
+                "value1" => $brand,
+                "value2" => $page_name,
+                "value3" => $gender
+            );
+            $this->_queries->_res = NULL;
+            $find_products = $this->_queries->GetData("all_products", $fields, $values, $option = "14");
+            $find_products = $this->_queries->RetData();
+        } else {
+
+            $data = array(
+                "table" => "pages",
+                "field" => "id",
+                "value" => $page_parent
+            );
+
+            $this->_queries->_res = NULL;
+            $get_parents = $this->_queries->GetData("pages", "id", $page_parent, $option = "0");
+            $get_parents = $this->_queries->RetData();
+
+
+            if (count($get_parents) > 0) {
+                foreach ($get_parents as $parent) {
+                    $fields = array(
+                        "field1" => "category",
+                        "field3" => "gender"
+                    );
+                    $values = array(
+                        "value1" => $page_name,
+                        "value2" => $parent['name']
+                    );
+
+                    $this->_queries->_res = NULL;
+                    $find_products = $this->_queries->GetData("all_products", $fields, $values, $option = "11");
+                    $find_products = $this->_queries->RetData();
+                }
+            }
+        }
+        return $find_products;
+    }
+
+    public function ListItemsDetailsForm(array $all_products = NULL, $page_name) {
+        if ($all_products != NULL) {
+            ?>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">Products Listing for <?= $page_name ?></div>
+                <div class="panel-body">
+                    <table class="table table-bordered table-hover">
+                        <tr>
+                            <th>Id#</th>
+                            <th>Item Name</th>
+                            <th>Price</th>
+                            <th>Color</th>
+                            <th>Size</th>
+                            <th>Model Number</th>
+                            <th>Gender</th>
+                            <th>Brand</th>
+                        </tr>
+
+                        <?php
+                        foreach ($all_products as $product) {
+                            ?>
+                            <tr>
+                                <td><?= $product['id'] ?></td>
+                                <td><?= $product['item_name'] ?></td>
+                                <td><?= $product['price'] ?></td>
+                                <td><?= $product['color'] ?></td>
+                                <td><?= $product['size'] ?></td>
+                                <td><?= $product['model_number'] ?></td>
+                                <td><?= $product['gender'] ?></td>
+                                <td><?= $product['brand'] ?></td>
+                            </tr>
+
+                            <?php
+                        }
+                        ?>
+
+                    </table>
+                </div>
+            </div>
+
+            <?php
         }
     }
 

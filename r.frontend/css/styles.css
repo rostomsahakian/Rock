@@ -14,7 +14,7 @@
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  z-index: 1;
+  z-index: 13;
 }
 #cssmenu:after,
 #cssmenu > ul:after {

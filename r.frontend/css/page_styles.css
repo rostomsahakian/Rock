@@ -72,9 +72,10 @@ body{
 .rock-main-container{
     min-height: 1000px !important;
     background-color: #fff;
-    -webkit-box-shadow: 0px 0px 1px 0px rgba(50, 50, 50, 0.12);
-    -moz-box-shadow:    0px 0px 1px 0px rgba(50, 50, 50, 0.12);
-    box-shadow:         0px 0px 1px 0px rgba(50, 50, 50, 0.12);
+    -webkit-box-shadow: 0px 1px 2px 0px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    0px 1px 2px 0px rgba(50, 50, 50, 0.75);
+    box-shadow:         0px 1px 2px 0px rgba(50, 50, 50, 0.75);
+    /*width: 1200px !important;*/
 }
 .rock-home-carousel{
     padding: 5px;
@@ -91,12 +92,12 @@ body{
 .rock-item-image-holder{
     border: 1px solid #000;
     /*padding: 10px;*/
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     width:29%;
-    margin-right: 10px;
+    margin-right: 40px;
     text-align: center;
-    height: 345px;
-    width: 220px;
+    height: 375px;
+    width: 244px;
     overflow: hidden;
     position: relative;
 
@@ -121,27 +122,77 @@ body{
 }
 
 span.rollover {
-	opacity: 1;
-	-o-transition-duration: 1s;
-	-moz-transition-duration: 1s;
-	-webkit-transition: -webkit-transform 1s;
-	background: #000;
-	cursor: pointer;
-	height: 346px;
-	width: 347px;
-	position: absolute;
-	z-index: 10;
-	opacity: 0;
-        left: 0px;
-        top: -70px;
+    opacity: 1;
+    -o-transition-duration: 1s;
+    -moz-transition-duration: 1s;
+    -webkit-transition: -webkit-transform 1s;
+    background: #000;
+    cursor: pointer;
+    height: 373px;
+    width: 347px;
+    position: absolute;
+    z-index: 10;
+    opacity: 0;
+    left: 0px;
+    top: -70px;
 }
 
 span.rollover:hover {
-	opacity: .7;
-	-o-transition-duration: 1s;
-	-moz-transition-duration: 1s;
-	-webkit-transition: -webkit-transform 1s;
-	-webkit-box-shadow: 0px 0px 4px #000;
-	-moz-box-shadow: 0px 0px 4px #000;
-	box-shadow: 0px 0px 4px #000;
+    opacity: .7;
+    -o-transition-duration: 1s;
+    -moz-transition-duration: 1s;
+    -webkit-transition: -webkit-transform 1s;
+    -webkit-box-shadow: 0px 0px 4px #000;
+    -moz-box-shadow: 0px 0px 4px #000;
+    box-shadow: 0px 0px 4px #000;
+}
+.rock-items-col-12{
+    margin-left: 22px !important;
+}
+.rock-brand-in-box{
+    float: right;
+    border: 1px solid #000;
+    color: #fff;
+    padding: 5px;
+    background-color: #000;
+    z-index: 11;
+    position: absolute;
+    right: 0px;
+    font-size: 11px;
+    text-decoration: none;
+}
+.rock-brand-in-box:hover{
+    text-decoration: none !important;
+    color:#e5e5e5;
+}
+.rock-view-details-in-box{
+
+    border: 1px solid #000;
+    padding: 5px;
+    z-index: 10;
+    position: absolute;
+    right: 155px;
+    top:277px;
+    opacity: 0.6;
+    background-color: #000;
+    font-size: 11px;
+    text-decoration: none;
+    color: #fff;
+}
+.rock-view-details-in-box a{
+
+}
+.rock-view-details-in-box a:hover{
+
+}
+.rock-view-details-in-box:hover{
+    opacity: 1;
+
+    background-color: #000;
+    text-decoration: none !important;
+    color:#fff;
+
+}
+.rock-product-link{
+    z-index: 20;
 }

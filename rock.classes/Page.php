@@ -292,5 +292,9 @@ class Page {
             $this->_front_items = $items;
         }
     }
+    
+    public function setBreadCrumb($page_name){
+        
+    }
 
 }
