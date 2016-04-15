@@ -3615,7 +3615,7 @@ class forms {
         $this->_queries->_parent = NULL;
         $get_parents = $this->_queries->findParent($data, $option = "1");
 
-        if (is_array($get_parents)) {
+        if (is_array($get_parents) && array_key_exists("gender", $get_parents)) {
 
 
             $gender = $get_parents[0]['name'];
