@@ -325,11 +325,11 @@ class queries {
 
                 case "14":
                     $sql = "SELECT *   FROM `" . $table . "` WHERE "
-                        . "`".$fields['field1']."`  = '".$value['value1']."'"
-                        . " AND "
-                        . "`".$fields['field2']."`  = '".$value['value2']."'"
-                        . " AND "
-                        . "`".$fields['field3']."`  = '".$value['value3']."'";
+                            . "`" . $fields['field1'] . "`  = '" . $value['value1'] . "'"
+                            . " AND "
+                            . "`" . $fields['field2'] . "`  = '" . $value['value2'] . "'"
+                            . " AND "
+                            . "`" . $fields['field3'] . "`  = '" . $value['value3'] . "'";
 //                echo "<br/>";        
 //                var_dump($sql);
 //                echo "<br/>";
@@ -342,6 +342,17 @@ class queries {
                         return true;
                     } else {
                         return false;
+                    }
+                    break;
+                case "15":
+                    $sql = "SELECT id,name,parent FROM `pages` WHERE `parent` = '".$value."' ORDER BY ord, name ASC";
+                    $cats = array();
+                    $result = $this->_mysqli->query($sql);
+                    while($rows = $result->fetch_array(MYSQLI_ASSOC)){
+                                                 
+                            $this->GetData("", "", $rows['id'], $option="15");
+  
+                            $this->_res[] = $rows;
                     }
                     break;
             }
@@ -569,6 +580,21 @@ class queries {
                     break;
 
                 case 2:
+                    $sql = "SELECT * FROM `" . $data['table'] . "` WHERE `" . $data['field'] . "` = '" . $data['value'] . "'";
+                    $result = $this->_mysqli->query($sql);
+                    $num_rows = $result->num_rows;
+                    if ($num_rows > 0) {
+                        while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+
+                            $this->_res[] = $row;
+                            $data['value'] = $row['id'];
+                            $this->findChildren($data, $option = 2);
+                        }
+                    } else {
+                        return false;
+                    }
+                    break;
+                                    case 2:
                     $sql = "SELECT * FROM `" . $data['table'] . "` WHERE `" . $data['field'] . "` = '" . $data['value'] . "'";
                     $result = $this->_mysqli->query($sql);
                     $num_rows = $result->num_rows;

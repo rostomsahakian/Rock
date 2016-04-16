@@ -5,7 +5,8 @@
             
             "rock.includes",
             "rock.classes",
-            "rock.admin"
+            "rock.admin",
+            "rock.api"
         ]
     }
 }

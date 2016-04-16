@@ -2,10 +2,9 @@
 //include_once '../../rock.classes/Page.php';
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
     <head>
         <?php
-        
         $title = ($page_title != '') ? $page_title : str_replace('www.', '', $_SERVER['HTTP_HOST']) . '>' . $page_name;
         $metadata = '<title>' . htmlspecialchars($title) . '</title>';
         $metadata.='<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>';
@@ -15,7 +14,6 @@
 //                $metadata .='<meta http-equiv="description" content="' . htmlspecialchars($PAGEDATA->description) . '"/>';
 //            }
 //        }
-
         //var_dump($PAGEDATA->_files);
 
 
@@ -50,13 +48,13 @@
 //            foreach ($css as $styles) {
 //                
         ?>
-    
+
         <?php
 //            }
 //            foreach ($js as $javascripts) {
 //                
         ?>
-      
+
         <?php
 //            }
 //        }
@@ -66,8 +64,9 @@
         <link rel="stylesheet" href="<?= ABSOLUTH_PATH_OWL_CAR ?>owl.carousel.css" type="text/css"/>
         <link rel="stylesheet" href="<?= ABSOLUTH_PATH_OWL_CAR ?>owl.theme.css" type="text/css"/>
         <script src="<?= ABSOLUTH_PATH_OWL_CAR ?>owl.carousel.min.js" type="text/javascript"></script>
-        <link rel="stylesheet" href="<?= $navcss ?>" />
+        <link rel="stylesheet" href="<?php // $navcss ?>" />
         <link rel="stylesheet" href="<?= $maincCSS ?>" />
+        <link href="/r.frontend/css/megamenu.css" rel="stylesheet"/>
         <link href="web/css/style.css" rel="stylesheet" type="text/css" media="all"/>
         <link href="web/css/slider.css" rel="stylesheet" type="text/css" media="all"/>
         <script type="text/javascript" src="web/js/jquery-1.7.2.min.js"></script> 
@@ -75,6 +74,7 @@
         <script type="text/javascript" src="web/js/easing.js"></script>
         <script type="text/javascript" src="web/js/startstop-slider.js"></script>
         <script src="<?= $navjs ?>" type="text/javascript"></script>
+<!--        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>-->
 
         <style>
 
@@ -99,11 +99,11 @@
         </style>
     </head>
 
-    <body>
+    <body >
         <div class="row">
             <nav class="navbar navbar-default navbar-fixed-top rock-top-banner">
                 <div class="container">
-                    <div id="navbar" class="collapse navbar-collapse">
+                    <div>
                         <ul class="nav navbar-nav">
                             <li ><a href="#">login</a></li>
                             <li><a href="#about">sign up</a></li>
@@ -171,33 +171,29 @@
         <div class="rock-background-color-manager">
             <div class="rock-nav-bar-container">
                 <div class="container">
-                    <!--main Navigation-->
-                    <div id='cssmenu'>
+<!--                    main Navigation-->
+                   
                         <?php
                         $nav = new Navigation();
-                        echo $nav->showNavigation(0, NULL);
+//                        echo $nav->showNavigation(0, NULL);
+                        echo $nav->MegaNavigationMenu();
                         ?>
 
                     </div>
-                </div>
-            </div>
+                </div><!--
+            </div>-->
             <!--Breadcrumb goas here-->
 
             <div class="row">
                 <div class="container">
                     <ol class="breadcrumb rock-breadcrumb">
                         <?php
-                   
-                            
-                            
-                            ?>
-                          <li ></li>
-                        <?php
-                        
-                        
                         ?>
-                   
-                      
+                        <li ></li>
+                        <?php
+                        ?>
+
+
                     </ol>
                 </div>
             </div>

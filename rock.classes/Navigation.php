@@ -15,86 +15,65 @@ class Navigation {
     public $queries;
     public $forms;
     public $_url;
+    public $_children;
 
     public function __construct() {
         $this->queries = new queries();
         $this->forms = new forms();
+//$this->GetNavUrls();
     }
 
-    //put your code here
-    public function BuildNavigation() {
+    public function GetNavUrls() {
 
+        $request = "0";
+        $categories = array();
         $this->queries->_res = NULL;
-        $page = $this->queries->GetData("pages", NULL, NULL, "3");
-        $page = $this->queries->RetData();
-        /*
-         * Set the parent child relationship
-         * Rostom 03/26/2016
-         */
-        $pages_array = array();
-        foreach ($page as $p) {
-            if (!isset($pages_array[$p['parent']])) {
-                $pages_array[$p['parent']] = array();
-            }
-            $pages_array[$p['parent']][] = $p;
-        }
-        return $pages_array;
-    }
+        $get_parents = $this->queries->GetData("pages", "parent", $request, "0");
+        $get_parents = $this->queries->RetData();
+        if (count($get_parents) > 0) {
+            foreach ($get_parents as $parent) {
 
-    public function showNavigation($id, $pages = NULL) {
+                $data = array(
+                    "table" => "pages",
+                    "field" => "parent",
+                    "value" => $parent['id']
+                );
 
-        $i = isset($id['id']) ? $id['id'] : $id;
-        /*
-         * To build a navigation system
-         * 1. get all pages that the parent is zero and page type is zero (Top Level => Home, About us , etc.)
-         * 2. get all pages that have a parent (from one) and the page type is either 1 or 3 
-         * 3. get all page that their parent is 3 and the type is 5
-         * 
-         * page types:
-         * 0 => top level
-         * 1 => sub menu (normal pages)
-         * 3 => Categories (i.e clothing, men,women ...)
-         * 5 => sub-Categories (i.e T-shirt, pants)
-         * 7 => item page (NOT SHOWN IN THE MENU
-         */
-        $pages = $this->BuildNavigation(0);
+                $category = array();
 
-        if (!isset($pages[$i])) {
-            return;
-        }
-        ?>
-
-        <ul>
-            <?php
-            foreach ($pages[$i] as $page) {
-                if ($page['type'] == 0 || $page['type'] == "0" || $page['type'] == 1 || $page['type'] == "1" || $page['type'] == 3 || $page['type'] == "3" || $page['type'] == 5 || $page['type'] == "5" || $page['type'] == 9 || $page['type'] == "9") {
-
-                    $this->GetUrl($page['id']);
-                    ?>
-
-                    <li id="page_<?= $page['id'] ?>">
-                        <?php
-                        if($page['parent'] == 0 || $page['parent'] == "0" ){
-                            $page_id_ext = "";
-                        }else{
-                            $page_id_ext = "/".$page['id'];
-                        }
-                        ?>
-                        <a href="<?= $this->RetUrl().$page_id_ext ?>" ><?= htmlspecialchars($page['name']) ?></a>
-
-                        <?php
-                        $this->showNavigation($page['id'], $this->BuildNavigation(0));
-                        ?>
-                    </li>
-
-
-                    <?php
+                $category['id'] = $parent['id'];
+                $category['name'] = $parent['name'];
+                $category['parent'] = $parent['parent'];
+                $category['type'] = $parent['type'];
+                if ($this->HasChild($parent['id'])) {
+                    $category['sub_categories'] = array();
                 }
-            }
-            ?>
-        </ul>
 
-        <?php
+                $this->queries->_res = NULL;
+                $get_children = $this->queries->GetData("pages", "parent", $parent['id'], "0");
+                $get_children = $this->queries->RetData();
+                if (count($get_children) > 0) {
+                    if ($parent['id'] != "1") {
+                        foreach ($get_children as $child) {
+                            if ($parent['id'] == $child['parent']) {
+
+                                $subcat = array();
+                                $subcat['id'] = $child['id'];
+                                $subcat['name'] = $child['name'];
+                                $subcat['parent'] = $child['parent'];
+
+                                array_push($category['sub_categories'], $subcat);
+                            }
+                        }
+                    }
+                }
+                array_push($categories, $category);
+            }
+//            $json = json_encode($categories);
+//            header('Content-Type: application/json');
+//            echo $json;
+            return $categories;
+        }
     }
 
     public function breadcrumbs($separator = ' » ', $home = 'Home') {
@@ -127,14 +106,13 @@ class Navigation {
         return implode($separator, $breadcrumbs);
     }
 
-
-    public function GetUrl($page_id){
+    public function GetUrl($page_id) {
         $this->queries->_res = NULL;
-        $get_url = $this->queries->GetData("page_urls", NULL, NULL, $option="7");
+        $get_url = $this->queries->GetData("page_urls", NULL, NULL, $option = "7");
         $get_url = $this->queries->RetData();
-        
-        foreach ($get_url as $url){
-            if($url['page_id'] == $page_id){
+
+        foreach ($get_url as $url) {
+            if ($url['page_id'] == $page_id) {
                 $this->_url = $url['long_url'];
             }
         }
@@ -142,6 +120,121 @@ class Navigation {
 
     public function RetUrl() {
         return $this->_url;
+    }
+
+    public function MegaNavigationMenu() {
+        ?>
+        <!-- Static navbar -->
+        <nav class="navbar navbar-default megamenu">
+            <div class="container-fluid">
+                <div class="col-sm-12">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+                    <div id="navbar" class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav">
+                            <?php
+                            foreach ($this->GetNavUrls() as $no_child) {
+
+                                if (!array_key_exists("sub_categories", $no_child)) {
+
+                                    $this->GetUrl($no_child['id']);
+                                    if ($no_child['parent'] == 0 || $no_child['parent'] == "0") {
+                                        $page_id_ext = "";
+                                    } else {
+                                        $page_id_ext = "/" . $no_child['id'];
+                                    }
+                                    ?>
+                                    <li ><a href="<?= $this->RetUrl() . $page_id_ext ?>"><?= $no_child['name'] ?></a></li>
+                                    <?php
+                                } else {
+                                    ?>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?= $no_child['name'] ?><span class="caret"></span></a>
+
+                                        <ul class="dropdown-menu rock-mega-menu">
+                                            <div class="rock-drop-down-header-div">
+                                                <h4 class="rock-drop-down-header">
+                                                    <?php
+                                                    if ($no_child['type'] == "0") {
+                                                        echo "Designers";
+                                                    } else if ($no_child['type'] == "3") {
+                                                        echo "Categories";
+                                                    } else {
+                                                        echo "";
+                                                    }
+                                                    ?>
+                                                </h4>
+                                            </div>
+                                            <?php
+                                            foreach ($no_child['sub_categories'] as $children) {
+                                                ?>
+
+                                                <li>
+
+                                                    <div class="col-sm-3 rock-drop-down-link">
+                                                        <?php
+                                                        $this->GetUrl($children['id']);
+                                                        if ($children['parent'] == 0 || $children['parent'] == "0") {
+                                                            $page_id_ext = "";
+                                                        } else {
+                                                            $page_id_ext = "/" . $children['id'];
+                                                        }
+                                                        ?>
+                                                        <a href="<?= $this->RetUrl() . $page_id_ext ?>"><?= $children['name'] ?></a>
+
+                                                    </div>
+
+                                                </li>
+
+                                                <?php
+                                            }
+                                            ?>
+
+                                        </ul>
+                                        <!--                                        </div>-->
+                                        <?php
+                                    }
+                                }
+                                ?>
+
+                            </li>
+                        </ul>
+                    </div>
+                </div><!--/.nav-collapse -->
+            </div><!--/.container-fluid -->
+        </nav>
+
+        <?php
+    }
+
+    public function HasChild($parent_id) {
+
+        $data_to_ftech = array(
+            "table" => "pages",
+            "field" => "parent",
+            "value" => $parent_id
+        );
+
+
+        $this->queries->_res = NULL;
+        $get_children = $this->queries->findChildren($data_to_ftech, $option = 2);
+        $get_children = $this->queries->RetData();
+        $this->_children[] = $get_children;
+        if (count($get_children) > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function ReturnChildren() {
+        return $this->_children;
     }
 
 }
