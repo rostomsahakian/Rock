@@ -161,37 +161,51 @@ class Navigation {
                                             <div class="rock-drop-down-header-div">
                                                 <h4 class="rock-drop-down-header">
                                                     <?php
-                                                    if ($no_child['type'] == "0") {
-                                                        echo "Designers";
-                                                    } else if ($no_child['type'] == "3") {
-                                                        echo "Categories";
-                                                    } else {
-                                                        echo "";
-                                                    }
+                                                    $this->GetUrl($no_child['id']);
                                                     ?>
+
+
+                                                    <a href="<?= $this->RetUrl() . "/" . $no_child['id'] ?>" title="<?= $no_child['name'] ?>" alt="<?= $no_child['name'] ?>">
+                                                        <?php
+                                                        echo $no_child['name'];
+                                                        ?>
+                                                    </a>
                                                 </h4>
                                             </div>
+
                                             <?php
+                                            $sorted_children = array();
                                             foreach ($no_child['sub_categories'] as $children) {
+                                                $child_id = $children['id'];
+                                                $child_parent = $children['parent'];
+                                                $child_name = $children['name'];
+
+                                                array_push($sorted_children, array("id" => $child_id, "parent" => $child_parent, "name" => $child_name));
+                                            }
+                                            /*
+                                             * Sorts children
+                                             */
+                                            usort($sorted_children, array($this, "compare_name"));
+                                            foreach ($sorted_children as $child) {
                                                 ?>
+                                                <div>
+                                                    <li>
 
-                                                <li>
+                                                        <div class="col-sm-3 rock-drop-down-link">
+                                                            <?php
+                                                            $this->GetUrl($child['id']);
+                                                            if ($child['parent'] == 0 || $child['parent'] == "0") {
+                                                                $page_id_ext = "";
+                                                            } else {
+                                                                $page_id_ext = "/" . $child['id'];
+                                                            }
+                                                            ?>
+                                                            <a href="<?= $this->RetUrl() . $page_id_ext ?>"><?= $child['name'] ?></a>
 
-                                                    <div class="col-sm-3 rock-drop-down-link">
-                                                        <?php
-                                                        $this->GetUrl($children['id']);
-                                                        if ($children['parent'] == 0 || $children['parent'] == "0") {
-                                                            $page_id_ext = "";
-                                                        } else {
-                                                            $page_id_ext = "/" . $children['id'];
-                                                        }
-                                                        ?>
-                                                        <a href="<?= $this->RetUrl() . $page_id_ext ?>"><?= $children['name'] ?></a>
+                                                        </div>
 
-                                                    </div>
-
-                                                </li>
-
+                                                    </li>
+                                                </div>
                                                 <?php
                                             }
                                             ?>
@@ -213,6 +227,18 @@ class Navigation {
         <?php
     }
 
+    /*
+     * Sorst the sub-names for navigation menu
+     */
+
+    public function compare_name($a, $b) {
+        return strnatcmp($a['name'], $b['name']);
+    }
+
+    /*
+     * Checks to see if the given value has any children retuns true or false
+     */
+
     public function HasChild($parent_id) {
 
         $data_to_ftech = array(
@@ -232,6 +258,10 @@ class Navigation {
             return false;
         }
     }
+
+    /*
+     * Returns the fetched array of data for children
+     */
 
     public function ReturnChildren() {
         return $this->_children;

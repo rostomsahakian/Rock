@@ -4,26 +4,6 @@ include_once TEMPLATE_H_F_PATH . 'header.php';
 
 <!--PAGE CONTENT GO HERE-->
 <div class="container rock-main-container" >
-
-
-    <?php
-    foreach ($page_extra_data as $content) {
-
-
-
-        for ($i = 0; $i < count($content['categories']); $i++) {
-            /*
-             * Category name
-             */
-            $category_name = $content['categories'][$i]['category'];
-            ?>
-
-            <?php
-        }
-    }
-    ?>
-
-
     <?= $pagecontent ?>
 
     <div class="row">
@@ -103,7 +83,7 @@ include_once TEMPLATE_H_F_PATH . 'header.php';
                             <div class="row rock-item-captions">
 
                                 <p> <?= $item_name ?><p> 
-                                <p>  REG. PRCIE: $<?= $item_price ?></p>  
+                                <p>  REG. PRICE: $<?= $item_price ?></p>  
 
                             </div>
                         </div>

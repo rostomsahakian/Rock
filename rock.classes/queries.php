@@ -260,6 +260,8 @@ class queries {
                 case "10":
 
                     $sql = "SELECT DISTINCT `" . $fields['field1'] . "` FROM `" . $table . "` WHERE `" . $fields['field2'] . "` = '" . $value . "'";
+//                            . "'" . $fields['limit'] . "'";
+//                  var_dump($sql);
 
                     $result = $this->_mysqli->query($sql);
 
@@ -281,6 +283,7 @@ class queries {
                     $result = $this->_mysqli->query($sql);
 //                    echo "<br/>";
 //                    var_dump($sql);
+//                    echo "<br/>";
                     if ($result) {
                         while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
 
@@ -310,7 +313,7 @@ class queries {
                     break;
                 case "13":
                     $sql = "SELECT DISTINCT `" . $fields['field1'] . "`  FROM `" . $table . "` WHERE `" . $fields['field2'] . "` = '" . $value . "' ORDER BY RAND() LIMIT 1";
-
+//                    var_dump($sql);
                     $result = $this->_mysqli->query($sql);
                     if ($result) {
                         while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
@@ -345,14 +348,42 @@ class queries {
                     }
                     break;
                 case "15":
-                    $sql = "SELECT id,name,parent FROM `pages` WHERE `parent` = '".$value."' ORDER BY ord, name ASC";
+                    $sql = "SELECT id,name,parent FROM `pages` WHERE `parent` = '" . $value . "' ORDER BY ord, name ASC";
                     $cats = array();
                     $result = $this->_mysqli->query($sql);
-                    while($rows = $result->fetch_array(MYSQLI_ASSOC)){
-                                                 
-                            $this->GetData("", "", $rows['id'], $option="15");
-  
-                            $this->_res[] = $rows;
+                    while ($rows = $result->fetch_array(MYSQLI_ASSOC)) {
+
+                        $this->GetData("", "", $rows['id'], $option = "15");
+
+                        $this->_res[] = $rows;
+                    }
+                    break;
+                case "16":
+                    $sql = "SELECT *  FROM `" . $table . "` WHERE `" . $fields['field1'] . "` = '" . $value . "'  ORDER BY RAND() LIMIT {$fields['limit']}";
+//                    var_dump($sql);
+                    $result = $this->_mysqli->query($sql);
+                    if ($result) {
+                        while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+
+                            $this->_res[] = $row;
+                        }
+                        return true;
+                    } else {
+                        return false;
+                    }
+                    break;
+                case "17":
+                    $sql = "SELECT *  FROM `" . $table . "` WHERE `" . $fields['field1'] . "` = '" . $value['value1'] . "' AND `".$fields['field2']."` = '".$value['value2']."'  ORDER BY RAND() LIMIT {$fields['limit']}";
+                    
+                    $result = $this->_mysqli->query($sql);
+                    if ($result) {
+                        while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+
+                            $this->_res[] = $row;
+                        }
+                        return true;
+                    } else {
+                        return false;
                     }
                     break;
             }
@@ -487,7 +518,7 @@ class queries {
             switch ($option) {
                 case "1":
                     $sql = "SELECT `" . $data['select'] . "`, `parent` FROM `" . $data['table'] . "` WHERE `" . $data['field'] . "` = '" . (int) $data['value'] . "' ORDER BY `id` ASC";
-
+//                    var_dump($sql);
                     $result = $this->_mysqli->query($sql);
                     $row = $result->fetch_array(MYSQLI_ASSOC);
                     $this->_parent[] = $row;
@@ -567,6 +598,7 @@ class queries {
                     $result = $this->_mysqli->query($sql);
                     while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
                         if (count($row) < 1) {
+
                             return false;
                         } else {
                             $this->_res[] = $row;
@@ -584,21 +616,7 @@ class queries {
                     $result = $this->_mysqli->query($sql);
                     $num_rows = $result->num_rows;
                     if ($num_rows > 0) {
-                        while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
 
-                            $this->_res[] = $row;
-                            $data['value'] = $row['id'];
-                            $this->findChildren($data, $option = 2);
-                        }
-                    } else {
-                        return false;
-                    }
-                    break;
-                                    case 2:
-                    $sql = "SELECT * FROM `" . $data['table'] . "` WHERE `" . $data['field'] . "` = '" . $data['value'] . "'";
-                    $result = $this->_mysqli->query($sql);
-                    $num_rows = $result->num_rows;
-                    if ($num_rows > 0) {
                         while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
 
                             $this->_res[] = $row;
@@ -627,9 +645,9 @@ class queries {
                     $sql .= implode(",", $data['values']);
 
                     $sql .= " ) ";
-                    echo "<br/>";
-                    var_dump($sql);
-                    echo "<br/>";
+//                    echo "<br/>";
+//                    var_dump($sql);
+//                    echo "<br/>";
                     $result = $this->_mysqli->query($sql);
                     if ($result) {
                         return true;

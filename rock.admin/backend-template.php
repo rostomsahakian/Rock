@@ -92,6 +92,7 @@
                             case "edit_page":
 
 
+
                                 /*
                                  * URL OPTIONS
                                  * SHORT
@@ -152,7 +153,7 @@
                                 foreach ($cmd['editor_data'] as $data_to_check) {
                                     if ($data_to_check['type'] == '0' || $data_to_check['type'] == 0 || $data_to_check['type'] == '1' || $data_to_check['type'] == 1 || $data_to_check['type'] == '3' || $data_to_check['type'] == 3 || $data_to_check['type'] == '5' || $data_to_check['type'] == 5 || $data_to_check['type'] == '9' || $data_to_check['type'] == 9) {
                                         $this->_forms->EditPageForm($cmd['editor_data'], $cmd['url_options'], $cmd['page_images'], $cmd['page_files'], $cmd['page_id'], $cmd['pages']);
-                                    } else if ($data_to_check['type'] == '7' || $data_to_check['type'] == 7){
+                                    } else if ($data_to_check['type'] == '7' || $data_to_check['type'] == 7) {
 
                                         $this->_forms->ItemPageForm($cmd['item_page_data'], $cmd['page_images']);
                                     }
@@ -179,7 +180,7 @@
                              * If clciked to update the page in the pages form
                              */#################################################
                             case "update_page_details":
-
+                                
                                 /*
                                  * First We check if the page name is does not exist under the same directory 
                                  */
@@ -291,11 +292,11 @@
                             case "upload_items":
                                 $this->_forms->CustomizedProductUploader(NULL);
                                 break;
-                            /*##########################
+                            /* ##########################
                              * Social Media Manager
                              */#########################
                             case "social_media":
-                                
+
                                 $this->_forms->SocialMediaForm($cmd['social_media']);
                                 break;
                         }

@@ -75,14 +75,15 @@ if (!$page_id) {
 
                 $template = THEME_DIR . '/' . THEME . '/html/categories.php';
                 $page_title = $PAGEDATA->title;
-                $pagecontent = $PAGEDATA->SetItemData();
-                $pagecontent = $PAGEDATA->_front_items;
+                $pagecontent = $PAGEDATA->body;
+                $pag_data = $PAGEDATA->SetItemData();
+                $page_data = $PAGEDATA->_front_items;
                 include $template;
 
                 break;
             case "5": //Sub-category
 
-                $template = THEME_DIR . '/' . THEME . '/html/categories.php';
+                $template = THEME_DIR . '/' . THEME . '/html/sub-categories.php';
                 $page_title = $PAGEDATA->title;
                 $pagecontent = $PAGEDATA->SetItemData();
                 $pagecontent = $PAGEDATA->_front_items;

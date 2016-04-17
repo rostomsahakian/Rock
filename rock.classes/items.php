@@ -36,11 +36,11 @@ class items {
              * if page type is 9 = designers
              */
 
-            if (isset($data['type']) && $data['type'] == 0 || $data['type'] == "0" ||  $data['type'] == 3 || $data['type'] == "3" || $data['type'] == 5 || $data['type'] == "5" || $data['type'] == 7 || $data['type'] == "7" || $data['type'] == 9 || $data['type'] == "9") {
+            if (isset($data['type']) && $data['type'] == 0 || $data['type'] == "0" || $data['type'] == 3 || $data['type'] == "3" || $data['type'] == 5 || $data['type'] == "5" || $data['type'] == 7 || $data['type'] == "7" || $data['type'] == 9 || $data['type'] == "9") {
 
                 switch ($data['type']) {
-                    
-                    
+
+
                     /*
                      * Home
                      */
@@ -50,50 +50,32 @@ class items {
                          * we will need images of four to five random images for the bottom of the carousel 
                          * (for now random but for future it should be the new arrivals or trending or if the customer wants to promote an item
                          */
-                        
-                        $this->_queries->_res = NULL;
-                        $fields = array(
-                            "field1" => "category",
-                            "field2" => "status"
+                        $fields_ran = array(
+                            "field1" => "status",
+                            "limit" => "8"
                         );
-                        $get_data_for_home_page = $this->_queries->GetData("all_products", $fields, "1", $option="10");
-                        $get_data_for_home_page = $this->_queries->RetData();
-                        
-                        
-                        
-                        foreach($get_data_for_home_page as $home_data){
-                            $fields_ran = array(
-                                "field1" => "id",
-                                "field2" => "category"
-                                
-                            );
-                            
+
+                        $this->_queries->_res = NULL;
+                        $get_random_images_and_data = $this->_queries->GetData("all_products", $fields_ran, "1", $option = "16");
+                        $get_random_images_and_data = $this->_queries->RetData();
+
+                        $get_random_id[] = $get_random_images_and_data;
+
+                        foreach ($get_random_images_and_data as $get_image_data) {
+
                             $this->_queries->_res = NULL;
-                            $get_random_images_and_data = $this->_queries->GetData("all_products", $fields_ran, $home_data['category'], $option="13");
-                            $get_random_images_and_data = $this->_queries->RetData();
-                            
-                            $get_random_id[] = $get_random_images_and_data;
-                            
-                            foreach ($get_random_images_and_data as $get_image_data){
-                                
-                                $this->_queries->_res = NULL;
-                                $get_data = $this->_queries->GetData("all_products", "id" , $get_image_data['id'], $option= "0");
-                                $get_data = $this->_queries->RetData();
-                                
-                                $get_random_data[] = $get_data;
-                                
-                                
-                            }
-                            
+                            $get_data = $this->_queries->GetData("all_products", "id", $get_image_data['id'], $option = "0");
+                            $get_data = $this->_queries->RetData();
+
+                            $get_random_data[] = $get_data;
                         }
-                        
+
                         $collect_data_for_home_page = array(
-                            "categories" => $get_data_for_home_page,
                             "random_id" => $get_random_id,
                             "random_data" => $get_random_data
                         );
-                        $this->_front_data[] = $collect_data_for_home_page; 
-                        
+                        $this->_front_data[] = $collect_data_for_home_page;
+
                         break;
 
                     /*
@@ -106,71 +88,86 @@ class items {
                          * 2. get the page information
                          * 3. pass the information
                          */
+                        /*
+                         * First get the distinct fields that this category has 
+                         * i.e. If it is Mens
+                         * then get every single category that it has Limit by one
+                         * for filtering purpases
+                         */
+
+                        $categories = array();
+
                         $fields = array(
                             "field1" => "category",
-                            "field2" => "gender"
+                            "field2" => "gender",
+                            "limit" => ""
                         );
-                        /*
-                         * Categoires
-                         * (i.e. footwaare, clothing,...)
-                         */
+                        $table = "all_products";
+                        $value = $data['name'];
+
                         $this->_queries->_res = NULL;
-                        $get_selected_category = $this->_queries->GetData("all_products", $fields, $data['name'], $option = "10");
-                        $get_selected_category = $this->_queries->RetData();
+                        $get_data_for_categories_filter = $this->_queries->GetData($table, $fields, $value, $option = "10");
+                        $get_data_for_categories_filter = $this->_queries->RetData();
+                        if (count($get_data_for_categories_filter) > 0) {
 
+                            foreach ($get_data_for_categories_filter as $category) {
+                                /*
+                                 * Now for each category select one random product for the categories display
+                                 */
+                                $cats = array();
+                                $cats['filter'] = $category['category'];
+                                $cats['display'] = array();
+                                $fields_dispay = array(
+                                    "field1" => "category",
+                                    "field2" => "gender",
+                                    "limit" => "1"
+                                );
+                                $table_display = "all_products";
+                                $value_display =array("value1" => $category['category'], "value2" => $data['name']);
+                                $this->_queries->_res = NULL;
+                                $get_data_for_categories_for_display = $this->_queries->GetData($table_display, $fields_dispay, $value_display, $option = "17");
+                                $get_data_for_categories_for_display = $this->_queries->RetData();
+                                if (count($get_data_for_categories_for_display) > 0) {
+                                    foreach ($get_data_for_categories_for_display as $cats_for_dispaly) {
 
-                        $field_for_band_id = array(
-                            "field1" => "brand_id",
-                            "field2" => "gender"
-                        );
-                        /*
-                         * Brand ID
-                         */
-                        $this->_queries->_res = NULL;
-                        $get_selected_brands = $this->_queries->GetData("all_products", $field_for_band_id, $data['name'], $option = "10");
-                        $get_selected_brands = $this->_queries->RetData();
+                                        $displays = array();
+                                        $displays['item_name'] = $cats_for_dispaly['item_name'];
+                                        $displays['item_image_url'] = $cats_for_dispaly['item_image_url'];
+                                        $displays['price'] = $cats_for_dispaly['price'];
+                                        $displays['gender'] = $cats_for_dispaly['gender'];
+                                        $displays['decription'] = $cats_for_dispaly['description'];
+                                        $displays['color'] = $cats_for_dispaly['color'];
+                                        $displays['size'] = $cats_for_dispaly['size'];
+                                        $displays['model_number'] = $cats_for_dispaly['model_number'];
+                                        $displays['brand'] = $cats_for_dispaly['brand'];
+                                        $displays['category'] = $cats_for_dispaly['category'];
+                                        $displays['gender'] = $cats_for_dispaly['gender'];
 
-                        foreach ($get_selected_brands as $brand_name) {
-                            /*
-                             * Find Categories Brands
-                             * 
-                             */
-                            $fields_for_brand_name = array(
-                                "field1" => "category",
-                                "field3" => "brand_id",
-                                "field2" => "gender"
-                            );
-                            /*
-                             * Brand Name
-                             * * (i.e. Converse, Champion,...)
-                             */
-                            $this->_queries->_res = NULL;
-                            $get_category_brand = $this->_queries->GetData("brands", "id", $brand_name['brand_id'], $option = "0");
-                            $get_category_brand = $this->_queries->RetData();
-
-                            $brands[] = $get_category_brand;
+                                        array_push($cats['display'], $displays);
+                                    }
+                                }
+                                array_push($categories, $cats);
+                            }
+                            
+                           
                         }
 
-                        $big_data = array(
-                            "categories" => $get_selected_category,
-                            "brand_ids" => $get_selected_brands,
-                            "brands" => $brands
-                        );
-                        $this->_front_data[] = $big_data;
 
-                      
+                        $this->_front_data[] = $categories;
+
+
                         break;
                     /*
                      * Sub Categories
                      */
                     case "5":
-                       
+
                         break;
                     /*
                      * 
                      */
                     case "7":
-                        
+
                         break;
                 }
             }
