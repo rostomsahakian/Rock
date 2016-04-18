@@ -76,23 +76,29 @@ if (!$page_id) {
                 $template = THEME_DIR . '/' . THEME . '/html/categories.php';
                 $page_title = $PAGEDATA->title;
                 $pagecontent = $PAGEDATA->body;
+                $footer_data = $PAGEDATA->GetFooterData();
+                $footer_data = $PAGEDATA->_footer_links;
+                
                 $pag_data = $PAGEDATA->SetItemData();
                 $page_data = $PAGEDATA->_front_items;
                 include $template;
+                include_once 'r.frontend/template/footer.php';
 
                 break;
             case "5": //Sub-category
 
                 $template = THEME_DIR . '/' . THEME . '/html/sub-categories.php';
                 $page_title = $PAGEDATA->title;
-                $pagecontent = $PAGEDATA->SetItemData();
-                $pagecontent = $PAGEDATA->_front_items;
+                $page_data_sub = $PAGEDATA->SetItemData();
+                $page_data_sub = $PAGEDATA->_front_items;
                 include $template;
                 break;
             case "7": //item page
                 $template = THEME_DIR . '/' . THEME . '/html/_items.php';
                 $page_title = $PAGEDATA->_brand . "|" . $PAGEDATA->_item_name;
                 $pagecontent = $PAGEDATA->body;
+                $page_data_item = $PAGEDATA->SetItemData();
+                $page_data_item = $PAGEDATA->_front_items;
                 include $template;
                 break;
             case "9": //Designer page

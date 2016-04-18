@@ -74,6 +74,7 @@
         <script type="text/javascript" src="web/js/easing.js"></script>
         <script type="text/javascript" src="web/js/startstop-slider.js"></script>
         <script src="<?= $navjs ?>" type="text/javascript"></script>
+        <script src="/r.frontend/js/jquery.zoom.js"></script>
 <!--        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>-->
 
         <style>
@@ -94,9 +95,25 @@
                 width: 100%;
                 background: #EDEDED;
             }
-
+    img { border:3px solid #fff;}
+        .jzoom {
+            position: absolute;
+            top: 250px;
+            left: 100px;
+            width: 350px;
+            height: 350px;
+        }
 
         </style>
+        <!--ATTENTION--->
+        <!--THIS IS WHERE YOU CAN CHANGE THE MAGNIFICATION OF ZOOM ON ITEM PAGE-->
+        <script>
+		$(document).ready(function(){
+			$('#ex1').zoom({magnify: '1.5'});
+			
+		});
+	</script>
+        <!--DO NOT REMOVE -->
     </head>
 
     <body >

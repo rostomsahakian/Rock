@@ -41,6 +41,7 @@ class Page {
     public $_sub_level = array();
     public $Navigation;
     public $_social_media = array();
+    public $_footer_links = array();
     /*
      * For Items
      */
@@ -61,6 +62,7 @@ class Page {
     public $_year;
     public $_added_date;
     public $_band_id;
+  
 
     public function __construct() {
         $this->queries = new queries();
@@ -280,11 +282,18 @@ class Page {
     }
 
     public function SetItemData() {
+
+       
+        $page = isset($_GET['p'])? $_GET['p'] : "1";
+
+
         $page_data = array(
             "id" => $this->id,
             "type" => $this->type,
             "parent" => $this->parent,
-            "name" => $this->name
+            "name" => $this->name,
+            "page" => $page,
+            "model_number" => $this->_model_number
         );
         $this->_items->GetItemsFromDB($page_data);
 
@@ -292,9 +301,31 @@ class Page {
             $this->_front_items = $items;
         }
     }
-    
-    public function setBreadCrumb($page_name){
+
+    public function setBreadCrumb($page_name) {
         
+    }
+    
+    
+    public function GetFooterData(){
+        /*
+         * Footer links are going to be 
+         * 1. Gender based 
+         * 2. by brands
+         * So
+         * Select from pages where name= 'gender' and parent is zero
+         */
+        $values = array(
+            "value1" => "9",
+            "value2" => "10"
+            
+        );
+        $this->queries->_res = NULL;
+        $get_designers = $this->queries->GetData("pages", "type", $values, $option="20");
+        $get_designers = $this->queries->RetData();
+        
+        $this->_footer_links = $get_designers;
+ 
     }
 
 }

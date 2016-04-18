@@ -4,7 +4,47 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 ?>
+<div class="row rock-footer-div">
+    <!-- Mens-->
+    <div class="col-md-3">
+        <h3>Top Designers</h3>
+        <ul>
+             <?php
+        
+        foreach ($footer_data as $footer_designers){
+            $top_ten_designers = $footer_designers['name'];
+        
+            
+            ?>
+            <li><a href=""><?= $top_ten_designers ?></a></li>
+            <?php
+            
+        }
+        
+        
+        ?>
+            
+        </ul>
+
+    </div>
+    <!-- womens-->
+    <div class="col-md-3">
+
+    </div>
+    <!--Boys-->
+    <div class="col-md-3">
+
+    </div>
+    <!--Boys-->
+    <div class="col-md-3">
+
+    </div>
+</div>
+
+
+
 <script>
 
 

@@ -10,6 +10,7 @@ return array(
     'NavApi' => $baseDir . '/rock.api/NavApi.php',
     'Navigation' => $baseDir . '/rock.classes/Navigation.php',
     'Page' => $baseDir . '/rock.classes/Page.php',
+    'PagePagination' => $baseDir . '/rock.classes/PagePagination.php',
     'Smarty' => $baseDir . '/rock.includes/smarty-3.1.29/libs/Smarty.class.php',
     'SmartyBC' => $baseDir . '/rock.includes/smarty-3.1.29/libs/SmartyBC.class.php',
     'SmartyCompilerException' => $baseDir . '/rock.includes/smarty-3.1.29/libs/sysplugins/smartycompilerexception.php',

@@ -373,8 +373,8 @@ class queries {
                     }
                     break;
                 case "17":
-                    $sql = "SELECT *  FROM `" . $table . "` WHERE `" . $fields['field1'] . "` = '" . $value['value1'] . "' AND `".$fields['field2']."` = '".$value['value2']."'  ORDER BY RAND() LIMIT {$fields['limit']}";
-                    
+                    $sql = "SELECT *  FROM `" . $table . "` WHERE `" . $fields['field1'] . "` = '" . $value['value1'] . "' AND `" . $fields['field2'] . "` = '" . $value['value2'] . "'  ORDER BY RAND() LIMIT {$fields['limit']}";
+
                     $result = $this->_mysqli->query($sql);
                     if ($result) {
                         while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
@@ -385,6 +385,46 @@ class queries {
                     } else {
                         return false;
                     }
+                    break;
+
+                case "18":
+
+                    $sql = "SELECT * FROM `" . $table . "` WHERE `" . $fields['field1'] . "` = '" . $value['value1'] . "' AND `" . $fields['field2'] . "` = '" . $value['value2'] . "' LIMIT {$value['value3']} , {$value['value4']}";
+                    $result = $this->_mysqli->query($sql);
+                    if ($result) {
+                        while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+
+                            $this->_res[] = $row;
+                        }
+                        return true;
+                    } else {
+                        return false;
+                    }
+                case "19":
+
+                    $sql = "SELECT * FROM `" . $table . "` WHERE `" . $fields['field1'] . "` = '" . $value['value1'] . "' AND `" . $fields['field2'] . "` = '" . $value['value2'] . "'";
+                    $result = $this->_mysqli->query($sql);
+                    $num_rows = $result->num_rows;
+                    if ($result) {
+                        return $num_rows;
+                    } else {
+                        return false;
+                    }
+                case "20":
+
+                    $sql = "SELECT * FROM `" . $table . "` WHERE `" . $fields . "` = '" . $value['value1'] . "' LIMIT {$value['value2']}";
+
+                    $result = $this->_mysqli->query($sql);
+                    if ($result) {
+                        while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+
+                            $this->_res[] = $row;
+                        }
+                        return true;
+                    } else {
+                        return FALSE;
+                    }
+
                     break;
             }
         }

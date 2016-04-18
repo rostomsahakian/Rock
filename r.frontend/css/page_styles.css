@@ -210,3 +210,30 @@ span.rollover:hover {
     color: rgb(255, 255, 255);
     font-size: 11px;
 }
+
+.rock-item-page-image-div{
+    border: 1px solid #EFEFEF;
+    overflow: hidden;
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    margin-bottom: 20px;
+    min-height: 435px;
+}
+.rock-item-page-image-div img{
+    width: 100%;
+
+}
+.rock-quantity-div-select{
+    margin-top: 20px;
+}
+.rock-quantity-div-select select{
+    width:60px;
+}
+.rock-add-to-cart-button{
+    width: 100% !important;
+    margin-bottom: 20px;
+}
+.rock-item-desc{
+    padding: 15px;
+    min-height: 150px;
+}
