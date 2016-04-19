@@ -980,53 +980,53 @@ class forms {
                                                     <div class="panel-heading"><span>Sub-Pages</span></div>
                                                     <div class="panel-body">
                                                         <?php
-                                                        $this->_queries->_res = NULL;
-                                                        $find_count_sub_children = $this->_queries->GetData("pages", 'parent', $this->_editFormData['id'], "0");
-                                                        $find_count_sub_children = $this->_queries->RetData();
-
-                                                        $num = count($find_count_sub_children);
-
-                                                        if ($sub_pages_data == NULL) {
-
-                                                            $this->_queries->_res = NULL;
-                                                            $data_for_listing = $this->_queries->GetData("pages", NULL, NULL, "3");
-                                                            $data_for_listing = $this->_queries->RetData();
-
-
-                                                            if ($num != "0") {
-
-                                                                $child_pages = $this->ListAllPagesOnMainContent($data_for_listing, $this->_editFormData['parent']);
-                                                            } else if ($num == "0" && $this->_editFormData['type'] == "5") {
-                                                                /*
-                                                                 * Find products from all products where columns match
-                                                                 * 1.parent name
-                                                                 * 2.category
-                                                                 * 3.gender
-                                                                 */
-
-                                                                $all_products = $this->ListAllItemsFromDB($this->_editFormData['name'], $this->_editFormData['parent']);
-                                                                //var_dump($all_products);
-                                                                $list_items_details_form = $this->ListItemsDetailsForm($all_products, $this->_editFormData['name']);
-                                                            }
-                                                        } else {
-
-                                                            if ($num != "0") {
-
-                                                                $child_pages = $this->ListAllPagesOnMainContent($sub_pages_data, $this->_editFormData['id']);
-                                                            } else if ($num == "0" && $this->_editFormData['type'] == "5") {
-
-                                                                /*
-                                                                 * Find products from all products where columns match
-                                                                 * 1.parent name
-                                                                 * 2.category
-                                                                 * 3.gender
-                                                                 */
-
-                                                                $all_products = $this->ListAllItemsFromDB($this->_editFormData['name'], $this->_editFormData['parent']);
-
-                                                                $list_items_details_form = $this->ListItemsDetailsForm($all_products, $this->_editFormData['name']);
-                                                            }
-                                                        }
+//                                                        $this->_queries->_res = NULL;
+//                                                        $find_count_sub_children = $this->_queries->GetData("pages", 'parent', $this->_editFormData['id'], "0");
+//                                                        $find_count_sub_children = $this->_queries->RetData();
+//
+//                                                        $num = count($find_count_sub_children);
+//
+//                                                        if ($sub_pages_data == NULL) {
+//
+//                                                            $this->_queries->_res = NULL;
+//                                                            $data_for_listing = $this->_queries->GetData("pages", NULL, NULL, "3");
+//                                                            $data_for_listing = $this->_queries->RetData();
+//
+//
+//                                                            if ($num != "0") {
+//
+//                                                                $child_pages = $this->ListAllPagesOnMainContent($data_for_listing, $this->_editFormData['parent']);
+//                                                            } else if ($num == "0" && $this->_editFormData['type'] == "5") {
+//                                                                /*
+//                                                                 * Find products from all products where columns match
+//                                                                 * 1.parent name
+//                                                                 * 2.category
+//                                                                 * 3.gender
+//                                                                 */
+//
+//                                                                $all_products = $this->ListAllItemsFromDB($this->_editFormData['name'], $this->_editFormData['parent']);
+//                                                                //var_dump($all_products);
+//                                                                $list_items_details_form = $this->ListItemsDetailsForm($all_products, $this->_editFormData['name']);
+//                                                            }
+//                                                        } else {
+//
+//                                                            if ($num != "0") {
+//
+//                                                                $child_pages = $this->ListAllPagesOnMainContent($sub_pages_data, $this->_editFormData['id']);
+//                                                            } else if ($num == "0" && $this->_editFormData['type'] == "5") {
+//
+//                                                                /*
+//                                                                 * Find products from all products where columns match
+//                                                                 * 1.parent name
+//                                                                 * 2.category
+//                                                                 * 3.gender
+//                                                                 */
+//
+//                                                                $all_products = $this->ListAllItemsFromDB($this->_editFormData['name'], $this->_editFormData['parent']);
+//
+//                                                                $list_items_details_form = $this->ListItemsDetailsForm($all_products, $this->_editFormData['name']);
+//                                                            }
+//                                                        }
                                                         ?>
 
                                                     </div>

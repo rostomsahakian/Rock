@@ -106,5 +106,5 @@ include_once TEMPLATE_H_F_PATH . 'header.php';
 </div>
 
 <?php
-include_once TEMPLATE_H_F_PATH . 'footer.php';
+//include_once TEMPLATE_H_F_PATH . 'footer.php';
 ?>

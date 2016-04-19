@@ -9,7 +9,7 @@ and open the template in the editor.
 */
 @import url(http://fonts.googleapis.com/css?family=Montserrat:400,700);
 body{
-    font-family: Montserrat, sans-serif !important;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 }
 .rock-top-banner{
     /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,e5e5e5+74 */
@@ -236,4 +236,42 @@ span.rollover:hover {
 .rock-item-desc{
     padding: 15px;
     min-height: 150px;
+    text-align: justify;
+}
+.footer-main-wrapper{
+    background-color: #000;
+    min-height: 500px;
+    margin-top: 10px;
+}
+.footer-main-wrapper ul{
+    margin-top: 15px;
+}
+.footer-main-wrapper ul li{
+    list-style: none;
+}
+.footer-main-wrapper ul li a{
+    color:#fff;
+}
+.footer-main-wrapper h4{
+
+    color:#fff;
+
+}
+.rock-footer-div{
+    margin-top: 25px;
+}
+.rock-footer-all-rights{
+
+    text-align: center !important;
+    margin-top: 170px;
+    color: #fff;
+
+}
+.rock-list-group-heading{
+    font-size: 13px !important;
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+}
+.rock-list-group-item{
+    font-size: 11px !important;
 }

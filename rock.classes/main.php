@@ -64,7 +64,7 @@ class main {
                 "1" => '<link href="' . ABSOLUTH_PATH_CSS . 'bootstrap.min.css" rel="stylesheet">',
                 "2" => '<link rel="stylesheet" type="text/css" href="' . ABSOLUTH_PATH_CSS . 'styles.css"/>',
                 "3" => '<link rel="stylesheet" href="' . ABSOLUTH_PATH_JS . 'dist/themes/default/style.min.css" />',
-                "4" => '<link rel="stylesheet" href="' . ABSOLUTH_PATH_FONT_AWESOME. 'font-awesome.min.css" />'
+                "4" => '<link rel="stylesheet" href="' . ABSOLUTH_PATH_FONT_AWESOME . 'font-awesome.min.css" />'
             ),
             "js_links" => array(
                 "1" => '    <!-- jQuery (necessary for Bootstrap\'s JavaScript plugins) -->
@@ -75,7 +75,9 @@ class main {
 			  integrity="sha256-IY2gCpIs4xnQTJzCIPlL3uUgSOwVQYD9M8t208V+7KA="
 			  crossorigin="anonymous"></script>',
                 "4" => '  <script src="' . ABSOLUTH_PATH_ADMIN . 'pages/pages.js"></script>',
-                "5" => '<script src="' . ABSOLUTH_PATH_JS . 'ckeditor/ckeditor.js"></script>'
+                "5" => '<script src="' . ABSOLUTH_PATH_JS . 'ckeditor/ckeditor.js"></script>',
+                "6" => '<script src="' . ABSOLUTH_PATH_JS . 'promotion_ajax.js"></script>',
+
             ),
         );
 
@@ -141,6 +143,11 @@ class main {
                 "Social Media" => array(
                     "link" => "/rock.admin/?cmd=social_media&option=true",
                     "class" => "fa fa-facebook-square",
+                    "badge" => ""
+                ),
+                "Brands Promotions" => array(
+                    "link" => "/rock.admin/?cmd=b_promotion&option=true",
+                    "class" => "fa fa-thumbs-o-up",
                     "badge" => ""
                 )
             ),

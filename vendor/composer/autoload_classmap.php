@@ -195,6 +195,7 @@ return array(
     'header' => $baseDir . '/rock.classes/header.php',
     'items' => $baseDir . '/rock.classes/items.php',
     'main' => $baseDir . '/rock.classes/main.php',
+    'promotions' => $baseDir . '/rock.classes/promotions.php',
     'queries' => $baseDir . '/rock.classes/queries.php',
     'test' => $baseDir . '/rock.classes/test.php',
     'uploads' => $baseDir . '/rock.classes/uploads.php',

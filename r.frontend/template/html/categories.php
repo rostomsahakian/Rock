@@ -36,7 +36,7 @@ function compare_filters($a, $b) {
                                 $no_ands_cat_name = str_replace("&", "and", $no_spaces_cat_name);
                                 $clean_cat_name = preg_replace('/[^a-zA-Z0-9,-]/', "-", $no_ands_cat_name)
                                 ?>
-                                <a href="/<?= $clean_parent_name . "/" . $clean_cat_name . "/" . $page_real_id['child_id'] ?>" class="list-group-item"><?= $items['filter'] ?></a>
+                                <a href="/<?= $clean_parent_name . "/" . $clean_cat_name . "/" . $page_real_id['child_id'] ?>" class="list-group-item rock-list-group-item"><?= $items['filter'] ?></a>
                                 <?php
                             }
                         }

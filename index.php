@@ -55,6 +55,8 @@ if (!$page_id) {
          */
         $PAGEDATA->getInstanceByName($page, $data_for_query);
         $PAGEDATA->type;
+        $footer_data = $PAGEDATA->GetFooterData();
+        $footer_data = $PAGEDATA->_footer_links;
         switch ($PAGEDATA->type) {
             case "0": //Normal Page Type
                 $template = THEME_DIR . '/' . THEME . '/html/_default.php';
@@ -65,20 +67,19 @@ if (!$page_id) {
                 $page_extra_data = $PAGEDATA->SetItemData();
                 $page_extra_data = $PAGEDATA->_front_items;
                 include $template;
+                include_once 'r.frontend/template/footer.php';
                 break;
             case "1": //Sub-menu
 
                 $template = THEME_DIR . '/' . THEME . '/html/_default.php';
                 include $template;
+                include_once 'r.frontend/template/footer.php';
                 break;
             case "3": //Category
 
                 $template = THEME_DIR . '/' . THEME . '/html/categories.php';
                 $page_title = $PAGEDATA->title;
                 $pagecontent = $PAGEDATA->body;
-                $footer_data = $PAGEDATA->GetFooterData();
-                $footer_data = $PAGEDATA->_footer_links;
-                
                 $pag_data = $PAGEDATA->SetItemData();
                 $page_data = $PAGEDATA->_front_items;
                 include $template;
@@ -92,6 +93,7 @@ if (!$page_id) {
                 $page_data_sub = $PAGEDATA->SetItemData();
                 $page_data_sub = $PAGEDATA->_front_items;
                 include $template;
+                include_once 'r.frontend/template/footer.php';
                 break;
             case "7": //item page
                 $template = THEME_DIR . '/' . THEME . '/html/_items.php';
@@ -100,6 +102,7 @@ if (!$page_id) {
                 $page_data_item = $PAGEDATA->SetItemData();
                 $page_data_item = $PAGEDATA->_front_items;
                 include $template;
+                include_once 'r.frontend/template/footer.php';
                 break;
             case "9": //Designer page
 
@@ -107,6 +110,7 @@ if (!$page_id) {
                 $page_title = $PAGEDATA->title;
                 $pagecontent = $PAGEDATA->body;
                 include $template;
+                include_once 'r.frontend/template/footer.php';
                 break;
         }
     }

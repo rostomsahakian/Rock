@@ -62,7 +62,6 @@ class Page {
     public $_year;
     public $_added_date;
     public $_band_id;
-  
 
     public function __construct() {
         $this->queries = new queries();
@@ -283,8 +282,8 @@ class Page {
 
     public function SetItemData() {
 
-       
-        $page = isset($_GET['p'])? $_GET['p'] : "1";
+
+        $page = isset($_GET['p']) ? $_GET['p'] : "1";
 
 
         $page_data = array(
@@ -305,27 +304,66 @@ class Page {
     public function setBreadCrumb($page_name) {
         
     }
-    
-    
-    public function GetFooterData(){
+
+    public function GetFooterData() {
+
         /*
-         * Footer links are going to be 
-         * 1. Gender based 
-         * 2. by brands
-         * So
-         * Select from pages where name= 'gender' and parent is zero
+         * If the retailer is for apperal then we should use a different footer type
+         * Footer type: Clothing
+         * It must show the top designers for each brand.
+         * Footer type: regular
+         * It will show all the top and sub-menu pages, if they have designers or services, store and payment information
          */
-        $values = array(
-            "value1" => "9",
-            "value2" => "10"
+        if (defined('DISIGNER_FOOTER') && DISIGNER_FOOTER == "1") {
+
+            $footer_top_designers = array();
+            $footer_top_designers["m"] = array();
+            $footer_top_designers['w'] = array();
+            $footer_top_designers['b'] = array();
+            $footer_top_designers['g'] = array();
+            $this->queries->_res = NULL;
+            $get_mens_brands = $this->queries->GetData("brand_promotions", "gender", "Mens", "0");
+            $get_mens_brands = $this->queries->RetData();
+            $mens = array();
+            $mens['mens'] = $get_mens_brands;
+            array_push($footer_top_designers['m'], $mens);
+
+            $this->queries->_res = NULL;
+            $get_womens_brands = $this->queries->GetData("brand_promotions", "gender", "Womens", "0");
+            $get_womens_brands = $this->queries->RetData();
+            $womens = array();
+            $womens['womens'] = $get_womens_brands;
+            array_push($footer_top_designers['w'], $womens);
             
-        );
-        $this->queries->_res = NULL;
-        $get_designers = $this->queries->GetData("pages", "type", $values, $option="20");
-        $get_designers = $this->queries->RetData();
-        
-        $this->_footer_links = $get_designers;
- 
+            $this->queries->_res = NULL;
+            $get_boys_brands = $this->queries->GetData("brand_promotions", "gender", "Boys", "0");
+            $get_boys_brands = $this->queries->RetData();
+            $boys = array();
+            $boys['boys'] = $get_boys_brands;
+            array_push($footer_top_designers['b'], $boys);
+            
+            $this->queries->_res = NULL;
+            $get_girls_brands = $this->queries->GetData("brand_promotions", "gender", "Girls", "0");
+            $get_girls_brands = $this->queries->RetData();
+            $girls = array();
+            $girls['girls'] = $get_girls_brands;            
+            array_push($footer_top_designers['g'], $girls);
+
+            array_push($this->_footer_links, $footer_top_designers);
+            
+        } else {
+
+
+            $values = array(
+                "value1" => "9", //Page type
+                "value2" => "10" //Limit
+            );
+            $this->queries->_res = NULL;
+            $get_designers = $this->queries->GetData("pages", "type", $values, $option = "20");
+            $get_designers = $this->queries->RetData();
+
+            $this->_footer_links = $get_designers;
+        }
     }
 
 }

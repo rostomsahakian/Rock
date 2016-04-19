@@ -15,11 +15,14 @@ class body {
     public $_forms;
     public $listener;
     public $queries;
+    public $_promotions;
 
     public function __construct() {
+
         $this->_forms = new forms(); //Forms
-        $this->listener = new BackendController(); //BackendController
+        $this->listener = new BackendController(); //BackendController.
         $this->queries = new queries(); //queries (MySQL commands)
+        $this->_promotions = new promotions();
     }
 
     public function TopNavBar(array $topNavBar) {
@@ -44,35 +47,35 @@ class body {
                             unset($topNavBar['Module manager']['Carousel Manager']);
                         }
                     }
-                    if(array_key_exists("Theme Manager", $topNavBar['Module manager'])){
+                    if (array_key_exists("Theme Manager", $topNavBar['Module manager'])) {
                         if (defined('THEME_MANAGER') && THEME_MANAGER === "0") {
                             unset($topNavBar['Module manager']['Theme Manager']);
                         }
                     }
-                    if(array_key_exists("Forms Manager", $topNavBar['Module manager'])){
+                    if (array_key_exists("Forms Manager", $topNavBar['Module manager'])) {
                         if (defined('FORMS_MANAGER') && FORMS_MANAGER === "0") {
                             unset($topNavBar['Module manager']['Forms Manager']);
                         }
                     }
-                    if(array_key_exists("Sells Report", $topNavBar['Reports'])){
+                    if (array_key_exists("Sells Report", $topNavBar['Reports'])) {
                         if (defined('REPORTS') && REPORTS === "0") {
                             unset($topNavBar['Reports']['Sells Report']);
                         }
                     }
-                    if(array_key_exists("Google Analytic Report", $topNavBar['Reports'])){
+                    if (array_key_exists("Google Analytic Report", $topNavBar['Reports'])) {
                         if (defined('GAR') && GAR === "0") {
                             unset($topNavBar['Reports']['Google Analytic Report']);
                         }
                     }
-                    if(array_key_exists("Page manager", $topNavBar)){
+                    if (array_key_exists("Page manager", $topNavBar)) {
                         if (defined('PAGE_MANAGER') && PAGE_MANAGER === "0") {
                             unset($topNavBar['Page manager']);
                         }
                     }
-                    if(count($topNavBar['Module manager']) == 0){
+                    if (count($topNavBar['Module manager']) == 0) {
                         unset($topNavBar['Module manager']);
                     }
-                    if(count($topNavBar['Reports']) == 0){
+                    if (count($topNavBar['Reports']) == 0) {
                         unset($topNavBar['Reports']);
                     }
 
@@ -341,15 +344,14 @@ class body {
                 } else {
                     $get_data_for_items = array();
                 }
-                                /*
+                /*
                  * Get Data for social media
                  */
                 $this->queries->_res = NULL;
                 $get_data_for_social_media = $this->queries->GetData("social_media", NULL, NULL, "7");
-              
+
                 if ($get_data_for_social_media) {
                     $get_data_for_social_media = $this->queries->RetData();
-                   
                 } else {
                     $get_data_for_social_media = array();
                 }
@@ -405,8 +407,7 @@ class body {
                 }
 
 
-
-
+    
 
 
 
@@ -429,7 +430,8 @@ class body {
                     "edit_save_page_data" => $page_data_array,
                     "message" => (isset($message) ? $message : ""),
                     "item_page_data" => $get_data_for_items,
-                    "social_media" => $get_data_for_social_media
+                    "social_media" => $get_data_for_social_media,
+                    
                 );
 
 

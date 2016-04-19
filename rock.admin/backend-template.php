@@ -180,7 +180,7 @@
                              * If clciked to update the page in the pages form
                              */#################################################
                             case "update_page_details":
-                                
+
                                 /*
                                  * First We check if the page name is does not exist under the same directory 
                                  */
@@ -298,6 +298,12 @@
                             case "social_media":
 
                                 $this->_forms->SocialMediaForm($cmd['social_media']);
+                                break;
+                            /* ##########################
+                             * Brand Promotion (clothing)
+                             */#########################
+                            case "b_promotion":   
+                                 $this->_promotions->PromotionBackendModule();
                                 break;
                         }
                     }

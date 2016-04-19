@@ -65,3 +65,4 @@ define("REPORTS", "1");
 define("GAR", "1");
 define("PAGE_MANAGER", "1");
 define("SOCIAL_MEDIA", "1");
+define("DISIGNER_FOOTER", "1"); // IF it is 1 then designer footer will show the top designers for each gender

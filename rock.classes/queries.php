@@ -685,9 +685,9 @@ class queries {
                     $sql .= implode(",", $data['values']);
 
                     $sql .= " ) ";
-//                    echo "<br/>";
-//                    var_dump($sql);
-//                    echo "<br/>";
+                    echo "<br/>";
+                    var_dump($sql);
+                    echo "<br/>";
                     $result = $this->_mysqli->query($sql);
                     if ($result) {
                         return true;
@@ -814,6 +814,15 @@ class queries {
                     break;
                 case "1":
                     $sql = "DELETE FROM `" . $to_delete['table'] . "` WHERE `" . $to_delete['field1'] . "` = '" . $to_delete['value1'] . "' AND `" . $to_delete['field2'] . "` = '" . $to_delete['value2'] . "'";
+                    $result = $this->_mysqli->query($sql);
+                    if ($result) {
+                        return true;
+                    }
+                    break;
+
+                case "2":
+                    $sql = "DELETE FROM `" . $to_delete['table'] . "` WHERE `" . $to_delete['field1'] . "` = '" . $to_delete['value1'] . "'";
+                   
                     $result = $this->_mysqli->query($sql);
                     if ($result) {
                         return true;
