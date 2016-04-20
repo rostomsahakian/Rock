@@ -18,7 +18,7 @@ include_once TEMPLATE_H_F_PATH . 'header.php';
                 <div class="col-md-12">
                     <div class="col-md-1">&nbsp;</div>
                     <div class="col-md-4 rock-item-page-image-div" id="ex1">    
-                        <img src="<?= $item_d['item_image_url'] ?>"/>
+                        <img src="<?= $item_d['item_image_url'] ?>" class="rock-item-image"/>
                     </div>
 
                     <div class="col-md-6 rock-item-page-details">

@@ -4,6 +4,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 ?>
 <div class="footer-main-wrapper">
     <div class="container">

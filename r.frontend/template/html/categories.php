@@ -63,7 +63,8 @@ function compare_filters($a, $b) {
             /*
              * Brand Name
              */
-            $brand = str_replace(" ", "-", $for_categories['brand']);
+            $real_brand_name = $for_categories['brand'];
+            $brand = str_replace(" ", "-", $real_brand_name);
             $clean_brand_name = str_replace(" ", "-", $brand);
             $remove_ands_from_brand = str_replace("&", "and", $clean_brand_name);
             $brand_name_url = '/' . preg_replace('/[^a-zA-Z0-9,-]/', '-', strtolower($remove_ands_from_brand));
@@ -104,7 +105,7 @@ function compare_filters($a, $b) {
 
                                 <div class="row">
                 <!--                                <span class="rock-category-in-box"><?php // $category    ?></span>-->
-                                    <a href="<?= $brand_name_url ?>" class="rock-brand-in-box"><?= $brand ?></a>
+                                    <a href="<?= $brand_name_url ?>" class="rock-brand-in-box"><?= $real_brand_name ?></a>
                                     <a  href="<?= $gender_url . $category_for_url . $brand_name_url . "/" . $model_number ?>"  class="rock-product-link">
                                         <span class="rollover" >                                    
                 <!--                                        <a class="rock-view-details-in-box" href="<?php // $gender_url . $category_for_url . $brand_name_url . "/" . $model_number    ?>#<?php //$clean_p_name    ?>" >View Product</a>-->
@@ -116,7 +117,7 @@ function compare_filters($a, $b) {
                                 </div>
                                 <div class="row rock-item-captions">
 
-                                <p> <?= $item_name ?><p> 
+                                    <p class="rock-item-name"> <?= $item_name ?><p> 
                                 <p>  REG. PRICE: $<?= $item_price ?></p>  
 <!--                                    <p><a href="<?// $gender_url . $category_for_url . "/" . $page_id ?>" title="<?//$category ?>"> <?= $category ?></a><p> -->
 

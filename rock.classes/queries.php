@@ -426,6 +426,21 @@ class queries {
                     }
 
                     break;
+                case "21":
+
+                    $sql = "SELECT * FROM `" . $table . "` WHERE `" . $fields . "`= '" . $value['value1'] . "' ORDER By {$value['value2']}";
+                    $result = $this->_mysqli->query($sql);
+
+                    if ($result) {
+                        while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+
+                            $this->_res[] = $row;
+                        }
+                        return true;
+                    } else {
+                        return FALSE;
+                    }
+                    break;
             }
         }
     }
@@ -822,7 +837,7 @@ class queries {
 
                 case "2":
                     $sql = "DELETE FROM `" . $to_delete['table'] . "` WHERE `" . $to_delete['field1'] . "` = '" . $to_delete['value1'] . "'";
-                   
+
                     $result = $this->_mysqli->query($sql);
                     if ($result) {
                         return true;

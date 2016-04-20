@@ -78,18 +78,17 @@ include_once TEMPLATE_H_F_PATH . 'header.php';
                                     <a href="<? ?>" class="rock-brand-in-box"><?= $brand ?></a>
                                     <a  href="<?= $gender . $category . $brand_name . "/" . $model_number ?>#<?= $clean_p_name ?> "  class="rock-product-link">
                                         <span class="rollover" >                                    
-                                            <a class="rock-view-details-in-box" href="<??>" >View Product</a>
 
                                         </span>
                                     </a>
-                                    <img id="zoom_<?= $model_number ?>" src="<?= $item_image ?>"  title="<?= $brand." ".$item_name." ".$model_number ?>">
+                                    <img id="zoom_<?= $model_number ?>" src="<?= $item_image ?>"  title="<?= $brand." ".$item_name." ".$model_number ?>" class="rock-item-image">
 
 
                                 </div>
 
                                 <div class="row rock-item-captions">
 
-                                    <p> <?= $item_name ?><p> 
+                                    <p class="rock-item-name"> <?= $item_name ?><p> 
                                     <p>  REG. PRICE:  $<?= $item_price ?></p>  
 
                                 </div>

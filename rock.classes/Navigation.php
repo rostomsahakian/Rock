@@ -48,9 +48,12 @@ class Navigation {
                 if ($this->HasChild($parent['id'])) {
                     $category['sub_categories'] = array();
                 }
-
+                $values = array(
+                    "value1" => $parent['id'],
+                    "value2" => "ord"
+                );
                 $this->queries->_res = NULL;
-                $get_children = $this->queries->GetData("pages", "parent", $parent['id'], "0");
+                $get_children = $this->queries->GetData("pages", "parent", $values, "21");
                 $get_children = $this->queries->RetData();
                 if (count($get_children) > 0) {
                     if ($parent['id'] != "1") {
@@ -185,13 +188,13 @@ class Navigation {
                                             /*
                                              * Sorts children
                                              */
-                                            usort($sorted_children, array($this, "compare_name"));
+                                           // usort($sorted_children, array($this, "compare_name"));
                                             foreach ($sorted_children as $child) {
                                                 ?>
                                                 <div>
                                                     <li>
 
-                                                        <div class="col-sm-3 rock-drop-down-link">
+                                                        <div class="col-sm-6 rock-drop-down-link">
                                                             <?php
                                                             $this->GetUrl($child['id']);
                                                             if ($child['parent'] == 0 || $child['parent'] == "0") {
@@ -200,7 +203,7 @@ class Navigation {
                                                                 $page_id_ext = "/" . $child['id'];
                                                             }
                                                             ?>
-                                                            <a href="<?= $this->RetUrl() . $page_id_ext ?>"><?= $child['name'] ?></a>
+                                                            <a href="<?= $this->RetUrl() . $page_id_ext ?>"><i class="fa fa-angle-double-right" aria-hidden="true"></i>&nbsp;<?= $child['name'] ?></a>
 
                                                         </div>
 

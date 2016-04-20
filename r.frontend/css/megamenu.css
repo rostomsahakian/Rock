@@ -88,9 +88,9 @@
 .rock-drop-down-link a:hover{
     
     text-decoration: underline;
-   
-
-
+}
+rock-drop-down-link.col-sm-6 {
+    width: 35% important;
 }
 .rock-drop-down-header{
     margin-left: 10px;

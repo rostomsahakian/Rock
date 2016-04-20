@@ -66,6 +66,7 @@ class Page {
     public function __construct() {
         $this->queries = new queries();
         $this->_items = new items();
+        $this->SetFooterData();
     }
 
     /*
@@ -179,6 +180,7 @@ class Page {
                     $this->vars = $page_info['vars'];
                 }
                 $nameIndex = preg_replace('#[^a-z0-9/]#', '-', $this->name);
+                
             }
         } else {
 
@@ -283,7 +285,7 @@ class Page {
     public function SetItemData() {
 
 
-        $page = isset($_GET['p']) ? $_GET['p'] : "1";
+        $page_id = isset($_GET['p']) ? $_GET['p'] : "1";
 
 
         $page_data = array(
@@ -291,7 +293,7 @@ class Page {
             "type" => $this->type,
             "parent" => $this->parent,
             "name" => $this->name,
-            "page" => $page,
+            "page" => $page_id,
             "model_number" => $this->_model_number
         );
         $this->_items->GetItemsFromDB($page_data);
@@ -364,6 +366,10 @@ class Page {
 
             $this->_footer_links = $get_designers;
         }
+    }
+    
+    public function SetFooterData(){
+        return $this->_footer_links;
     }
 
 }

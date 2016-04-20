@@ -117,7 +117,6 @@
     </head>
 
     <body >
-        <div class="row">
             <nav class="navbar navbar-default navbar-fixed-top rock-top-banner">
                 <div class="container">
                     <div>
@@ -129,9 +128,8 @@
                     </div>
                 </div>
             </nav>
-        </div>    
+       
         <!-- Logo and search and social media go here-->
-        <div class="row">
             <div class="container rock-mid-bar-container">
                 <div class="clear-fix"></div>
                 <div class="col-lg-12">
@@ -143,8 +141,7 @@
                     </div>
                     <div class="col-lg-4 ">
                         <!--Search-->
-                        <div class="row">
-                        </div><!-- /.col-lg-6 -->
+                       <!-- /.col-lg-6 -->
                         <div class="col-md-12">
                             <div class="input-group ">
                                 <input type="text" class="form-control pull-right" placeholder="Search for...">
@@ -157,7 +154,7 @@
                     <div class="col-lg-4" style="margin-top: 10px; margin-bottom: 10px;">
                         <center>
                             <!--Social Media-->
-                            <div class="row">
+                            
                                 <div class="btn-group">
                                     <?php
                                     $social_media = $PAGEDATA->SetSocialMedia();
@@ -173,7 +170,7 @@
                                     ?>
 
                                 </div>
-                            </div>
+                           
                             <!-- Shopping cart info goes here -->
                             <div class="row rock-shopping-cart">
                                 <a href="#">My cart (0)</a> <i class="glyphicon glyphicon-shopping-cart"></i>
@@ -182,7 +179,6 @@
                     </div>
                 </div>
             </div>
-        </div>
         <!--End of mid bar-->
         <!-- Navigation Begins-->
         <div class="rock-background-color-manager">
@@ -201,7 +197,7 @@
             </div>-->
             <!--Breadcrumb goas here-->
 
-            <div class="row">
+            
                 <div class="container">
                     <ol class="breadcrumb rock-breadcrumb">
                         <?php
@@ -213,4 +209,4 @@
 
                     </ol>
                 </div>
-            </div>
+        

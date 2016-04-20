@@ -368,11 +368,11 @@ class forms {
                                 <input type="hidden" name="form[page_edit][id]" value="<?= $page_id; ?>"/>
                                 <div class="row">
                                     <ul class="nav nav-tabs" role="tablist" id="tabs_editpage" >
-                                        <li class="active" aria-controls="login" role="tab" ><a href="#tabs-common-details" data-toggle="tab">Common Details</a></li>
-                                        <li aria-controls="f_pass" role="tab" ><a href="#tabs-advanced-options" data-toggle="tab">Advanced Options</a></li>
-                                        <li aria-controls="f_pass" role="tab" ><a href="#tabs-images" data-toggle="tab">Images</a></li>
-                                        <li aria-controls="f_pass" role="tab" ><a href="#tabs-files" data-toggle="tab">Files</a></li>
-                                        <li aria-controls="f_pass" role="tab" ><a href="#sub-pages" data-toggle="tab">Sub-pages</a></li>
+                                        <li class="active" aria-controls="login" role="tab" ><a href="/rock.admin/?cmd=edit_page#tabs-common-details" data-toggle="tab">Common Details</a></li>
+                                        <li aria-controls="f_pass" role="tab" ><a href="/rock.admin/?cmd=edit_page#tabs-advanced-options" data-toggle="tab">Advanced Options</a></li>
+                                        <li aria-controls="f_pass" role="tab" ><a href="/rock.admin/?cmd=edit_page#tabs-images" data-toggle="tab">Images</a></li>
+                                        <li aria-controls="f_pass" role="tab" ><a href="/rock.admin/?cmd=edit_page#tabs-files" data-toggle="tab">Files</a></li>
+                                        <li aria-controls="f_pass" role="tab" ><a href="/rock.admin/?cmd=edit_page#sub-pages" data-toggle="tab">Sub-pages</a></li>
                                         <!--add plugin tabs here-->
                                         <li class=""> </li>
                                     </ul>
@@ -980,53 +980,53 @@ class forms {
                                                     <div class="panel-heading"><span>Sub-Pages</span></div>
                                                     <div class="panel-body">
                                                         <?php
-//                                                        $this->_queries->_res = NULL;
-//                                                        $find_count_sub_children = $this->_queries->GetData("pages", 'parent', $this->_editFormData['id'], "0");
-//                                                        $find_count_sub_children = $this->_queries->RetData();
-//
-//                                                        $num = count($find_count_sub_children);
-//
-//                                                        if ($sub_pages_data == NULL) {
-//
-//                                                            $this->_queries->_res = NULL;
-//                                                            $data_for_listing = $this->_queries->GetData("pages", NULL, NULL, "3");
-//                                                            $data_for_listing = $this->_queries->RetData();
-//
-//
-//                                                            if ($num != "0") {
-//
-//                                                                $child_pages = $this->ListAllPagesOnMainContent($data_for_listing, $this->_editFormData['parent']);
-//                                                            } else if ($num == "0" && $this->_editFormData['type'] == "5") {
-//                                                                /*
-//                                                                 * Find products from all products where columns match
-//                                                                 * 1.parent name
-//                                                                 * 2.category
-//                                                                 * 3.gender
-//                                                                 */
-//
-//                                                                $all_products = $this->ListAllItemsFromDB($this->_editFormData['name'], $this->_editFormData['parent']);
-//                                                                //var_dump($all_products);
-//                                                                $list_items_details_form = $this->ListItemsDetailsForm($all_products, $this->_editFormData['name']);
-//                                                            }
-//                                                        } else {
-//
-//                                                            if ($num != "0") {
-//
-//                                                                $child_pages = $this->ListAllPagesOnMainContent($sub_pages_data, $this->_editFormData['id']);
-//                                                            } else if ($num == "0" && $this->_editFormData['type'] == "5") {
-//
-//                                                                /*
-//                                                                 * Find products from all products where columns match
-//                                                                 * 1.parent name
-//                                                                 * 2.category
-//                                                                 * 3.gender
-//                                                                 */
-//
-//                                                                $all_products = $this->ListAllItemsFromDB($this->_editFormData['name'], $this->_editFormData['parent']);
-//
-//                                                                $list_items_details_form = $this->ListItemsDetailsForm($all_products, $this->_editFormData['name']);
-//                                                            }
-//                                                        }
+                                                        $this->_queries->_res = NULL;
+                                                        $find_count_sub_children = $this->_queries->GetData("pages", 'parent', $this->_editFormData['id'], "0");
+                                                        $find_count_sub_children = $this->_queries->RetData();
+
+                                                        $num = count($find_count_sub_children);
+
+                                                        if ($sub_pages_data == NULL) {
+
+                                                            $this->_queries->_res = NULL;
+                                                            $data_for_listing = $this->_queries->GetData("pages", NULL, NULL, "3");
+                                                            $data_for_listing = $this->_queries->RetData();
+
+
+                                                            if ($num != "0") {
+
+                                                                $child_pages = $this->ListAllPagesOnMainContent($data_for_listing, $this->_editFormData['parent']);
+                                                            } else if ($num == "0" && $this->_editFormData['type'] == "5") {
+                                                                /*
+                                                                 * Find products from all products where columns match
+                                                                 * 1.parent name
+                                                                 * 2.category
+                                                                 * 3.gender
+                                                                 */
+
+                                                                $all_products = $this->ListAllItemsFromDB($this->_editFormData['name'], $this->_editFormData['parent']);
+                                                                //var_dump($all_products);
+                                                                $list_items_details_form = $this->ListItemsDetailsForm($all_products, $this->_editFormData['name']);
+                                                            }
+                                                        } else {
+
+                                                            if ($num != "0") {
+
+                                                                $child_pages = $this->ListAllPagesOnMainContent($sub_pages_data, $this->_editFormData['id']);
+                                                            } else if ($num == "0" && $this->_editFormData['type'] == "5") {
+
+                                                                /*
+                                                                 * Find products from all products where columns match
+                                                                 * 1.parent name
+                                                                 * 2.category
+                                                                 * 3.gender
+                                                                 */
+
+                                                                $all_products = $this->ListAllItemsFromDB($this->_editFormData['name'], $this->_editFormData['parent']);
+
+                                                                $list_items_details_form = $this->ListItemsDetailsForm($all_products, $this->_editFormData['name']);
+                                                            }
+                                                        }
                                                         ?>
 
                                                     </div>
@@ -1035,7 +1035,7 @@ class forms {
                                             </div>
                                         </div>
                                     </div>
-                <?php ?>
+                                    <?php ?>
                                     <!--Sub pages ends-->
                                 </div>
                             </div>
@@ -1069,26 +1069,27 @@ class forms {
         $this->_list_pages = $list_pages;
         ///var_dump($list_pages);
         ?>
+        </script>
         <div class="col-lg-12">
-        <?php
-        if ($this->_flag == 1) {
-            ?>
+            <?php
+            if ($this->_flag == 1) {
+                ?>
                 <div class="col-md-12" style="margin-top: 10px !important;">
 
                     <div class="list-group">
                         <ul>
-            <?php
-            foreach ($this->error_message as $message) {
+                            <?php
+                            foreach ($this->error_message as $message) {
 
-                echo "<li class='list-group-item list-group-item-warning'><i class='glyphicon glyphicon-info-sign'></i>&nbsp;" . $message . "</li>";
-            }
-            ?>
+                                echo "<li class='list-group-item list-group-item-warning'><i class='glyphicon glyphicon-info-sign'></i>&nbsp;" . $message . "</li>";
+                            }
+                            ?>
                         </ul>
                     </div>
                 </div>
-            <?php
-        }
-        ?>
+                <?php
+            }
+            ?>
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <span>Edit Your Pages</span>                    
@@ -1104,93 +1105,95 @@ class forms {
                             <th>Type</th>
                             <th>Children</th>
                             <th>Actions</th>
-        <?php
-        foreach ($this->_list_pages as $do_list_pages) {
+                            <?php
+                            foreach ($this->_list_pages as $do_list_pages) {
 
 
 
 
-            if ($do_list_pages['parent'] == $parent) {
-                ?>
+                                if ($do_list_pages['parent'] == $parent) {
+                                    ?>
                                 </tr>
                                 <tr>
                                     <td>
-                <?= $do_list_pages['id'] ?>
+                                        <?= $do_list_pages['id'] ?>
                                     </td>
                                     <td>
-                <?php
+                                        <?php
 //                                    if(isset($_REQUEST['new_order']) && isset($_REQUEST['page_id']) && $_REQUEST['page_id'] == $do_list_pages['id']){
 //                                        $do_list_pages['ord'] = $_REQUEST['new_order'];
 //                                    }
-                ?>
+                                        ?>
+
                                         <form  method="post">
-                                            <input  type="text"  style="width: 25px; text-align:center;" name="new_order" value="<?= (isset($do_list_pages['ord']) && $do_list_pages['ord'] != '') ? $do_list_pages['ord'] : 0; ?>"/>
-                                            <input type="hidden" name="page_id" value="<?= $do_list_pages['id'] ?>"/>
-                                            <input type="hidden" name="old_order" value="<?= $do_list_pages['ord'] ?>" />
-                                            <input type="hidden" name="parent" value="<?= $do_list_pages['parent'] ?>"/>
-                                            <input type="hidden" name="cmd" value="choose_edit_page"/>
-                                            <input type="submit"  name="do_update_order" class="btn btn-default btn-xs" value="update"/>
+                                            <input  type="text"  style="width: 25px; text-align:center;" name="new_order" id="new_order_<?= $do_list_pages['id'] ?>" value="<?= (isset($do_list_pages['ord']) && $do_list_pages['ord'] != '') ? $do_list_pages['ord'] : 0; ?>"/>
+                                            <input type="hidden" name="page_id" id="page_id" value="<?= $do_list_pages['id'] ?>"/>
+                                            <input type="hidden" name="old_order" id="old_order" value="<?= $do_list_pages['ord'] ?>" />
+                                            <input type="hidden" name="parent" id="parent" value="<?= $do_list_pages['parent'] ?>"/>
+                                            <input type="hidden" name="cmd" value="choose_edit_page" id ="cmd"/>
+                                            <input type="submit"  name="do_update_order" id="do_update_order" class="btn btn-default btn-xs" value="update"/>
                                         </form>
 
+
                                     </td>
                                     <td>
-                <?= $do_list_pages['name'] ?>
+                                        <?= $do_list_pages['name'] ?>
                                     </td>
                                     <td>
-                <?= $do_list_pages['parent'] ?>
+                                        <?= $do_list_pages['parent'] ?>
                                     </td>
                                     <td>
-                <?= $do_list_pages['title'] ?>
+                                        <?= $do_list_pages['title'] ?>
                                     </td>
 
                                     <td>
-                <?php
-                if ($do_list_pages['type'] == "0") {
+                                        <?php
+                                        if ($do_list_pages['type'] == "0") {
 
-                    $page_type = "Home page";
-                } else if ($do_list_pages['type'] == "1") {
+                                            $page_type = "Home page";
+                                        } else if ($do_list_pages['type'] == "1") {
 
-                    $page_type = "Sub-Menu";
-                } else if ($do_list_pages['type'] == "3") {
+                                            $page_type = "Sub-Menu";
+                                        } else if ($do_list_pages['type'] == "3") {
 
-                    $page_type = "Category";
-                } else if ($do_list_pages['type'] == "5") {
+                                            $page_type = "Category";
+                                        } else if ($do_list_pages['type'] == "5") {
 
-                    $page_type = "Sub-Category";
-                } else if ($do_list_pages['type'] == "9") {
+                                            $page_type = "Sub-Category";
+                                        } else if ($do_list_pages['type'] == "9") {
 
-                    $page_type = "Designer";
-                }
-                echo $page_type;
-                ?>
+                                            $page_type = "Designer";
+                                        }
+                                        echo $page_type;
+                                        ?>
                                     </td>
                                     <td>
-                <?php
-                $data = array(
-                    "table" => "pages",
-                    "field" => "parent",
-                    "value" => $do_list_pages['id']
-                );
-                $this->_queries->_res = NULL;
-                $find_count_sub_children = $this->_queries->GetData("pages", 'parent', $do_list_pages['id'], "0");
-                $find_count_sub_children = $this->_queries->RetData();
+                                        <?php
+                                        $data = array(
+                                            "table" => "pages",
+                                            "field" => "parent",
+                                            "value" => $do_list_pages['id']
+                                        );
+                                        $this->_queries->_res = NULL;
+                                        $find_count_sub_children = $this->_queries->GetData("pages", 'parent', $do_list_pages['id'], "0");
+                                        $find_count_sub_children = $this->_queries->RetData();
 
-                $num = count($find_count_sub_children);
+                                        $num = count($find_count_sub_children);
 
 
-                if ($num != "0" && $do_list_pages['type'] != "5") {
-                    echo $num;
-                } else if ($do_list_pages['type'] == "5" && $num == "0") {
+                                        if ($num != "0" && $do_list_pages['type'] != "5") {
+                                            echo $num;
+                                        } else if ($do_list_pages['type'] == "5" && $num == "0") {
 
-                    $num = $this->ListAllItemsFromDB($do_list_pages['name'], $do_list_pages['id']);
-                    echo count($num);
-                } else if ($num == "0" && $do_list_pages['type'] != "5") {
-                    $num = "0";
-                    echo $num;
-                } else {
-                    echo $num;
-                }
-                ?>
+                                            $num = $this->ListAllItemsFromDB($do_list_pages['name'], $do_list_pages['id']);
+                                            echo count($num);
+                                        } else if ($num == "0" && $do_list_pages['type'] != "5") {
+                                            $num = "0";
+                                            echo $num;
+                                        } else {
+                                            echo $num;
+                                        }
+                                        ?>
                                     </td>
                                     <td>
                                         <div class="row">
@@ -1210,10 +1213,10 @@ class forms {
 
 
                                 </tr>
-                <?php
-            }
-        }
-        ?>
+                                <?php
+                            }
+                        }
+                        ?>
                     </table>
 
                 </div>
@@ -1228,7 +1231,7 @@ class forms {
      */
 
     public function DoUpdateOrderForPages(array $order_data) {
-
+        
         if (isset($_REQUEST['do_update_order'])) {
 
             $new_order = $order_data[0];
@@ -1244,6 +1247,7 @@ class forms {
             if ($parent != 0 || $parent != "0") {
                 $get_child_data = $this->_queries->findParent($data, $option = "2");
             } else {
+                $this->_queries->_res = NULL;
                 $get_child_data = $this->_queries->findParent($data, $option = "2");
                 $get_child_data = $this->_queries->RetData();
             }
@@ -1754,25 +1758,25 @@ class forms {
         ?>
         <div class="row">
             <div class="col-md-12">
-        <?php
-        if ($this->_flag == 1) {
-            ?>
+                <?php
+                if ($this->_flag == 1) {
+                    ?>
                     <div class="col-md-12" style="margin-top: 10px !important;">
 
                         <div class="list-group">
                             <ul>
-            <?php
-            foreach ($this->error_message as $message) {
+                                <?php
+                                foreach ($this->error_message as $message) {
 
-                echo "<li class='list-group-item list-group-item-warning'><i class='glyphicon glyphicon-info-sign'></i>&nbsp;" . $message . "</li>";
-            }
-            ?>
+                                    echo "<li class='list-group-item list-group-item-warning'><i class='glyphicon glyphicon-info-sign'></i>&nbsp;" . $message . "</li>";
+                                }
+                                ?>
                             </ul>
                         </div>
                     </div>
-            <?php
-        }
-        ?>
+                    <?php
+                }
+                ?>
                 <div class="col-md-3"></div>
                 <div class="col-md-6">
 
@@ -1795,18 +1799,18 @@ class forms {
                                             <select name="form[add_new_page][page_parent]" class="form-control">
                                                 <option value="0">--None--</option>
 
-        <?php
-        if ($paren_list != NULL) {
+                                                <?php
+                                                if ($paren_list != NULL) {
 
-            foreach ($paren_list as $p_list) {
-                //  var_dump($p_list);
-                ?>
+                                                    foreach ($paren_list as $p_list) {
+                                                        //  var_dump($p_list);
+                                                        ?>
                                                         <option value="<?= (isset($_REQUEST['form']['add_new_page']['page_parent'])) ? $_REQUEST['form']['add_new_page']['page_parent'] : $p_list['id'] ?>"><?= $p_list['name'] . "  ->" . $p_list['type'] ?></option>
 
-                <?php
-            }
-        }
-        ?>
+                                                        <?php
+                                                    }
+                                                }
+                                                ?>
 
                                             </select>
                                         </div>
@@ -1817,16 +1821,16 @@ class forms {
                                         <div class="form-group">
                                             <label>Type</label>
                                             <select name="form[add_new_page][page_type]" class="form-control">
-        <?php
-        $this->DefinePageTypes();
-        $page_types = $this->RetPageTypes();
-        foreach ($page_types as $v => $p_type) {
-            ?>
+                                                <?php
+                                                $this->DefinePageTypes();
+                                                $page_types = $this->RetPageTypes();
+                                                foreach ($page_types as $v => $p_type) {
+                                                    ?>
                                                     <option value="<?= (isset($_REQUEST['form']['add_new_page']['page_type']) ? $_REQUEST['form']['add_new_page']['page_type'] : $v ) ?>"><?= $p_type ?></option>
 
-            <?php
-        }
-        ?>
+                                                    <?php
+                                                }
+                                                ?>
                                             </select>
                                         </div>
                                     </div>
@@ -1845,235 +1849,235 @@ class forms {
                 </div>
                 <div class="col-md-3"></div>
             </div>
-        <?php
-    }
+            <?php
+        }
 
-    /*
-     * Will process AddNewPagePopUp function
-     */
+        /*
+         * Will process AddNewPagePopUp function
+         */
 
-    public function DoAddNewPage(array $data = NULL, array $data_to_compare = NULL) {
-        if ($data != NULL) {
-            $page_name = $data['form']['add_new_page']['page_name'];
-            $new_page_parent = $data['form']['add_new_page']['page_parent'];
-            $page_type = $data['form']['add_new_page']['page_type'];
-            /*
-             * First check and make sure data is enterd
-             */
-            $flag = 0;
-            if (empty($page_name)) {
-                $flag = 1;
-                if ($flag === 1) {
-                    $message = array("message" => "Page name cannot be empty");
+        public function DoAddNewPage(array $data = NULL, array $data_to_compare = NULL) {
+            if ($data != NULL) {
+                $page_name = $data['form']['add_new_page']['page_name'];
+                $new_page_parent = $data['form']['add_new_page']['page_parent'];
+                $page_type = $data['form']['add_new_page']['page_type'];
+                /*
+                 * First check and make sure data is enterd
+                 */
+                $flag = 0;
+                if (empty($page_name)) {
+                    $flag = 1;
+                    if ($flag === 1) {
+                        $message = array("message" => "Page name cannot be empty");
 
-                    array_push($message, $flag);
-                    $this->_message = $message;
+                        array_push($message, $flag);
+                        $this->_message = $message;
+                    }
                 }
-            }
-            if (!isset($page_type)) {
-                $page_type = "0";
-            }
-            if ($data_to_compare != NULL) {
-                for ($i = 0; $i < count($data_to_compare); $i++) {
+                if (!isset($page_type)) {
+                    $page_type = "0";
+                }
+                if ($data_to_compare != NULL) {
+                    for ($i = 0; $i < count($data_to_compare); $i++) {
 
-                    $exsisting_pages_name = $data_to_compare[$i]['name'];
-                    $exsisting_pages_ids = $data_to_compare[$i]['id'];
+                        $exsisting_pages_name = $data_to_compare[$i]['name'];
+                        $exsisting_pages_ids = $data_to_compare[$i]['id'];
 
-                    if ($new_page_parent == $exsisting_pages_ids) {
-                        if ($page_name == $exsisting_pages_name) {
-                            $flag = 1;
-                            if ($flag === 1) {
-                                $message = array("message" => "Page name cannot be the same as the parent");
-
-                                array_push($message, $flag);
-                                $this->_message = $message;
-                            }
-                        }
-                    } else if ($new_page_parent === "0") {
-                        $exsisting_pages_parents = $data_to_compare[$i]['parent'];
-                        if ($new_page_parent == $exsisting_pages_parents) {
+                        if ($new_page_parent == $exsisting_pages_ids) {
                             if ($page_name == $exsisting_pages_name) {
                                 $flag = 1;
                                 if ($flag === 1) {
-                                    $message = array("message" => "Page name is duplicated! Try an other name.");
+                                    $message = array("message" => "Page name cannot be the same as the parent");
+
                                     array_push($message, $flag);
                                     $this->_message = $message;
+                                }
+                            }
+                        } else if ($new_page_parent === "0") {
+                            $exsisting_pages_parents = $data_to_compare[$i]['parent'];
+                            if ($new_page_parent == $exsisting_pages_parents) {
+                                if ($page_name == $exsisting_pages_name) {
+                                    $flag = 1;
+                                    if ($flag === 1) {
+                                        $message = array("message" => "Page name is duplicated! Try an other name.");
+                                        array_push($message, $flag);
+                                        $this->_message = $message;
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
-            if ($flag == 0) {
+                if ($flag == 0) {
 
-                $table = array("table1" => "pages");
-                $columns = array("`name`", "`alias`", "`parent`", "`type`", "`edate`");
-                $clean_page_alias = str_replace(" ", "-", $page_name);
-                $page_alias_with_out_ands = str_replace("&", "and", $clean_page_alias);
-                $page_alias_kosher = preg_replace('/[^a-zA-Z0-9,-]/', "-", $page_alias_with_out_ands);
-                $page_alias = trim(strtolower($page_alias_kosher));
+                    $table = array("table1" => "pages");
+                    $columns = array("`name`", "`alias`", "`parent`", "`type`", "`edate`");
+                    $clean_page_alias = str_replace(" ", "-", $page_name);
+                    $page_alias_with_out_ands = str_replace("&", "and", $clean_page_alias);
+                    $page_alias_kosher = preg_replace('/[^a-zA-Z0-9,-]/', "-", $page_alias_with_out_ands);
+                    $page_alias = trim(strtolower($page_alias_kosher));
 
-                $values = array("'" . $page_name . "'", "'" . $page_alias . "'", "'" . (int) $new_page_parent . "'", "'" . $page_type . "'", "'" . date("Y m d") . "'");
-                $values_to_insert = array(
-                    "tables" => $table,
-                    "columns" => $columns,
-                    "values" => $values
-                );
-                $insert_new_page_details = $this->_queries->Insertvalues($values_to_insert, $option = "1");
-
-                /*
-                 * Select the name of this page where parent is equal to parent
-                 */
-                $table_for_url_query = "pages";
-                $fields_for_url_query = array(
-                    "field1" => "name",
-                    "field2" => "id",
-                    "field3" => "parent"
-                );
-                $values_for_query_url = array(
-                    "value1" => $page_name,
-                    "value2" => $new_page_parent
-                );
-                $this->_queries->_res = NULL;
-                $get_page_info_for_url = $this->_queries->GetData($table_for_url_query, $fields_for_url_query, $values_for_query_url, $option = "9");
-                $get_page_info_for_url = $this->_queries->RetData();
-                foreach ($get_page_info_for_url as $data_for_url) {
-                    
-                }
-                $add_url_option = array(
-                    "selected" => "long",
-                    "parent_id" => $new_page_parent,
-                    "page_name" => $data_for_url['name']
-                );
-                $url_for_page = $this->URL_RE_WRITER($add_url_option);
-                $url_for_page = $this->RET_URL();
-                $table_to_insert_url = array("table1" => "page_urls");
-                $columns_to_insert = array("`page_id`", "`long_url`");
-
-                $values_to_insert_url_table = array("'" . $data_for_url['id'] . "'", "'" . $url_for_page . "'");
-
-                $values_to_insert_in_url = array(
-                    "tables" => $table_to_insert_url,
-                    "columns" => $columns_to_insert,
-                    "values" => $values_to_insert_url_table
-                );
-                $insert_new_page_url = $this->_queries->Insertvalues($values_to_insert_in_url, $option = "1");
-
-                /*
-                 * If page type is 7 (item page add data to product table as well
-                 */
-                foreach ($get_page_info_for_url as $data_for_item) {
-                    
-                }
-                if ($page_type == "7") {
-                    $table_for_item = array("table1" => "products");
-
-                    $columns_for_item = array("`product_id`", "`parent`");
-
-                    $values_for_item = array("'" . $data_for_item['id'] . "'", "'" . $data_for_item['parent'] . "'");
-
-                    $values_to_insert_in_product_table = array(
-                        "tables" => $table_for_item,
-                        "columns" => $columns_for_item,
-                        "values" => $values_for_item
+                    $values = array("'" . $page_name . "'", "'" . $page_alias . "'", "'" . (int) $new_page_parent . "'", "'" . $page_type . "'", "'" . date("Y m d") . "'");
+                    $values_to_insert = array(
+                        "tables" => $table,
+                        "columns" => $columns,
+                        "values" => $values
                     );
-                    $insert_new_item_page_details = $this->_queries->Insertvalues($values_to_insert_in_product_table, $option = "1");
-                }
+                    $insert_new_page_details = $this->_queries->Insertvalues($values_to_insert, $option = "1");
+
+                    /*
+                     * Select the name of this page where parent is equal to parent
+                     */
+                    $table_for_url_query = "pages";
+                    $fields_for_url_query = array(
+                        "field1" => "name",
+                        "field2" => "id",
+                        "field3" => "parent"
+                    );
+                    $values_for_query_url = array(
+                        "value1" => $page_name,
+                        "value2" => $new_page_parent
+                    );
+                    $this->_queries->_res = NULL;
+                    $get_page_info_for_url = $this->_queries->GetData($table_for_url_query, $fields_for_url_query, $values_for_query_url, $option = "9");
+                    $get_page_info_for_url = $this->_queries->RetData();
+                    foreach ($get_page_info_for_url as $data_for_url) {
+                        
+                    }
+                    $add_url_option = array(
+                        "selected" => "long",
+                        "parent_id" => $new_page_parent,
+                        "page_name" => $data_for_url['name']
+                    );
+                    $url_for_page = $this->URL_RE_WRITER($add_url_option);
+                    $url_for_page = $this->RET_URL();
+                    $table_to_insert_url = array("table1" => "page_urls");
+                    $columns_to_insert = array("`page_id`", "`long_url`");
+
+                    $values_to_insert_url_table = array("'" . $data_for_url['id'] . "'", "'" . $url_for_page . "'");
+
+                    $values_to_insert_in_url = array(
+                        "tables" => $table_to_insert_url,
+                        "columns" => $columns_to_insert,
+                        "values" => $values_to_insert_url_table
+                    );
+                    $insert_new_page_url = $this->_queries->Insertvalues($values_to_insert_in_url, $option = "1");
+
+                    /*
+                     * If page type is 7 (item page add data to product table as well
+                     */
+                    foreach ($get_page_info_for_url as $data_for_item) {
+                        
+                    }
+                    if ($page_type == "7") {
+                        $table_for_item = array("table1" => "products");
+
+                        $columns_for_item = array("`product_id`", "`parent`");
+
+                        $values_for_item = array("'" . $data_for_item['id'] . "'", "'" . $data_for_item['parent'] . "'");
+
+                        $values_to_insert_in_product_table = array(
+                            "tables" => $table_for_item,
+                            "columns" => $columns_for_item,
+                            "values" => $values_for_item
+                        );
+                        $insert_new_item_page_details = $this->_queries->Insertvalues($values_to_insert_in_product_table, $option = "1");
+                    }
 
 
-                if ($insert_new_page_details) {
-                    $flag = 1;
-                    $message = array("message" => "Page {$page_name} was added.");
-                    array_push($message, $flag);
-                    $this->_message = $message;
-                } else {
-                    $flag = 1;
-                    $message = array("message" => "page was not added.");
-                    array_push($message, $flag);
-                    $this->_message = $message;
+                    if ($insert_new_page_details) {
+                        $flag = 1;
+                        $message = array("message" => "Page {$page_name} was added.");
+                        array_push($message, $flag);
+                        $this->_message = $message;
+                    } else {
+                        $flag = 1;
+                        $message = array("message" => "page was not added.");
+                        array_push($message, $flag);
+                        $this->_message = $message;
+                    }
                 }
             }
         }
-    }
 
-    public function RET_MESSAGE_TO() {
-        return $this->_message;
-    }
-
-    public function RET_URL() {
-        return $this->_url;
-    }
-
-    /*
-     * Page Types
-     * Add more if needed 
-     * Number must be +2 of the last available number
-     * Just for convension
-     */
-
-    public function DefinePageTypes() {
-
-        $page_type = array(
-            "0" => "Home Page",
-            "1" => "Sub-Menu",
-            "3" => "Category",
-            "5" => "Sub-Category",
-            "7" => "Item-Page",
-            "9" => "Designers",
-            "11" => "Top Level",
-            "13" => "Contact-us",
-            "15" => "Normal"
-        );
-
-
-        $this->_page_type = $page_type;
-    }
-
-    /*
-     * Return Page_types
-     */
-
-    public function RetPageTypes() {
-        return $this->_page_type;
-    }
-
-    public function ItemPageForm(array $data = NULL, array $images = NULL) {
-
-        if (isset($_REQUEST['form']['item_edit']['update_item'])) {
-
-            $model_number = isset($_REQUEST['form']['item_edit']['db_id']) ? $_REQUEST['form']['item_edit']['db_id'] : '';
-            $model_number = isset($_REQUEST['form']['item_edit']['model_number']) ? $_REQUEST['form']['item_edit']['model_number'] : '';
-            $category_name = isset($_REQUEST['form']['item_edit']['categroy']) ? $_REQUEST['form']['item_edit']['categroy'] : '';
-            $parent = isset($_REQUEST['form']['item_edit']['parent']) ? $_REQUEST['form']['item_edit']['parent'] : '';
-            $product_name = isset($_REQUEST['form']['item_edit']['product_name']) ? $_REQUEST['form']['item_edit']['product_name'] : '';
-            $alias = isset($_REQUEST['form']['item_edit']['alias']) ? $_REQUEST['form']['item_edit']['alias'] : '';
-            $color = isset($_REQUEST['form']['item_edit']['color']) ? $_REQUEST['form']['item_edit']['color'] : '';
-            $product_description = isset($_REQUEST['form']['item_edit']['product_description']) ? $_REQUEST['form']['item_edit']['product_description'] : '';
-            $keywords = isset($_REQUEST['form']['item_edit']['keywords']) ? $_REQUEST['form']['item_edit']['keywords'] : '';
-            $version = isset($_REQUEST['form']['item_edit']['version']) ? $_REQUEST['form']['item_edit']['version'] : '';
-            $size = isset($_REQUEST['form']['item_edit']['size']) ? $_REQUEST['form']['item_edit']['size'] : '';
-            $status = isset($_REQUEST['form']['item_edit']['status']) ? $_REQUEST['form']['item_edit']['status'] : '';
-            $meta_keywords = isset($_REQUEST['form']['item_edit']['mata_keywords']) ? $_REQUEST['form']['item_edit']['mata_keywords'] : '';
-            $meta_description = isset($_REQUEST['form']['item_edit']['meta_description']) ? $_REQUEST['form']['item_edit']['meta_description'] : '';
-            $price = isset($_REQUEST['form']['item_edit']['price']) ? $_REQUEST['form']['item_edit']['price'] : '';
-            $date_added = date('Y,m,d');
+        public function RET_MESSAGE_TO() {
+            return $this->_message;
         }
 
-        foreach ($data as $item) {
-            ?>
+        public function RET_URL() {
+            return $this->_url;
+        }
+
+        /*
+         * Page Types
+         * Add more if needed 
+         * Number must be +2 of the last available number
+         * Just for convension
+         */
+
+        public function DefinePageTypes() {
+
+            $page_type = array(
+                "0" => "Home Page",
+                "1" => "Sub-Menu",
+                "3" => "Category",
+                "5" => "Sub-Category",
+                "7" => "Item-Page",
+                "9" => "Designers",
+                "11" => "Top Level",
+                "13" => "Contact-us",
+                "15" => "Normal"
+            );
+
+
+            $this->_page_type = $page_type;
+        }
+
+        /*
+         * Return Page_types
+         */
+
+        public function RetPageTypes() {
+            return $this->_page_type;
+        }
+
+        public function ItemPageForm(array $data = NULL, array $images = NULL) {
+
+            if (isset($_REQUEST['form']['item_edit']['update_item'])) {
+
+                $model_number = isset($_REQUEST['form']['item_edit']['db_id']) ? $_REQUEST['form']['item_edit']['db_id'] : '';
+                $model_number = isset($_REQUEST['form']['item_edit']['model_number']) ? $_REQUEST['form']['item_edit']['model_number'] : '';
+                $category_name = isset($_REQUEST['form']['item_edit']['categroy']) ? $_REQUEST['form']['item_edit']['categroy'] : '';
+                $parent = isset($_REQUEST['form']['item_edit']['parent']) ? $_REQUEST['form']['item_edit']['parent'] : '';
+                $product_name = isset($_REQUEST['form']['item_edit']['product_name']) ? $_REQUEST['form']['item_edit']['product_name'] : '';
+                $alias = isset($_REQUEST['form']['item_edit']['alias']) ? $_REQUEST['form']['item_edit']['alias'] : '';
+                $color = isset($_REQUEST['form']['item_edit']['color']) ? $_REQUEST['form']['item_edit']['color'] : '';
+                $product_description = isset($_REQUEST['form']['item_edit']['product_description']) ? $_REQUEST['form']['item_edit']['product_description'] : '';
+                $keywords = isset($_REQUEST['form']['item_edit']['keywords']) ? $_REQUEST['form']['item_edit']['keywords'] : '';
+                $version = isset($_REQUEST['form']['item_edit']['version']) ? $_REQUEST['form']['item_edit']['version'] : '';
+                $size = isset($_REQUEST['form']['item_edit']['size']) ? $_REQUEST['form']['item_edit']['size'] : '';
+                $status = isset($_REQUEST['form']['item_edit']['status']) ? $_REQUEST['form']['item_edit']['status'] : '';
+                $meta_keywords = isset($_REQUEST['form']['item_edit']['mata_keywords']) ? $_REQUEST['form']['item_edit']['mata_keywords'] : '';
+                $meta_description = isset($_REQUEST['form']['item_edit']['meta_description']) ? $_REQUEST['form']['item_edit']['meta_description'] : '';
+                $price = isset($_REQUEST['form']['item_edit']['price']) ? $_REQUEST['form']['item_edit']['price'] : '';
+                $date_added = date('Y,m,d');
+            }
+
+            foreach ($data as $item) {
+                ?>
                 <div class="col-md-12" style="margin-top: 10px !important;">
-                <?php
-                if ($this->_flag == 1) {
-                    ?>
+                    <?php
+                    if ($this->_flag == 1) {
+                        ?>
                         <div class="list-group">
                             <ul>
-                <?php
-                foreach ($this->error_message as $message) {
+                                <?php
+                                foreach ($this->error_message as $message) {
 
-                    echo "<li class='list-group-item list-group-item-warning'><i class='glyphicon glyphicon-info-sign'></i>&nbsp;" . $message . "</li>";
-                }
-            }
-            ?>
+                                    echo "<li class='list-group-item list-group-item-warning'><i class='glyphicon glyphicon-info-sign'></i>&nbsp;" . $message . "</li>";
+                                }
+                            }
+                            ?>
                         </ul>
                     </div>
                 </div>
@@ -2118,14 +2122,14 @@ class forms {
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Category Name:</label>
-            <?php
-            $this->_queries->_res = NULL;
-            $get_cat_name = $this->_queries->GetData("pages", "id", $item['parent'], "0");
-            $get_cat_name = $this->_queries->RetData();
-            foreach ($get_cat_name as $category) {
-                
-            }
-            ?>
+                                                        <?php
+                                                        $this->_queries->_res = NULL;
+                                                        $get_cat_name = $this->_queries->GetData("pages", "id", $item['parent'], "0");
+                                                        $get_cat_name = $this->_queries->RetData();
+                                                        foreach ($get_cat_name as $category) {
+                                                            
+                                                        }
+                                                        ?>
                                                         <input type="text" name="form[item_edit][category_name]" value="<?= $category['name'] ?>"  class="form-control" disabled="disabled"/>
                                                     </div>
                                                 </div>
@@ -2185,32 +2189,32 @@ class forms {
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div class="panel panel-default">
-            <?php
-            $status_icon = "";
-            $status = (isset($_REQUEST['form']['item_edit']['status']) ? $_REQUEST['form']['item_edit']['status'] : $item['status']);
-            if ($status == "1") {
-                $status_icon = "glyphicon glyphicon-plus-sign btn btn-success btn-xs";
-            } else {
-                $status_icon = "glyphicon glyphicon-minus-sign btn btn-danger btn-xs";
-            }
-            ?>
+                                                        <?php
+                                                        $status_icon = "";
+                                                        $status = (isset($_REQUEST['form']['item_edit']['status']) ? $_REQUEST['form']['item_edit']['status'] : $item['status']);
+                                                        if ($status == "1") {
+                                                            $status_icon = "glyphicon glyphicon-plus-sign btn btn-success btn-xs";
+                                                        } else {
+                                                            $status_icon = "glyphicon glyphicon-minus-sign btn btn-danger btn-xs";
+                                                        }
+                                                        ?>
                                                         <div class="panel-heading"><i class="<?= $status_icon ?>"></i><span> Status</span></div>
                                                         <div class="panel-body">
 
                                                             <div class="form-group">
-            <?php
-            $enabled = '';
-            $disabled = '';
-            //$status = (isset($_REQUEST['form']['item_edit']['status']) ? $_REQUEST['form']['item_edit']['status'] : $item['status']);
-            if ($status == "1") {
+                                                                <?php
+                                                                $enabled = '';
+                                                                $disabled = '';
+                                                                //$status = (isset($_REQUEST['form']['item_edit']['status']) ? $_REQUEST['form']['item_edit']['status'] : $item['status']);
+                                                                if ($status == "1") {
 
-                $enabled = 'checked="checked"';
-                $disabled = '';
-            } else {
-                $enabled = '';
-                $disabled = 'checked="checked"';
-            }
-            ?>
+                                                                    $enabled = 'checked="checked"';
+                                                                    $disabled = '';
+                                                                } else {
+                                                                    $enabled = '';
+                                                                    $disabled = 'checked="checked"';
+                                                                }
+                                                                ?>
                                                                 <table class="table table-hover">
                                                                     <tr>
                                                                         <td><span>Enabled</span></td>
@@ -2218,7 +2222,7 @@ class forms {
                                                                     </tr>
                                                                     <tr>
                                                                         <td><span>Disable</span></td>
-            <?php ?>
+                                                                        <?php ?>
                                                                         <td><input type="radio" name="form[item_edit][status]" value="0" <?= $disabled; ?> class="form-control"/></td>
                                                                     </tr>
                                                                 </table>
@@ -2280,10 +2284,10 @@ class forms {
                                                         </div>
                                                         <div class="panel-body">
                                                             <div class="row">
-            <?php
-            if ($images != NULL) {
-                foreach ($images as $image) {
-                    ?>
+                                                                <?php
+                                                                if ($images != NULL) {
+                                                                    foreach ($images as $image) {
+                                                                        ?>
 
                                                                         <div class="col-xs-7 col-md-2">
                                                                             <a href="<?= $image['image_path'] . $image['image_name'] ?>" target="_blank" class="thumbnail">
@@ -2298,10 +2302,10 @@ class forms {
 
                                                                             </a>
                                                                         </div>
-                    <?php
-                }
-            } else {
-                ?>
+                                                                        <?php
+                                                                    }
+                                                                } else {
+                                                                    ?>
                                                                     <p>This page currently has no images.</p>
                                                                 <?php }
                                                                 ?>
@@ -2348,22 +2352,22 @@ class forms {
                                                                     <div class="form-group">
                                                                         <label>Order of</label>
                                                                         <select class="form-control" name="form[page_edit][page_vars][order_of_sub_pages]">
-            <?php
-            $arr = array('as shown in admin menu', 'alphabetically', 'by associated date');
-            foreach ($arr as $k => $v) {
-                if (isset($page_vars['order_of_sub_pages']) &&
-                        $page_vars['order_of_sub_pages'] == $k) {
-                    $selected = "selected='selected'";
-                } else {
-                    $selected = "";
-                }
-                ?>
-                                                                                <option value="<?= $k ?>" <?= $selected ?>>                                                                             
-                                                                                <?= $v; ?>
-                                                                                </option>
-                                                                                    <?php
+                                                                            <?php
+                                                                            $arr = array('as shown in admin menu', 'alphabetically', 'by associated date');
+                                                                            foreach ($arr as $k => $v) {
+                                                                                if (isset($page_vars['order_of_sub_pages']) &&
+                                                                                        $page_vars['order_of_sub_pages'] == $k) {
+                                                                                    $selected = "selected='selected'";
+                                                                                } else {
+                                                                                    $selected = "";
                                                                                 }
                                                                                 ?>
+                                                                                <option value="<?= $k ?>" <?= $selected ?>>                                                                             
+                                                                                    <?= $v; ?>
+                                                                                </option>
+                                                                                <?php
+                                                                            }
+                                                                            ?>
 
                                                                         </select>
                                                                     </div>
@@ -2375,13 +2379,13 @@ class forms {
                                                                         <label>Sub-pages</label>
                                                                         <select class="form-control" name="form[page_edit][page_vars][order_of_sub_pages_dir]">
                                                                             <option value="0">ascending (a-z, 0-9)</option>
-            <?php
-            if (isset($page_vars['order_of_sub_pages_dir']) == '1') {
-                $sub_selected = 'selected="selected"';
-            } else {
-                $sub_selected = "";
-            }
-            ?>
+                                                                            <?php
+                                                                            if (isset($page_vars['order_of_sub_pages_dir']) == '1') {
+                                                                                $sub_selected = 'selected="selected"';
+                                                                            } else {
+                                                                                $sub_selected = "";
+                                                                            }
+                                                                            ?>
                                                                             <option value="1">descending (z-a, 9-0)</option>
 
 
@@ -2522,18 +2526,18 @@ class forms {
         ?>
         <div class="col-lg-12">
             <div class="col-md-12" style="margin-top: 10px !important;">
-        <?php
-        if ($this->_flag == 1) {
-            ?>
+                <?php
+                if ($this->_flag == 1) {
+                    ?>
                     <div class="list-group">
                         <ul>
-            <?php
-            foreach ($this->error_message as $message) {
+                            <?php
+                            foreach ($this->error_message as $message) {
 
-                echo "<li class='list-group-item list-group-item-warning'><i class='glyphicon glyphicon-info-sign'></i>&nbsp;" . $message . "</li>";
-            }
-        }
-        ?>
+                                echo "<li class='list-group-item list-group-item-warning'><i class='glyphicon glyphicon-info-sign'></i>&nbsp;" . $message . "</li>";
+                            }
+                        }
+                        ?>
                     </ul>
                 </div>
             </div>
@@ -2573,17 +2577,17 @@ class forms {
 
                                     <form method="post" name="form[brands]">
                                         <select name="form[brands][tables]">
-        <?php
-        $value = array(
-            "patern" => "rock_"
-        );
-        $this->_queries->_res = NULL;
-        $see_tables = $this->_queries->CreateTableServices($value, $option = "1");
-        $see_tables = $this->_queries->RetData();
+                                            <?php
+                                            $value = array(
+                                                "patern" => "rock_"
+                                            );
+                                            $this->_queries->_res = NULL;
+                                            $see_tables = $this->_queries->CreateTableServices($value, $option = "1");
+                                            $see_tables = $this->_queries->RetData();
 
-        foreach ($see_tables as $brand_tables) {
-            if ($brand_tables['Tables_in_rock_cmsdb (%rock_%)'] != '') {
-                ?>
+                                            foreach ($see_tables as $brand_tables) {
+                                                if ($brand_tables['Tables_in_rock_cmsdb (%rock_%)'] != '') {
+                                                    ?>
                                                     <option value="<?= $brand_tables['Tables_in_rock_cmsdb (%rock_%)'] ?>"><?= $brand_tables['Tables_in_rock_cmsdb (%rock_%)'] ?></option>
                                                     <?php
                                                 } else {
@@ -2744,18 +2748,18 @@ class forms {
         ?>
         <div class="col-md-12">
             <div class="col-md-12" style="margin-top: 10px !important;">
-        <?php
-        if ($this->_flag == 1) {
-            ?>
+                <?php
+                if ($this->_flag == 1) {
+                    ?>
                     <div class="list-group">
                         <ul>
-            <?php
-            foreach ($this->error_message as $message) {
+                            <?php
+                            foreach ($this->error_message as $message) {
 
-                echo "<li class='list-group-item list-group-item-warning'><i class='glyphicon glyphicon-info-sign'></i>&nbsp;" . $message . "</li>";
-            }
-        }
-        ?>
+                                echo "<li class='list-group-item list-group-item-warning'><i class='glyphicon glyphicon-info-sign'></i>&nbsp;" . $message . "</li>";
+                            }
+                        }
+                        ?>
                     </ul>
                 </div>
             </div>
@@ -2776,25 +2780,25 @@ class forms {
                                 <div class="form-group">
                                     <table class="table table-hover table-bordered" style="margin-top:21px">
                                         <!--LOGIC-->
-        <?php
-        $checked_1 = '';
-        $checked_2 = '';
-        $checked_3 = '';
-        $selection = ((isset($_REQUEST['form']['social']['facebook_icons']) ? $_REQUEST['form']['social']['facebook_icons'] : $social_media[0]['image_name']));
-        if ($selection == "faceboo_color.png") {
-            $checked_1 = 'checked="checked"';
-            $checked_2 = '';
-            $checked_3 = '';
-        } else if ($selection == "facebook.png") {
-            $checked_1 = '';
-            $checked_2 = 'checked="checked"';
-            $checked_3 = '';
-        } else {
-            $checked_1 = '';
-            $checked_2 = '';
-            $checked_3 = 'checked="checked"';
-        }
-        ?>
+                                        <?php
+                                        $checked_1 = '';
+                                        $checked_2 = '';
+                                        $checked_3 = '';
+                                        $selection = ((isset($_REQUEST['form']['social']['facebook_icons']) ? $_REQUEST['form']['social']['facebook_icons'] : $social_media[0]['image_name']));
+                                        if ($selection == "faceboo_color.png") {
+                                            $checked_1 = 'checked="checked"';
+                                            $checked_2 = '';
+                                            $checked_3 = '';
+                                        } else if ($selection == "facebook.png") {
+                                            $checked_1 = '';
+                                            $checked_2 = 'checked="checked"';
+                                            $checked_3 = '';
+                                        } else {
+                                            $checked_1 = '';
+                                            $checked_2 = '';
+                                            $checked_3 = 'checked="checked"';
+                                        }
+                                        ?>
                                         <tr>
                                             <td style="width:100px;">                                               
                                                 <img src="/r.frontend/social_media/social_media_by_alfredo/faceboo_color.png" alt="" width="25" height="25"/>                                          
@@ -2817,15 +2821,15 @@ class forms {
                             <div class="col-md-3">
                                 <div class="form-group" style="margin-top:30px">
                                     <label>Status</label>
-        <?php
-        $selection = (isset($_REQUEST['form']['social']['facebook_status']) ? $_REQUEST['form']['social']['facebook_status'] : $social_media[0]['status'] );
-        if ($selection == 1) {
-            $checked_1 = 'checked="checked"';
-            $checked_2 = '';
-        } else {
-            $checked_1 = '';
-        }
-        ?>
+                                    <?php
+                                    $selection = (isset($_REQUEST['form']['social']['facebook_status']) ? $_REQUEST['form']['social']['facebook_status'] : $social_media[0]['status'] );
+                                    if ($selection == 1) {
+                                        $checked_1 = 'checked="checked"';
+                                        $checked_2 = '';
+                                    } else {
+                                        $checked_1 = '';
+                                    }
+                                    ?>
                                     <input type="hidden"  name="form[social][facebook_status]" value="0" />
                                     <input type="checkbox"  name="form[social][facebook_status]" value="1" <?= $checked_1 ?>/>
                                 </div>
@@ -2842,25 +2846,25 @@ class forms {
                                 <div class="form-group">
                                     <table class="table table-hover table-bordered" style="margin-top:21px">
                                         <!--LOGIC-->
-        <?php
-        $checked_1 = '';
-        $checked_2 = '';
-        $checked_3 = '';
-        $selection = ((isset($_REQUEST['form']['social']['twitter_icons']) ? $_REQUEST['form']['social']['twitter_icons'] : $social_media[1]['image_name']));
-        if ($selection == "twitter_color.png") {
-            $checked_1 = 'checked="checked"';
-            $checked_2 = '';
-            $checked_3 = '';
-        } else if ($selection == "twitter.png") {
-            $checked_1 = '';
-            $checked_2 = 'checked="checked"';
-            $checked_3 = '';
-        } else {
-            $checked_1 = '';
-            $checked_2 = '';
-            $checked_3 = 'checked="checked"';
-        }
-        ?>
+                                        <?php
+                                        $checked_1 = '';
+                                        $checked_2 = '';
+                                        $checked_3 = '';
+                                        $selection = ((isset($_REQUEST['form']['social']['twitter_icons']) ? $_REQUEST['form']['social']['twitter_icons'] : $social_media[1]['image_name']));
+                                        if ($selection == "twitter_color.png") {
+                                            $checked_1 = 'checked="checked"';
+                                            $checked_2 = '';
+                                            $checked_3 = '';
+                                        } else if ($selection == "twitter.png") {
+                                            $checked_1 = '';
+                                            $checked_2 = 'checked="checked"';
+                                            $checked_3 = '';
+                                        } else {
+                                            $checked_1 = '';
+                                            $checked_2 = '';
+                                            $checked_3 = 'checked="checked"';
+                                        }
+                                        ?>
                                         <tr>
                                             <td style="width:100px;">                                               
                                                 <img src="/r.frontend/social_media/social_media_by_alfredo/twitter_color.png" alt="" width="25" height="25"/>
@@ -2886,16 +2890,16 @@ class forms {
                             <div class="col-md-3">
                                 <div class="form-group" style="margin-top:30px">
                                     <label>Status</label>
-        <?php
-        $checked_1 = '';
+                                    <?php
+                                    $checked_1 = '';
 
-        $selection = (isset($_REQUEST['form']['social']['twitter_status']) ? $_REQUEST['form']['social']['twitter_status'] : $social_media[1]['status'] );
-        if ($selection == 1) {
-            $checked_1 = 'checked="checked"';
-        } else {
-            $checked_1 = '';
-        }
-        ?>
+                                    $selection = (isset($_REQUEST['form']['social']['twitter_status']) ? $_REQUEST['form']['social']['twitter_status'] : $social_media[1]['status'] );
+                                    if ($selection == 1) {
+                                        $checked_1 = 'checked="checked"';
+                                    } else {
+                                        $checked_1 = '';
+                                    }
+                                    ?>
                                     <input type="hidden"  name="form[social][twitter_status]" value="0"/>
                                     <input type="checkbox"  name="form[social][twitter_status]" value="1" <?= $checked_1 ?>/>
                                 </div>
@@ -2913,25 +2917,25 @@ class forms {
                                 <div class="form-group">
                                     <table class="table table-hover table-bordered" style="margin-top:21px">
                                         <!--LOGIC-->
-        <?php
-        $checked_1 = '';
-        $checked_2 = '';
-        $checked_3 = '';
-        $selection = ((isset($_REQUEST['form']['social']['instagram_icons']) ? $_REQUEST['form']['social']['instagram_icons'] : $social_media[2]['image_name']));
-        if ($selection == "instagram_color.png") {
-            $checked_1 = 'checked="checked"';
-            $checked_2 = '';
-            $checked_3 = '';
-        } else if ($selection == "instagram.png") {
-            $checked_1 = '';
-            $checked_2 = 'checked="checked"';
-            $checked_3 = '';
-        } else {
-            $checked_1 = '';
-            $checked_2 = '';
-            $checked_3 = 'checked="checked"';
-        }
-        ?>
+                                        <?php
+                                        $checked_1 = '';
+                                        $checked_2 = '';
+                                        $checked_3 = '';
+                                        $selection = ((isset($_REQUEST['form']['social']['instagram_icons']) ? $_REQUEST['form']['social']['instagram_icons'] : $social_media[2]['image_name']));
+                                        if ($selection == "instagram_color.png") {
+                                            $checked_1 = 'checked="checked"';
+                                            $checked_2 = '';
+                                            $checked_3 = '';
+                                        } else if ($selection == "instagram.png") {
+                                            $checked_1 = '';
+                                            $checked_2 = 'checked="checked"';
+                                            $checked_3 = '';
+                                        } else {
+                                            $checked_1 = '';
+                                            $checked_2 = '';
+                                            $checked_3 = 'checked="checked"';
+                                        }
+                                        ?>
                                         <tr>
                                             <td style="width:100px;">                                               
                                                 <img src="/r.frontend/social_media/social_media_by_alfredo/instagram_color.png" alt="" width="25" height="25"/>                                          
@@ -2957,16 +2961,16 @@ class forms {
                             <div class="col-md-3">
                                 <div class="form-group" style="margin-top:30px">
                                     <label>Status</label>
-        <?php
-        $checked_1 = '';
+                                    <?php
+                                    $checked_1 = '';
 
-        $selection = (isset($_REQUEST['form']['social']['instagram_status']) ? $_REQUEST['form']['social']['instagram_status'] : $social_media[2]['status'] );
-        if ($selection == 1) {
-            $checked_1 = 'checked="checked"';
-        } else {
-            $checked_1 = '';
-        }
-        ?>
+                                    $selection = (isset($_REQUEST['form']['social']['instagram_status']) ? $_REQUEST['form']['social']['instagram_status'] : $social_media[2]['status'] );
+                                    if ($selection == 1) {
+                                        $checked_1 = 'checked="checked"';
+                                    } else {
+                                        $checked_1 = '';
+                                    }
+                                    ?>
                                     <input type="hidden"  name="form[social][instagram_status]" value="0" />
                                     <input type="checkbox"  name="form[social][instagram_status]" value="1" <?= $checked_1 ?>/>
                                 </div>
@@ -2983,25 +2987,25 @@ class forms {
                                 <div class="form-group">
                                     <table class="table table-hover table-bordered" style="margin-top:21px">
                                         <!--LOGIC-->
-        <?php
-        $checked_1 = '';
-        $checked_2 = '';
-        $checked_3 = '';
-        $selection = ((isset($_REQUEST['form']['social']['youtube_icons']) ? $_REQUEST['form']['social']['youtube_icons'] : $social_media[3]['image_name']));
-        if ($selection == "youtube_color.png") {
-            $checked_1 = 'checked="checked"';
-            $checked_2 = '';
-            $checked_3 = '';
-        } else if ($selection == "youtube.png") {
-            $checked_1 = '';
-            $checked_2 = 'checked="checked"';
-            $checked_3 = '';
-        } else {
-            $checked_1 = '';
-            $checked_2 = '';
-            $checked_3 = 'checked="checked"';
-        }
-        ?>
+                                        <?php
+                                        $checked_1 = '';
+                                        $checked_2 = '';
+                                        $checked_3 = '';
+                                        $selection = ((isset($_REQUEST['form']['social']['youtube_icons']) ? $_REQUEST['form']['social']['youtube_icons'] : $social_media[3]['image_name']));
+                                        if ($selection == "youtube_color.png") {
+                                            $checked_1 = 'checked="checked"';
+                                            $checked_2 = '';
+                                            $checked_3 = '';
+                                        } else if ($selection == "youtube.png") {
+                                            $checked_1 = '';
+                                            $checked_2 = 'checked="checked"';
+                                            $checked_3 = '';
+                                        } else {
+                                            $checked_1 = '';
+                                            $checked_2 = '';
+                                            $checked_3 = 'checked="checked"';
+                                        }
+                                        ?>
                                         <tr>
                                             <td style="width:100px;">                                               
                                                 <img src="/r.frontend/social_media/social_media_by_alfredo/youtube_color.png" alt="" width="25" height="25"/>                                          
@@ -3025,16 +3029,16 @@ class forms {
                             <div class="col-md-3">
                                 <div class="form-group" style="margin-top:30px">
                                     <label>Status</label>
-        <?php
-        $checked_1 = '';
+                                    <?php
+                                    $checked_1 = '';
 
-        $selection = (isset($_REQUEST['form']['social']['youtube_status']) ? $_REQUEST['form']['social']['youtube_status'] : $social_media[3]['status'] );
-        if ($selection == 1) {
-            $checked_1 = 'checked="checked"';
-        } else {
-            $checked_1 = '';
-        }
-        ?>
+                                    $selection = (isset($_REQUEST['form']['social']['youtube_status']) ? $_REQUEST['form']['social']['youtube_status'] : $social_media[3]['status'] );
+                                    if ($selection == 1) {
+                                        $checked_1 = 'checked="checked"';
+                                    } else {
+                                        $checked_1 = '';
+                                    }
+                                    ?>
                                     <input type="hidden"  name="form[social][youtube_status]" value="0" />
                                     <input type="checkbox"  name="form[social][youtube_status]" value="1" <?= $checked_1 ?>/>
                                 </div>
@@ -3052,25 +3056,25 @@ class forms {
                                 <div class="form-group">
                                     <table class="table table-hover table-bordered" style="margin-top:21px">
                                         <!--LOGIC-->
-        <?php
-        $checked_1 = '';
-        $checked_2 = '';
-        $checked_3 = '';
-        $selection = ((isset($_REQUEST['form']['social']['linkedin_icons']) ? $_REQUEST['form']['social']['linkedin_icons'] : $social_media[4]['image_name']));
-        if ($selection == "linkedin_color.png") {
-            $checked_1 = 'checked="checked"';
-            $checked_2 = '';
-            $checked_3 = '';
-        } else if ($selection == "linedin.png") {
-            $checked_1 = '';
-            $checked_2 = 'checked="checked"';
-            $checked_3 = '';
-        } else {
-            $checked_1 = '';
-            $checked_2 = '';
-            $checked_3 = 'checked="checked"';
-        }
-        ?>
+                                        <?php
+                                        $checked_1 = '';
+                                        $checked_2 = '';
+                                        $checked_3 = '';
+                                        $selection = ((isset($_REQUEST['form']['social']['linkedin_icons']) ? $_REQUEST['form']['social']['linkedin_icons'] : $social_media[4]['image_name']));
+                                        if ($selection == "linkedin_color.png") {
+                                            $checked_1 = 'checked="checked"';
+                                            $checked_2 = '';
+                                            $checked_3 = '';
+                                        } else if ($selection == "linedin.png") {
+                                            $checked_1 = '';
+                                            $checked_2 = 'checked="checked"';
+                                            $checked_3 = '';
+                                        } else {
+                                            $checked_1 = '';
+                                            $checked_2 = '';
+                                            $checked_3 = 'checked="checked"';
+                                        }
+                                        ?>
                                         <tr>
                                             <td style="width:100px;">                                               
                                                 <img src="/r.frontend/social_media/social_media_by_alfredo/linkedin_color.png" alt="" width="25" height="25"/>                                          
@@ -3097,16 +3101,16 @@ class forms {
                             <div class="col-md-3">
                                 <div class="form-group" style="margin-top:30px">
                                     <label>Status</label>
-        <?php
-        $checked_1 = '';
+                                    <?php
+                                    $checked_1 = '';
 
-        $selection = (isset($_REQUEST['form']['social']['linkedin_status']) ? $_REQUEST['form']['social']['linkedin_status'] : $social_media[4]['status'] );
-        if ($selection == 1) {
-            $checked_1 = 'checked="checked"';
-        } else {
-            $checked_1 = '';
-        }
-        ?>
+                                    $selection = (isset($_REQUEST['form']['social']['linkedin_status']) ? $_REQUEST['form']['social']['linkedin_status'] : $social_media[4]['status'] );
+                                    if ($selection == 1) {
+                                        $checked_1 = 'checked="checked"';
+                                    } else {
+                                        $checked_1 = '';
+                                    }
+                                    ?>
                                     <input type="hidden"  name="form[social][linkedin_status]" value="0" />
                                     <input type="checkbox"  name="form[social][linkedin_status]" value="1" <?= $checked_1 ?>/>
                                 </div>
@@ -3125,25 +3129,25 @@ class forms {
                                 <div class="form-group">
                                     <table class="table table-hover table-bordered" style="margin-top:21px">
                                         <!--LOGIC-->
-        <?php
-        $checked_1 = '';
-        $checked_2 = '';
-        $checked_3 = '';
-        $selection = ((isset($_REQUEST['form']['social']['google_icons']) ? $_REQUEST['form']['social']['google_icons'] : $social_media[5]['image_name']));
-        if ($selection == "google_plus_color.png") {
-            $checked_1 = 'checked="checked"';
-            $checked_2 = '';
-            $checked_3 = '';
-        } else if ($selection == "google_plus.png") {
-            $checked_1 = '';
-            $checked_2 = 'checked="checked"';
-            $checked_3 = '';
-        } else {
-            $checked_1 = '';
-            $checked_2 = '';
-            $checked_3 = 'checked="checked"';
-        }
-        ?>
+                                        <?php
+                                        $checked_1 = '';
+                                        $checked_2 = '';
+                                        $checked_3 = '';
+                                        $selection = ((isset($_REQUEST['form']['social']['google_icons']) ? $_REQUEST['form']['social']['google_icons'] : $social_media[5]['image_name']));
+                                        if ($selection == "google_plus_color.png") {
+                                            $checked_1 = 'checked="checked"';
+                                            $checked_2 = '';
+                                            $checked_3 = '';
+                                        } else if ($selection == "google_plus.png") {
+                                            $checked_1 = '';
+                                            $checked_2 = 'checked="checked"';
+                                            $checked_3 = '';
+                                        } else {
+                                            $checked_1 = '';
+                                            $checked_2 = '';
+                                            $checked_3 = 'checked="checked"';
+                                        }
+                                        ?>
                                         <tr>
                                             <td style="width:100px;">                                               
                                                 <img src="/r.frontend/social_media/social_media_by_alfredo/google_plus_color.png" alt="" width="25" height="25"/>                                          
@@ -3169,16 +3173,16 @@ class forms {
                             <div class="col-md-3">
                                 <div class="form-group" style="margin-top:30px">
                                     <label>Status</label>
-        <?php
-        $checked_1 = '';
+                                    <?php
+                                    $checked_1 = '';
 
-        $selection = (isset($_REQUEST['form']['social']['google_status']) ? $_REQUEST['form']['social']['google_status'] : $social_media[5]['status'] );
-        if ($selection == 1) {
-            $checked_1 = 'checked="checked"';
-        } else {
-            $checked_1 = '';
-        }
-        ?>
+                                    $selection = (isset($_REQUEST['form']['social']['google_status']) ? $_REQUEST['form']['social']['google_status'] : $social_media[5]['status'] );
+                                    if ($selection == 1) {
+                                        $checked_1 = 'checked="checked"';
+                                    } else {
+                                        $checked_1 = '';
+                                    }
+                                    ?>
                                     <input type="hidden"  name="form[social][google_status]" value="0" />
                                     <input type="checkbox"  name="form[social][google_status]" value="1" <?= $checked_1 ?>/>
                                 </div>
@@ -3675,15 +3679,15 @@ class forms {
             $p_i = $p['parent'];
             array_push($parent_info, $p_n);
         }
-        /********************************************************
+        /*         * ******************************************************
          * Chenge the ket name if the parent is not called Brands
          * i.e. if the page name is changed to Designers search for
          * Designers 
          * ******************************************************
          */
-        /***************************************/
+        /*         * ************************************ */
         if (in_array("Brands", $parent_info)) {
-       /***************************************/
+            /*             * ************************************ */
 
             $gender = $get_parents[0]['name'];
             $brand = $get_parents[1]['name'];
@@ -3700,9 +3704,9 @@ class forms {
             $this->_queries->_res = NULL;
             $find_products = $this->_queries->GetData("all_products", $fields, $values, $option = "14");
             $find_products = $this->_queries->RetData();
-            
-            /*****************************/
-            /**************************************************************
+
+            /*             * ************************** */
+            /*             * ************************************************************
              * Search for categories in product table per catergory/gender
              * change this if no gender is specified
              * ************************************************************
@@ -3759,9 +3763,9 @@ class forms {
                             <th>Brand</th>
                         </tr>
 
-            <?php
-            foreach ($all_products as $product) {
-                ?>
+                        <?php
+                        foreach ($all_products as $product) {
+                            ?>
                             <tr>
                                 <td><?= $product['id'] ?></td>
                                 <td><?= $product['item_name'] ?></td>
@@ -3773,9 +3777,9 @@ class forms {
                                 <td><?= $product['brand'] ?></td>
                             </tr>
 
-                <?php
-            }
-            ?>
+                            <?php
+                        }
+                        ?>
 
                     </table>
                 </div>

@@ -77,6 +77,7 @@ class main {
                 "4" => '  <script src="' . ABSOLUTH_PATH_ADMIN . 'pages/pages.js"></script>',
                 "5" => '<script src="' . ABSOLUTH_PATH_JS . 'ckeditor/ckeditor.js"></script>',
                 "6" => '<script src="' . ABSOLUTH_PATH_JS . 'promotion_ajax.js"></script>',
+                 "7" => '<script src="' . ABSOLUTH_PATH_JS . 'updateorder_ajax.js"></script>',
 
             ),
         );

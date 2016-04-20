@@ -137,7 +137,10 @@ if (!$page_id) {
             $pagecontent = $PAGEDATA->body;
             $page_extra_data = $PAGEDATA->SetItemData();
             $page_extra_data = $PAGEDATA->_front_items;
+            $footer_data = $PAGEDATA->GetFooterData();
+            $footer_data = $PAGEDATA->_footer_links;
             include $template;
+            include_once 'r.frontend/template/footer.php';
         }
     }
 } else if ($page_id != 0) {
