@@ -13,10 +13,10 @@ function compare_filters($a, $b) {
     ?>
 
     <div class="col-md-12">
-        <div class="col-md-2">
+        <div class="col-md-3">
             <div class="list-group">
                 <h4 href="#" class="list-group-item rock-list-group-heading">
-                   <?= str_replace("|", " ", $page_title) ?>
+                   <i class="fa fa-list fa-2x" aria-hidden="true"></i> &nbsp; &nbsp;  <?= str_replace("|", " ", $page_title) ?>
                 </h4>
                 <?php
                 foreach ($page_data as $data) {
@@ -47,7 +47,7 @@ function compare_filters($a, $b) {
                 </div>
             </div>
 
-            <div class="col-md-10">
+            <div class="col-md-9" style="margin-top: 10px;">
     <?php
     foreach ($data as $to_display) {
         foreach ($to_display['display'] as $for_categories) {

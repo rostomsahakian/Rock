@@ -20,6 +20,7 @@ class BackendController {
     public $_cmd_checker;
     public $_queries;
     public $_page_list = array();
+    public $_nav_promo;
     public $_promotions;
 
     /*
@@ -31,6 +32,7 @@ class BackendController {
         $this->_cmd_checker = new commands();
         $this->_queries = new queries();
         $this->_promotions = new promotions();
+        $this->_nav_promo = new NavPromotions();
         if (isset($_POST['brand'])) {
 
             $this->_promotions->InsertTopDesigners($_POST);

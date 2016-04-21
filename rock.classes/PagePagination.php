@@ -48,13 +48,17 @@ class PagePagination {
                 "value3" => $l,
                 "value4" => $this->_limit
             );
-
+            /*
+             * Number of rows
+             */
             $table = $data['table'];
-            $get_num_rows = $this->_queries->GetData($table, $fields, $values, $option = "19");
+            $get_num_rows = $this->_queries->GetData($table, $fields, $values, $data['option1']);
             $this->_total = $get_num_rows;
-
+            /*
+             * Data
+             */
             $this->_queries->_res = NULL;
-            $get_page_data = $this->_queries->GetData($table, $fields, $values, $option = "18");
+            $get_page_data = $this->_queries->GetData($table, $fields, $values, $data['option2']);
             $get_page_data = $this->_queries->RetData();
 
             $this->_results[] = $get_page_data;

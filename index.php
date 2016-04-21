@@ -58,7 +58,7 @@ if (!$page_id) {
         $footer_data = $PAGEDATA->GetFooterData();
         $footer_data = $PAGEDATA->_footer_links;
         switch ($PAGEDATA->type) {
-            case "0": //Normal Page Type
+            case "0": //Home Page Type
                 $template = THEME_DIR . '/' . THEME . '/html/_default.php';
                 $page_title = $PAGEDATA->title;
                 $page_name = $PAGEDATA->name;
@@ -109,6 +109,18 @@ if (!$page_id) {
                 $template = THEME_DIR . '/' . THEME . '/html/_designers.php';
                 $page_title = $PAGEDATA->title;
                 $pagecontent = $PAGEDATA->body;
+                $page_data_sub = $PAGEDATA->SetItemData();
+                $page_data_sub = $PAGEDATA->_front_items;
+                include $template;
+                include_once 'r.frontend/template/footer.php';
+                break;
+            case "17": //Designer MAIN
+
+                $template = THEME_DIR . '/' . THEME . '/html/designer_main.php';
+                $page_title = $PAGEDATA->title;
+                $pagecontent = $PAGEDATA->body;
+                $page_data_brands = $PAGEDATA->SetItemData();
+                $page_data_brands = $PAGEDATA->_front_items;
                 include $template;
                 include_once 'r.frontend/template/footer.php';
                 break;

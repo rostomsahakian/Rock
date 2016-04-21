@@ -9,7 +9,7 @@ and open the template in the editor.
 */
 @import url(http://fonts.googleapis.com/css?family=Montserrat:400,700);
 body{
-font-family: 'Futura Std Book';
+    font-family: 'Futura Std Book';
 }
 @font-face {
     font-family: 'Futura Std Book';
@@ -20,7 +20,7 @@ font-family: 'Futura Std Book';
 }
 h1,h4 {
     text-transform: uppercase;
-    
+
 }
 .rock-brand-in-box{
     text-transform: uppercase;
@@ -111,7 +111,7 @@ h1,h4 {
     /*padding: 10px;*/
     margin-bottom: 20px;
     width:29%;
-    margin-right: 40px;
+    margin-right: 20px;
     text-align: center;
     height: 375px;
     width: 244px;
@@ -173,7 +173,7 @@ span.rollover:hover {
     box-shadow: 0px 0px 4px #000;
 }
 .rock-items-col-12{
-    margin-left: 22px !important;
+    margin-left: 50px !important;
 }
 .rock-brand-in-box{
     float: right;
@@ -292,7 +292,15 @@ span.rollover:hover {
     font-size: 13px !important;
     border-top-left-radius: 0 !important;
     border-top-right-radius: 0 !important;
+    background-color: #EA3A3C;
+    color: #fff;
+    font-weight: bold;
+    min-height: 51px;
+   
 }
 .rock-list-group-item{
-    font-size: 11px !important;
+    font-size: 13px !important;
+}
+.rock-item-page-title{
+    margin-left: 100px;
 }

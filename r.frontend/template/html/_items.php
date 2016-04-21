@@ -13,7 +13,7 @@ include_once TEMPLATE_H_F_PATH . 'header.php';
                 foreach ($data as $item_d) {
                     ?>
 
-                    <h1><?= $item_d['item_name'] ?></h1>
+            <h1 class="rock-item-page-title"><?= $item_d['item_name'] ?></h1>
                 </div>
                 <div class="col-md-12">
                     <div class="col-md-1">&nbsp;</div>

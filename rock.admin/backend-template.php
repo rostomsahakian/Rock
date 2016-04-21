@@ -151,9 +151,9 @@
                                 }
 
                                 foreach ($cmd['editor_data'] as $data_to_check) {
-                                    if ($data_to_check['type'] == '0' || $data_to_check['type'] == 0 || $data_to_check['type'] == '1' || $data_to_check['type'] == 1 || $data_to_check['type'] == '3' || $data_to_check['type'] == 3 || $data_to_check['type'] == '5' || $data_to_check['type'] == 5 || $data_to_check['type'] == '9' || $data_to_check['type'] == 9) {
+                                    if($data_to_check['type'] != "7"){
                                         $this->_forms->EditPageForm($cmd['editor_data'], $cmd['url_options'], $cmd['page_images'], $cmd['page_files'], $cmd['page_id'], $cmd['pages']);
-                                    } else if ($data_to_check['type'] == '7' || $data_to_check['type'] == 7) {
+                                    } else {
 
                                         $this->_forms->ItemPageForm($cmd['item_page_data'], $cmd['page_images']);
                                     }
@@ -302,8 +302,14 @@
                             /* ##########################
                              * Brand Promotion (clothing)
                              */#########################
-                            case "b_promotion":   
-                                 $this->_promotions->PromotionBackendModule();
+                            case "b_promotion":
+                                $this->_promotions->PromotionBackendModule();
+                                break;
+                            /* ##########################
+                             * Navigation Promotional images
+                             */#########################
+                            case "nav_promo":
+                                $this->_nav_promo->PromotionsForNaviagtion();
                                 break;
                         }
                     }

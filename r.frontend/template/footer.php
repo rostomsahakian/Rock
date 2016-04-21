@@ -210,5 +210,7 @@
 
 <script src="/rock.assets/js/bootstrap.min.js"></script>
 
+    <!-- Bootstrap Dropdown Hover JS -->
+    <script src="/r.frontend/js/bootstrap-dropdownhover.min.js"></script>
 </body>
 </html>

@@ -441,6 +441,31 @@ class queries {
                         return FALSE;
                     }
                     break;
+                    
+                case "22":
+
+                    $sql = "SELECT * FROM `" . $table . "` WHERE `" . $fields['field1'] . "` = '" . $value['value1'] . "' LIMIT {$value['value3']} , {$value['value4']}";
+                    $result = $this->_mysqli->query($sql);
+//                    var_dump($sql);
+                    if ($result) {
+                        while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+
+                            $this->_res[] = $row;
+                        }
+                        return true;
+                    } else {
+                        return false;
+                    }
+                case "23":
+
+                    $sql = "SELECT * FROM `" . $table . "` WHERE `" . $fields['field1'] . "` = '" . $value['value1'] . "'";
+                    $result = $this->_mysqli->query($sql);
+                    $num_rows = $result->num_rows;
+                    if ($result) {
+                        return $num_rows;
+                    } else {
+                        return false;
+                    }
             }
         }
     }
@@ -700,9 +725,9 @@ class queries {
                     $sql .= implode(",", $data['values']);
 
                     $sql .= " ) ";
-                    echo "<br/>";
-                    var_dump($sql);
-                    echo "<br/>";
+//                    echo "<br/>";
+//                    var_dump($sql);
+//                    echo "<br/>";
                     $result = $this->_mysqli->query($sql);
                     if ($result) {
                         return true;

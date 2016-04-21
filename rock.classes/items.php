@@ -45,7 +45,7 @@ class items {
              * if page type is 9 = designers
              */
 
-            if (isset($data['type']) && $data['type'] == 0 || $data['type'] == "0" || $data['type'] == 3 || $data['type'] == "3" || $data['type'] == 5 || $data['type'] == "5" || $data['type'] == 7 || $data['type'] == "7" || $data['type'] == 9 || $data['type'] == "9") {
+            if (isset($data['type']) && $data['type'] == 0 || $data['type'] == "0" || $data['type'] == 3 || $data['type'] == "3" || $data['type'] == 5 || $data['type'] == "5" || $data['type'] == 7 || $data['type'] == "7" || $data['type'] == 9 || $data['type'] == "9" || $data['type'] == 17 || $data['type'] == "17") {
 
                 switch ($data['type']) {
 
@@ -230,37 +230,144 @@ class items {
                             "value1" => $data['name'],
                             "value2" => $parent['name'],
                             "limit" => "16",
-                            "page" => $page
+                            "page" => $page,
+                            "option1" => "19",
+                            "option2" => "18"
                         );
 
                         $data_for_cat_page = array();
                         $data_for_cat_page['pagination'] = array();
                         $data_for_cat_page['data'] = array();
                         $get_list = $this->_pagination->GetPageData($page_data);
-                        $get_list = $this->_pagination->RetPageData();                       
+                        $get_list = $this->_pagination->RetPageData();
                         $links = $this->_pagination->createLinks(2, "pagination pagination-sm");
                         array_push($data_for_cat_page['pagination'], $links);
                         array_push($data_for_cat_page['data'], $get_list);
-                   
-                        
+
+
                         $this->_front_data[] = $data_for_cat_page;
-                        
+
                         break;
                     /*
                      * 
                      */
                     case "7":
-                       /*
-                        * get the model number 
-                        */
-                       $model_number = $data['model_number'];
-                        
-                       $this->_queries->_res = NULL;
-                       $get_items_info = $this->_queries->GetData("all_products", "model_number", $model_number, $option="0");
-                       $get_items_info = $this->_queries->RetData();
-                       
-                       $this->_front_data[] = $get_items_info;
-                        
+                        /*
+                         * get the model number 
+                         */
+                        $model_number = $data['model_number'];
+
+                        $this->_queries->_res = NULL;
+                        $get_items_info = $this->_queries->GetData("all_products", "model_number", $model_number, $option = "0");
+                        $get_items_info = $this->_queries->RetData();
+
+                        $this->_front_data[] = $get_items_info;
+
+                        break;
+                    /*
+                     * Designers Main Holds all the designers
+                     */
+                    case "17":
+                        /*
+                         * Select all sub-children that are page type 9
+                         */
+                        $page_id = $data['id'];
+                        $this->_queries->_res = NULL;
+                        $fields = array(
+                            "field1" => "parent",
+                            "field3" => "type",
+                        );
+                        $values = array(
+                            "value1" => $page_id,
+                            "value2" => "9" ///Page type designer
+                        );
+                        $designers_array = array();
+                        $get_all_brands_under = $this->_queries->GetData("pages", $fields, $values, "11");
+                        $get_all_brands_under = $this->_queries->RetData();
+                        if ($get_all_brands_under != NULL) {
+                            foreach ($get_all_brands_under as $brand) {
+                                $brands_by_name = array();
+                                $brands_by_name['page_name'] = $brand['name'];
+                                $brands_by_name['id'] = $brand['id'];
+                                $brands_by_name['single_data_per_brand'] = array();
+
+                                $fields_p_b = array(
+                                    "field1" => "brand",
+                                    "limit" => "1"
+                                );
+
+                                $this->_queries->_res = NULL;
+                                $get_brand_data_random = $this->_queries->GetData("all_products", $fields_p_b, $brand['name'], "16");
+                                $get_brand_data_random = $this->_queries->RetData();
+                                if ($get_brand_data_random != NULL) {
+
+                                    foreach ($get_brand_data_random as $random_designer_item) {
+                                        $designer_items = array();
+                                        $designer_items['item_name'] = $random_designer_item['item_name'];
+                                        $designer_items['item_image_url'] = $random_designer_item['item_image_url'];
+                                        $designer_items['price'] = $random_designer_item['price'];
+                                        $designer_items['brand'] = $random_designer_item['brand'];
+                                        $designer_items['category'] = $random_designer_item['category'];
+                                        $designer_items['gender'] = $random_designer_item['gender'];
+                                        $designer_items['brand_id'] = $random_designer_item['brand_id'];
+                                        $designer_items['model_number'] = $random_designer_item['model_number'];
+
+                                        array_push($brands_by_name['single_data_per_brand'], $designer_items);
+                                    }
+                                }
+                                array_push($designers_array, $brands_by_name);
+                            }
+                            $this->_front_data[] = $designers_array;
+                        }
+
+                        break;
+
+
+                    /*
+                     * Designers Individual
+                     */
+                    case "9":
+                        /*
+                         * Get the information for specific sub-category
+                         * select all from all_products where gender = gender and catgory = category
+                         * i.e. Mens/pants
+                         * Show all mens pants
+                         * pagination required 
+                         */
+                        $this->_queries->_res = NULL;
+                        $get_parent_name = $this->_queries->GetData("pages", "id", $data['id'], $option = "0");
+                        $get_parent_name = $this->_queries->RetData();
+                      
+                        if (count($get_parent_name) > 0) {
+                            foreach ($get_parent_name as $page_name) {
+                                
+                            }
+                        }
+
+                        $page = $data['page'];
+                        $page_data = array(
+                            "table" => "all_products",
+                            "field1" => "brand",
+                            "field2" => NULL,
+                            "value1" => $page_name['name'],
+                            "value2" => NULL,
+                            "limit" => "16",
+                            "page" => $page,
+                            "option1" => "23",
+                            "option2" => "22"
+                        );
+
+                        $data_for_brand_page = array();
+                        $data_for_brand_page['pagination'] = array();
+                        $data_for_brand_page['data'] = array();
+                        $get_list = $this->_pagination->GetPageData($page_data);
+                        $get_list = $this->_pagination->RetPageData();
+                        $links = $this->_pagination->createLinks(2, "pagination pagination-sm");
+                        array_push($data_for_brand_page['pagination'], $links);
+                        array_push($data_for_brand_page['data'], $get_list);
+
+
+                        $this->_front_data[] = $data_for_brand_page;
                         break;
                 }
             }

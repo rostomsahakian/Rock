@@ -1163,6 +1163,9 @@ class forms {
                                         } else if ($do_list_pages['type'] == "9") {
 
                                             $page_type = "Designer";
+                                        } else if ($do_list_pages['type'] == "17") {
+
+                                            $page_type = "Designer-main";
                                         }
                                         echo $page_type;
                                         ?>
@@ -1231,7 +1234,7 @@ class forms {
      */
 
     public function DoUpdateOrderForPages(array $order_data) {
-        
+
         if (isset($_REQUEST['do_update_order'])) {
 
             $new_order = $order_data[0];
@@ -2026,7 +2029,8 @@ class forms {
                 "9" => "Designers",
                 "11" => "Top Level",
                 "13" => "Contact-us",
-                "15" => "Normal"
+                "15" => "Normal",
+                "17" => "Brands-main"
             );
 
 

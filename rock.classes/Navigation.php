@@ -64,6 +64,23 @@ class Navigation {
                                 $subcat['id'] = $child['id'];
                                 $subcat['name'] = $child['name'];
                                 $subcat['parent'] = $child['parent'];
+                                $subcat['promo_images'] = array();
+
+                                $this->queries->_res = NULL;
+                                $get_promo_images = $this->queries->GetData("promotional_images", "page_id", $parent['id'], "0");
+                                $get_promo_images = $this->queries->RetData();
+                                // var_dump($get_promo_images);
+                                if ($get_promo_images != NULL) {
+                                    foreach ($get_promo_images as $promo_images) {
+//                                        $promos = array();
+//                                        $promos['page_id'] = $promo_images['page_id'];
+//                                        $promos['image_name'] = $promo_images['image_name'];
+//                                        $promos['image_path'] = $promo_images['image_path'];
+
+                                        array_push($subcat['promo_images'], $promo_images);
+                                    }
+                                }
+
 
                                 array_push($category['sub_categories'], $subcat);
                             }
@@ -72,9 +89,7 @@ class Navigation {
                 }
                 array_push($categories, $category);
             }
-//            $json = json_encode($categories);
-//            header('Content-Type: application/json');
-//            echo $json;
+
             return $categories;
         }
     }
@@ -158,7 +173,7 @@ class Navigation {
                                 } else {
                                     ?>
                                     <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?= $no_child['name'] ?><span class="caret"></span></a>
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeIn" role="button" aria-haspopup="true" aria-expanded="false"><?= $no_child['name'] ?><span class="caret"></span></a>
 
                                         <ul class="dropdown-menu rock-mega-menu">
                                             <div class="rock-drop-down-header-div">
@@ -179,19 +194,25 @@ class Navigation {
                                             <?php
                                             $sorted_children = array();
                                             foreach ($no_child['sub_categories'] as $children) {
+
                                                 $child_id = $children['id'];
                                                 $child_parent = $children['parent'];
                                                 $child_name = $children['name'];
-
-                                                array_push($sorted_children, array("id" => $child_id, "parent" => $child_parent, "name" => $child_name));
+                                                $promo_image = $children['promo_images'];
+                                                array_push($sorted_children, array("id" => $child_id, "parent" => $child_parent, "name" => $child_name, "image_name" => $promo_image));
                                             }
                                             /*
                                              * Sorts children
                                              */
-                                           // usort($sorted_children, array($this, "compare_name"));
-                                            foreach ($sorted_children as $child) {
-                                                ?>
-                                                <div>
+                                            // usort($sorted_children, array($this, "compare_name"));
+                                            ?>
+                                            <!--                                            <div class="row">-->
+                                            <div class="col-sm-5 rock-drop-down-small-container">
+                                                <?php
+                                                foreach ($sorted_children as $child) {
+                                                    ?>
+                                                    <!--                                                <div class="col-sm-12">-->
+
                                                     <li>
 
                                                         <div class="col-sm-6 rock-drop-down-link">
@@ -207,12 +228,27 @@ class Navigation {
 
                                                         </div>
 
-                                                    </li>
-                                                </div>
-                                                <?php
-                                            }
-                                            ?>
 
+                                                    </li>
+
+
+
+                                                    <?php
+                                                }
+                                                ?>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <?php
+                                                if ($child['image_name'] != NULL) {
+                                                   $image_name = $child['image_name'][0]['image_name'];
+                                                   $image_path = $child['image_name'][0]['image_path'];
+                                                   ?>
+                                                <img src="<?= $image_path.$image_name ?>"/>
+                                                <?php
+                                                }
+                                                ?>
+                                            </div>
+                                            <!--                                            </div>-->
                                         </ul>
                                         <!--                                        </div>-->
                                         <?php

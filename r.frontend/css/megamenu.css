@@ -78,7 +78,7 @@
     color: #fff;
 }
 .rock-drop-down-link a{
-    font-size: 12px;
+    font-size: 14px;
     color: #000 !important;
     text-decoration: none;
     margin-top: 15px; 
@@ -99,13 +99,15 @@ rock-drop-down-link.col-sm-6 {
 }
 .rock-drop-down-header-div{
     margin-bottom: 5px;
-    padding-top: 5px; 
-    border-bottom: 1px solid #000;
+    padding-top: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    border-bottom: 1px solid #ddd;
 }
 
 @media screen and (max-width: 768px) {
     .rock-drop-down-link a{
-        font-size: 11px;
+        font-size: 12px;
         color: #fff !important;
         text-decoration: none;
         margin-top: 10px !important; 
@@ -128,4 +130,8 @@ rock-drop-down-link.col-sm-6 {
 }
 .rock-drop-down-header a:hover{
     text-decoration: underline;
+}
+.rock-drop-down-small-container{
+    
+    border-right: 1px solid #ddd;
 }

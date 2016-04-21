@@ -39,7 +39,8 @@ class commands {
             "upload_items",
             "bulk_image_upload",
             "social_media",
-            "b_promotion"
+            "b_promotion",
+            "nav_promo"
         );
     }
 
