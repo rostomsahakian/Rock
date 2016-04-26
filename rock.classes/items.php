@@ -222,7 +222,8 @@ class items {
                             }
                         }
 
-                        $page = $data['page'];
+                        $page = ($data['page'] == NULL) ? "?p=1" : $data['page'];
+                    
                         $page_data = array(
                             "table" => "all_products",
                             "field1" => "category",
@@ -238,9 +239,10 @@ class items {
                         $data_for_cat_page = array();
                         $data_for_cat_page['pagination'] = array();
                         $data_for_cat_page['data'] = array();
+                        $data_for_cat_page['page_id'] = $data['id'];
                         $get_list = $this->_pagination->GetPageData($page_data);
                         $get_list = $this->_pagination->RetPageData();
-                        $links = $this->_pagination->createLinks(2, "pagination pagination-sm");
+                        $links = $this->_pagination->createLinks(2, "pagination pagination-sm rock-pagination-top");
                         array_push($data_for_cat_page['pagination'], $links);
                         array_push($data_for_cat_page['data'], $get_list);
 
@@ -337,7 +339,7 @@ class items {
                         $this->_queries->_res = NULL;
                         $get_parent_name = $this->_queries->GetData("pages", "id", $data['id'], $option = "0");
                         $get_parent_name = $this->_queries->RetData();
-                      
+
                         if (count($get_parent_name) > 0) {
                             foreach ($get_parent_name as $page_name) {
                                 
@@ -345,6 +347,9 @@ class items {
                         }
 
                         $page = $data['page'];
+                        
+//                        var_dump("hello");
+//                        var_dump($page);
                         $page_data = array(
                             "table" => "all_products",
                             "field1" => "brand",
@@ -360,6 +365,7 @@ class items {
                         $data_for_brand_page = array();
                         $data_for_brand_page['pagination'] = array();
                         $data_for_brand_page['data'] = array();
+                        $data_for_brand_page['brand_id'] = $data['id'];
                         $get_list = $this->_pagination->GetPageData($page_data);
                         $get_list = $this->_pagination->RetPageData();
                         $links = $this->_pagination->createLinks(2, "pagination pagination-sm");

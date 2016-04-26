@@ -51,7 +51,7 @@ class BackendController {
         /*
          * prevent url injection if user is not logged in !important
          */
-        $cmd['cmd'] = (isset($_SESSION['userdata']) ? (isset($_REQUEST['cmd']) ? $_REQUEST['cmd'] : "menus") : "login");
+        $cmd['cmd'] = (isset($_SESSION['userdata']) ? (isset($_REQUEST['cmd']) ? $_REQUEST['cmd'] : "choose_edit_page") : "login");
 
         /*
          * Check if the command exists or not

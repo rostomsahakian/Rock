@@ -4,9 +4,49 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 ?>
+<div class="rock-top-footer">
+    <div class="container ">
+        <div class="row">
+            <div class="col-md-4">
+
+                <div class="rock-social-media-footer">
+                    <?php
+                    $social_media = $PAGEDATA->SetSocialMedia();
+                    $social_media = $PAGEDATA->getSocialMedia();
+                    if ($social_media != NULL) {
+                        foreach ($social_media as $sm) {
+                            ?> 
+                            <a href="<?= $sm['url'] ?>" alt="Social Media Icons" title="<?= $sm['image_name'] ?>" target="_blank"><img src="<?= $sm['image_url'] . "/" . $sm['image_name'] ?>" alt="" height="30" width="30"/></a>
+
+                            <?php
+                        }
+                    }
+                    ?>
+
+                </div>
+            </div>
+
+            <div class="col-md-4 rock-top-footer-newsletter">
+
+                <h4><i class="fa fa-envelope-o" aria-hidden="true"></i>&nbsp;&nbsp;Sign Up For Our NewsLetter</h4>
+            </div>
+
+            <div class="col-md-4 rock-top-footer-newsletter-form">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Your email address">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default rock-input-button" type="button">SIGN UP</button>
+                    </span>
+                </div><!-- /input-group -->
+            </div>
+        </div> 
+    </div>
+
+</div>
 <div class="footer-main-wrapper">
+
+
     <div class="container">
         <div class="row rock-footer-div">
             <!-- Mens-->
@@ -110,10 +150,62 @@
             }
             ?>
         </div>
-        <div class="rock-footer-all-rights"
-             <center>Your Website Name All Rights Reserved &reg; Powered By <a href="/rock.admin">GrowaRock</a></center>
+
+    </div>
+</div>
+<div class="rock-bottom-footer-div">
+    <div class="container">
+        <div class="row rock-bottom-row">
+
+            <div class="col-md-3">
+                <h4>GrowaRock</h4>
+                <ul>
+
+                    <li><a href="">Home</a></li>
+                    <li><a href="">About us</a></li>
+                    <li><a href="">Our History</a></li>
+                    <li><a href="">Our Staff</a></li>
+                    <li><a href="">Our Company</a></li>
+                    <li><a href="">Contact Us</a></li>
+
+
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <h4>Policies</h4>
+                <ul>
+                    <li><a href="">Shipping Policies</a></li>
+                    <li><a href="">Privacy Policies</a></li>
+                    <li><a href="">Return Policies</a></li>
+                    <li><a href="">Terms of Use</a></li>
+                    <li><a href="">FAQ'S</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3 rock-contact-us-footer">
+                <h4>Contact Us</h4>
+                <ul>
+                    <li><i class="fa fa-home" aria-hidden="true"></i>&nbsp;17941 Ventura Blvd #208,Encino CA 91316 US </li>
+                    <li><i class="fa fa-mobile" aria-hidden="true"></i>&nbsp;Telephone:(818) 538-4494 </li>
+                    <li><i class="fa fa-envelope" aria-hidden="true"></i>&nbsp; E-mail: support@growarock.com</li>
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <h4>Payment options</h4>
+                <ul class="rock-payment-options">
+                    <li><a href="#"><img src="/r.frontend/images/payment-visa.png"/></a></li>
+                    <li><a href="#"><img src="/r.frontend/images/payment-paypal.png"/></a></li>
+                    <li><a href="#"><img src="/r.frontend/images/payment-mastercard.png"/></a></li>
+                    <li><a href="#"><img src="/r.frontend/images/payment-ae.png"/></a></li>
+                    <li><a href="#"><img src="/r.frontend/images/payment-discover.png"/></a></li>
+                </ul>
+            </div>
+
         </div>
     </div>
+    <div class="rock-footer-all-rights"
+         <center>Your Website Name All Rights Reserved &reg; Powered By <a href="/rock.admin">GrowaRock</a></center>
+    </div>
+
 </div>
 <script>
 
@@ -210,7 +302,7 @@
 
 <script src="/rock.assets/js/bootstrap.min.js"></script>
 
-    <!-- Bootstrap Dropdown Hover JS -->
-    <script src="/r.frontend/js/bootstrap-dropdownhover.min.js"></script>
+<!-- Bootstrap Dropdown Hover JS -->
+<script src="/r.frontend/js/bootstrap-dropdownhover.min.js"></script>
 </body>
 </html>

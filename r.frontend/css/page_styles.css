@@ -261,8 +261,6 @@ span.rollover:hover {
 }
 .footer-main-wrapper{
     background-color: #000;
-    min-height: 500px;
-    margin-top: 10px;
 }
 .footer-main-wrapper ul{
     margin-top: 15px;
@@ -284,9 +282,17 @@ span.rollover:hover {
 .rock-footer-all-rights{
 
     text-align: center !important;
-    margin-top: 170px;
+    margin-top: 90px;
     color: #fff;
 
+
+}
+.rock-footer-all-rights a{
+    color: #DDDDDD !important;
+    text-decoration: underline;
+}
+.rock-footer-all-rights a:hover{
+    color:#EA3A3C;
 }
 .rock-list-group-heading{
     font-size: 13px !important;
@@ -296,11 +302,108 @@ span.rollover:hover {
     color: #fff;
     font-weight: bold;
     min-height: 51px;
-   
+
 }
 .rock-list-group-item{
     font-size: 13px !important;
 }
 .rock-item-page-title{
     margin-left: 100px;
+}
+.rock-top-footer{
+    margin-top: 50px;
+
+    background-color: #000;
+}
+.rock-top-footer a{
+    vertical-align: middle !important;
+}
+.rock-social-media-footer{
+    margin-top: 21px;
+}
+.rock-social-media-footer a img{
+    border:1px solid #fff !important;
+}
+.rock-social-media-footer a{
+    vertical-align: middle !important;
+    background-color: #fff;
+    padding-bottom: 6px !important;
+}
+.rock-top-footer-newsletter{
+    margin-top: 10px;
+    color:#fff;
+
+}
+.rock-top-footer-newsletter h4, i{
+    margin-top: 10px;
+}
+.rock-top-footer-newsletter-form {
+    margin-top: 21px;
+}
+
+.rock-input-button{
+    background-color: #EA3A3C !important;
+    border-color: #EA3A3C !important;
+    color: #fff !important;
+}
+.rock-contact-us-footer{
+    color:#fff;
+}
+.rock-bottom-footer-div{
+    background-color: #000;
+    border-top:1px solid #EA3A3C  !important;
+}
+.rock-bottom-footer-div a{
+    color: #fff;
+}
+.rock-bottom-footer-div ul{
+    list-style: none;
+}
+
+.rock-bottom-footer-div h4{
+    color:#fff;
+
+    margin-left: 35px;
+}
+.rock-payment-options ul{
+    list-style: none;
+}
+.rock-payment-options li{
+    display: inline-block;
+
+}
+.rock-payment-options li a img{
+    margin-top: 10px;
+}
+.rock-payment-options a img{
+    border:0px !important;
+}
+.rock-bottom-row{
+    margin-top:15px;
+}
+@media screen and (max-width: 768px) {
+    .rock-item-page-title{
+        margin-left: 0 !important;
+        text-align: center;
+        font-size: 15px !important;
+        font-weight: bold !important;
+    }
+}
+.rock-pagination{
+    border: 1px solid #ddd;
+    margin-bottom: 30px;
+    display: inline-block;
+    width: 100%;
+    padding: 6px;
+}
+.rock-pagination-top.pagination{
+    margin: 0px !important;
+}
+.rock-pagination-top{
+    max-height: 30px;
+    float: right;
+}
+.rock-top-filter-container{
+    width:88%;
+    margin-left: 16px;
 }

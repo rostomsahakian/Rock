@@ -35,6 +35,7 @@ include_once TEMPLATE_H_F_PATH . 'header.php';
                             $item_name = trim($items['item_name']);
                             $item_image = $items['item_image_url'];
                             $item_price = $items['price'];
+                            
                             /*
                              * Gender (if applicable)
                              */

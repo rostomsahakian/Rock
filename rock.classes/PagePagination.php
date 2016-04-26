@@ -78,7 +78,8 @@ class PagePagination {
         $html = '<ul class="' . $list_class . '">';
 
         $class = ( $this->ReturnPage() == 1 ) ? "disabled" : "";
-        $html .= '<li class="' . $class . '"><a href="?p=' . ( $this->ReturnPage() - 1 ) . '">&laquo;</a></li>';
+        $disabled = ( $this->ReturnPage() == 1 ) ? "onclick='return false'" : "";
+        $html .= '<li class="' . $class . '"><a href="?p=' . ( $this->ReturnPage() - 1 ) . '" '.$disabled.'>&laquo;</a></li>';
 
         if ($start > 1) {
             $html .= '<li><a href="?p=1">1</a></li>';
@@ -96,7 +97,8 @@ class PagePagination {
         }
 
         $class = ( $this->ReturnPage() == $last ) ? "disabled" : "";
-        $html .= '<li class="' . $class . '"><a href="?p=' . ( $this->ReturnPage() + 1 ) . '">&raquo;</a></li>';
+        $disabled =  ( $this->ReturnPage() == $last ) ? "onclick='return false'" : "";
+        $html .= '<li class="' . $class . '"><a href="?p=' . ( $this->ReturnPage() + 1 ) . '" '.$disabled.'>&raquo;</a></li>';
 
         $html .= '</ul>';
 

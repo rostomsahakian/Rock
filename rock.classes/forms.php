@@ -257,7 +257,7 @@ class forms {
                             if ($data['extras'] == '') {
                                 $data['extras'] = '[]';
                                 $_SESSION['userdata']['extras'] = json_decode($data['extras']);
-                                $this->login_redirect("?cmd=menus&option=true", "success");
+                                $this->login_redirect("?cmd=choose_edit_page&option=true", "success");
                             }
                         }
                     }

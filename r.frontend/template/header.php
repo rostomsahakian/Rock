@@ -67,7 +67,7 @@
         <link rel="stylesheet" href="<?= ABSOLUTH_PATH_OWL_CAR ?>owl.carousel.css" type="text/css"/>
         <link rel="stylesheet" href="<?= ABSOLUTH_PATH_OWL_CAR ?>owl.theme.css" type="text/css"/>
         <script src="<?= ABSOLUTH_PATH_OWL_CAR ?>owl.carousel.min.js" type="text/javascript"></script>
-        <link rel="stylesheet" href="<?php // $navcss  ?>" />
+        <link rel="stylesheet" href="<?php // $navcss    ?>" />
         <link rel="stylesheet" href="<?= $maincCSS ?>" />
         <link href="/r.frontend/css/megamenu.css" rel="stylesheet"/>
         <link href="web/css/style.css" rel="stylesheet" type="text/css" media="all"/>
@@ -112,10 +112,24 @@
         <!--ATTENTION--->
         <!--THIS IS WHERE YOU CAN CHANGE THE MAGNIFICATION OF ZOOM ON ITEM PAGE-->
         <script>
-            $(document).ready(function () {
-                $('#ex1').zoom({magnify: '1.5'});
+            $(document).mouseover(function () {
+                $('#ex1').zoom({magnify: '1.5', touch: false});
+
 
             });
+//            $(window).resize(function () {
+//                // This will execute whenever the window is resized
+//                $(window).height(); // New height
+//                $(window).width(); // New width
+//                if ($(window).width() < 768) {
+//                    console.log($(window).width());
+//                    jQuery('div.rock-item-page-image-div').attr("id", "ex2");
+//                } else {
+//                    jQuery('div.rock-item-page-image-div').attr("id", "ex1");
+//
+//                }
+//            });
+
         </script>
         <!--DO NOT REMOVE -->
     </head>

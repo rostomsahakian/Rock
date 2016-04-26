@@ -42,6 +42,7 @@ class Page {
     public $Navigation;
     public $_social_media = array();
     public $_footer_links = array();
+    public $_breadcrumb;
     /*
      * For Items
      */
@@ -82,6 +83,7 @@ class Page {
             $this->data = $this->queries->RetData();
 
             foreach ($this->data as $page_info) {
+                
                 $this->id = $page_info['id'];
                 $this->name = $page_info['name'];
                 $this->body = $page_info['body'];
@@ -126,6 +128,7 @@ class Page {
 
         $qs = $_SERVER['QUERY_STRING'];
         $get_childern = explode('/', $qs);
+//        var_dump($get_childern);
         /*
          * if page name is empty then page is home
          */
@@ -163,6 +166,7 @@ class Page {
             if ($this->data) {
                 $this->data = $this->queries->RetData();
                 foreach ($this->data as $page_info) {
+                    
                     $this->id = $page_info['id'];
                     $this->name = $page_info['name'];
                     $this->body = $page_info['body'];
@@ -183,7 +187,10 @@ class Page {
                 
             }
         } else {
-
+            
+            /*
+             * If last child is an id search by ID
+             */
 
             $sub_pages = $this->queries->GetData("pages", 'id', $data['last_child'], "0");
             $sub_pages = $this->queries->RetData();
@@ -207,7 +214,7 @@ class Page {
                     $this->vars = $page_info['vars'];
                 }
             } else {
-                /*
+                /* Page type 7
                  * Check if the model number is in the products page
                  */
                 $search_page = array(
@@ -303,7 +310,18 @@ class Page {
         }
     }
 
-    public function setBreadCrumb($page_name) {
+    public function setBreadCrumb($page_name = NULL) {
+        
+        if($page_name != NULL){
+            $bread_crumb_cut = substr($page_name,16);
+            $bread_crumb_built = explode("/", $bread_crumb_cut);
+            
+            
+            
+            
+            
+           // var_dump($bread_crumb_built);
+        }
         
     }
 

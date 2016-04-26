@@ -44,12 +44,14 @@ $PAGEDATA = new Page(); //New instance of page class
 if (!$page_id) {
 
     if ($page && $page_id == 0) {
-
+        $withand = (substr($child, 0, strpos($child, '&')) !="")? $child=substr($child, 0, strpos($child, '&')):$child;
+            
         $data_for_query = array(
             "main_node" => $parent,
-            "last_child" => $child,
+            "last_child" => $withand,
         );
 
+        
         /*
          * get instance by NAME
          */
@@ -57,6 +59,7 @@ if (!$page_id) {
         $PAGEDATA->type;
         $footer_data = $PAGEDATA->GetFooterData();
         $footer_data = $PAGEDATA->_footer_links;
+        $PAGEDATA->setBreadCrumb($_SERVER['QUERY_STRING']);
         switch ($PAGEDATA->type) {
             case "0": //Home Page Type
                 $template = THEME_DIR . '/' . THEME . '/html/_default.php';

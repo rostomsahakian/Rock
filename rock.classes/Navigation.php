@@ -237,7 +237,7 @@ class Navigation {
                                                 }
                                                 ?>
                                             </div>
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-6 rock-nav-side-image">
                                                 <?php
                                                 if ($child['image_name'] != NULL) {
                                                    $image_name = $child['image_name'][0]['image_name'];

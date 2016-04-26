@@ -13,15 +13,19 @@ include_once TEMPLATE_H_F_PATH . 'header.php';
         <div class="row">
             <div class="col-md-12">
                 <hr/>
-                <h1><?= str_replace("|" , " ", $page_title) ?></h1>
+                <h1><?= str_replace("|", " ", $page_title) ?></h1>
             </div>
             <div class="col-md-12 rock-items-col-12">
-                <div class="row">
-                    <?php
-                    foreach ($data['pagination'] as $pagination) {
-                        echo $pagination;
-                    }
-                    ?>
+                <div class="rock-top-filter-container">
+                    <div class="row">
+                        <div class="rock-pagination">
+                            <?php
+                            foreach ($data['pagination'] as $pagination) {
+                                echo $pagination;
+                            }
+                            ?>
+                        </div>
+                    </div>
                 </div>
 
                 <?php
@@ -75,13 +79,13 @@ include_once TEMPLATE_H_F_PATH . 'header.php';
                                 <div class="row">
 
 
-                                    <a href="<? ?>" class="rock-brand-in-box"><?= $brand ?></a>
+                                    <a href="<?= $brand_name ?>" class="rock-brand-in-box"><?= $brand ?></a>
                                     <a  href="<?= $gender . $category . $brand_name . "/" . $model_number ?>#<?= $clean_p_name ?> "  class="rock-product-link">
                                         <span class="rollover" >                                    
 
                                         </span>
                                     </a>
-                                    <img id="zoom_<?= $model_number ?>" src="<?= $item_image ?>"  title="<?= $brand." ".$item_name." ".$model_number ?>" class="rock-item-image">
+                                    <img id="zoom_<?= $model_number ?>" src="<?= $item_image ?>"  title="<?= $brand . " " . $item_name . " " . $model_number ?>" class="rock-item-image">
 
 
                                 </div>
