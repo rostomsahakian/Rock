@@ -21,11 +21,11 @@ include_once TEMPLATE_H_F_PATH . 'header.php';
 
                         $page_name = $brands_pages_name['page_name'];
                         $page_id = $brands_pages_name['id'];
-                        $page_name_no_spaces = str_replace(" ", "-", $page_name);
+                        $page_name_no_spaces = str_replace(" ", "-", strtolower($page_name));
                         $page_name_no_ands = str_replace("&", "and", $page_name_no_spaces);
                         $page_url_clean = preg_replace('/[^a-zA-Z0-9,-]/', "-", $page_name_no_ands);
                         ?>
-                        <a href="/<?= $page_url_clean . "/" . $page_id ?>" class="list-group-item rock-list-group-item"><?= $page_name ?></a>
+                        <a href="/<?= $page_url_clean ?>" class="list-group-item rock-list-group-item"><?= $page_name ?></a>
 
 
                         <?php
@@ -49,7 +49,7 @@ include_once TEMPLATE_H_F_PATH . 'header.php';
                     $item_price = $singles['price'];
 
                     $item_brand = $singles['brand'];
-                    $item_brand_no_spaces = str_replace(" ", "-", $item_brand);
+                    $item_brand_no_spaces = str_replace(" ", "-", strtolower($item_brand));
                     $item_brand_no_ands = str_replace("&", "and", $item_brand_no_spaces);
                     $item_brand_clean = preg_replace('/[^a-zA-Z0-9,-]/', "-", $item_brand_no_ands);
 

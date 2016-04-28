@@ -441,7 +441,7 @@ class queries {
                         return FALSE;
                     }
                     break;
-                    
+
                 case "22":
 
                     $sql = "SELECT * FROM `" . $table . "` WHERE `" . $fields['field1'] . "` = '" . $value['value1'] . "' LIMIT {$value['value3']} , {$value['value4']}";
@@ -456,6 +456,7 @@ class queries {
                     } else {
                         return false;
                     }
+                    break;
                 case "23":
 
                     $sql = "SELECT * FROM `" . $table . "` WHERE `" . $fields['field1'] . "` = '" . $value['value1'] . "'";
@@ -466,6 +467,21 @@ class queries {
                     } else {
                         return false;
                     }
+                    break;
+                case "24":
+
+                    $sql = "SELECT * FROM `" . $table . "` WHERE `" . $fields['field1'] . "` = '" . $value['value1'] . "' AND `" . $fields['field2'] . "` = '" . $value['value2'] . "'";
+                    $result = $this->_mysqli->query($sql);
+                    if ($result) {
+                        while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+
+                            $this->_res[] = $row;
+                        }
+                        return true;
+                    } else {
+                        return false;
+                    }
+                    break;
             }
         }
     }

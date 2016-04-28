@@ -68,7 +68,7 @@ include_once TEMPLATE_H_F_PATH . 'header.php';
                              */
                             $clear_url_spaces = str_replace(" ", "-", $items['item_name']);
                             $remove_ands = str_replace("&", "and", $clear_url_spaces);
-                            $clean_p_name = preg_replace('/[^a-zA-Z0-9,-]/', '-', strtolower($remove_ands));
+                            $clean_p_name = preg_replace('/[^a-zA-Z0-9,-,(,),.,\/, ]/', '-', strtolower($remove_ands));
                             ?>
 
                             <div class="col-md-4 rock-item-image-holder"> 

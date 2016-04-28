@@ -158,17 +158,23 @@ class Navigation {
                         <ul class="nav navbar-nav">
                             <?php
                             foreach ($this->GetNavUrls() as $no_child) {
-
+                                /*
+                                 * If the key does not exsist 
+                                 */
                                 if (!array_key_exists("sub_categories", $no_child)) {
 
-                                    $this->GetUrl($no_child['id']);
-                                    if ($no_child['parent'] == 0 || $no_child['parent'] == "0") {
-                                        $page_id_ext = "";
-                                    } else {
-                                        $page_id_ext = "/" . $no_child['id'];
-                                    }
+//                                    $this->GetUrl($no_child['id']);
+//                                    if ($no_child['parent'] == 0 || $no_child['parent'] == "0") {
+//                                        $page_id_ext = "";
+//                                    } else {
+//                                        $page_id_ext = "/" . $no_child['id'];
+//                                    }
+
+                                    $no_child_spaces = str_replace(" ", "-", strtolower($no_child['name']));
+                                    $no_child_ands = str_replace("&", "and", $no_child_spaces);
+                                    $no_child_alias = preg_replace('/[^a-zA-Z0-9,-]/', '-', $no_child_ands);
                                     ?>
-                                    <li ><a href="<?= $this->RetUrl() . $page_id_ext ?>"><?= $no_child['name'] ?></a></li>
+                                    <li ><a href="<?= "/" . $no_child_alias ?>"><?= $no_child['name'] ?></a></li>
                                     <?php
                                 } else {
                                     ?>
@@ -179,11 +185,14 @@ class Navigation {
                                             <div class="rock-drop-down-header-div">
                                                 <h4 class="rock-drop-down-header">
                                                     <?php
-                                                    $this->GetUrl($no_child['id']);
+//                                                    $this->GetUrl($no_child['id']);
+                                                    $with_child_spaces = str_replace(" ", "-", strtolower($no_child['name']));
+                                                    $with_child_ands = str_replace("&", "and", $with_child_spaces);
+                                                    $with_child_alias = preg_replace('/[^a-zA-Z0-9,-]/', '-', $with_child_ands);
                                                     ?>
 
 
-                                                    <a href="<?= $this->RetUrl() . "/" . $no_child['id'] ?>" title="<?= $no_child['name'] ?>" alt="<?= $no_child['name'] ?>">
+                                                    <a href="<?= "/" . $with_child_alias ?>" title="<?= $no_child['name'] ?>" alt="<?= $no_child['name'] ?>">
                                                         <?php
                                                         echo $no_child['name'];
                                                         ?>
@@ -217,22 +226,20 @@ class Navigation {
 
                                                         <div class="col-sm-6 rock-drop-down-link">
                                                             <?php
-                                                            $this->GetUrl($child['id']);
-                                                            if ($child['parent'] == 0 || $child['parent'] == "0") {
-                                                                $page_id_ext = "";
-                                                            } else {
-                                                                $page_id_ext = "/" . $child['id'];
-                                                            }
+//                                                            $this->GetUrl($child['id']);
+//                                                            if ($child['parent'] == 0 || $child['parent'] == "0") {
+//                                                                $page_id_ext = "";
+//                                                            } else {
+//                                                                $page_id_ext = "/" . $child['id'];
+//                                                            }
+                                                            $child_spaces = str_replace(" ", "-", strtolower($child['name']));
+                                                            $child_ands = str_replace("&", "and", $child_spaces);
+                                                            $child_alias = preg_replace('/[^a-zA-Z0-9,-]/', '-', $child_ands);
                                                             ?>
-                                                            <a href="<?= $this->RetUrl() . $page_id_ext ?>"><i class="fa fa-angle-double-right" aria-hidden="true"></i>&nbsp;<?= $child['name'] ?></a>
+                                                            <a href="<?= "/".$with_child_alias."/".$child_alias ?>"><i class="fa fa-angle-double-right" aria-hidden="true"></i>&nbsp;<?= $child['name'] ?></a>
 
                                                         </div>
-
-
                                                     </li>
-
-
-
                                                     <?php
                                                 }
                                                 ?>
@@ -240,11 +247,11 @@ class Navigation {
                                             <div class="col-sm-6 rock-nav-side-image">
                                                 <?php
                                                 if ($child['image_name'] != NULL) {
-                                                   $image_name = $child['image_name'][0]['image_name'];
-                                                   $image_path = $child['image_name'][0]['image_path'];
-                                                   ?>
-                                                <img src="<?= $image_path.$image_name ?>"/>
-                                                <?php
+                                                    $image_name = $child['image_name'][0]['image_name'];
+                                                    $image_path = $child['image_name'][0]['image_path'];
+                                                    ?>
+                                                    <img src="<?= $image_path . $image_name ?>"/>
+                                                    <?php
                                                 }
                                                 ?>
                                             </div>

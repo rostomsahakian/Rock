@@ -24,7 +24,12 @@ include_once TEMPLATE_H_F_PATH . 'header.php';
                     <div class="col-md-6 rock-item-page-details">
                         <div class="panel panel-default">
                             <!-- Default panel contents -->
-                            <div class="panel-heading"><?= $item_d['item_name'] ?><br/><span>by <a href="/<?= $item_d['brand'] ?>"><?= $item_d['brand'] ?></a></span></div>
+                            <?php
+                            $no_spaces = str_replace("", "-", strtolower($item_d['brand']));
+                            $no_ands = str_replace("&", "and", $no_spaces);
+                            $clean_name_for_url = preg_replace('/[^a-zA-Z0-9,-]/', '-',$no_ands);
+                            ?>
+                            <div class="panel-heading"><?= $item_d['item_name'] ?><br/><span>by <a href="/<?= $clean_name_for_url ?>"><?= $item_d['brand'] ?></a></span></div>
 
                             <!-- Price and Quantity -->
                             <div class="panel-body">

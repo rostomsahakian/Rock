@@ -83,7 +83,7 @@ class Page {
             $this->data = $this->queries->RetData();
 
             foreach ($this->data as $page_info) {
-                
+
                 $this->id = $page_info['id'];
                 $this->name = $page_info['name'];
                 $this->body = $page_info['body'];
@@ -151,22 +151,25 @@ class Page {
              * parent = node 1
              * child = n-th node
              */
+        } else if ($data['short_name'] != "") {
 
-            //echo $name;
-        } else if ($data['main_node'] == $data['last_child']) {
-            //echo $name;
-            $search_page = array(
-                "table" => "pages",
-                "fields" => "alias",
-                "value" => $data['main_node'],
-                "option" => "0"
+            $table = "pages";
+            $fields = array(
+                "field1" => "alias",
+                "field2" => "parent"
+            );
+            $values = array(
+                "value1" => $data['short_name'],
+                "value2" => "0"
             );
 
-            $this->data = $this->queries->GetData($search_page['table'], $search_page['fields'], $search_page['value'], $search_page['option']);
-            if ($this->data) {
-                $this->data = $this->queries->RetData();
+
+
+            $this->data = $this->queries->GetData($table, $fields, $values, "24");
+            $this->data = $this->queries->RetData();
+            if (count($this->data) > 0) {
                 foreach ($this->data as $page_info) {
-                    
+
                     $this->id = $page_info['id'];
                     $this->name = $page_info['name'];
                     $this->body = $page_info['body'];
@@ -184,14 +187,105 @@ class Page {
                     $this->vars = $page_info['vars'];
                 }
                 $nameIndex = preg_replace('#[^a-z0-9/]#', '-', $this->name);
-                
+            } else {
+                /*
+                 * If short name is not empty and the parent not equal to zero
+                 */
+                $table = "pages";
+                $field = "alias";
+                $value = $data['short_name'];
+                $option = "0";
+                $this->data = $this->queries->GetData($table, $field, $value, $option);
+                $this->data = $this->queries->RetData();
+                if (count($this->data) > 0) {
+                    foreach ($this->data as $page_info) {
+
+                        $this->id = $page_info['id'];
+                        $this->name = $page_info['name'];
+                        $this->body = $page_info['body'];
+                        $this->parent = $page_info['parent'];
+                        $this->order = $page_info['ord'];
+                        $this->cdate = $page_info['cdate'];
+                        $this->special = $page_info['special'];
+                        $this->edate = $page_info['edate'];
+                        $this->title = $page_info['title'];
+                        $this->template = $page_info['template'];
+                        $this->type = $page_info['type'];
+                        $this->keywords = $page_info['keywords'];
+                        $this->description = $page_info['description'];
+                        $this->associated_date = $page_info['associated_date'];
+                        $this->vars = $page_info['vars'];
+                    }
+                }
+            }
+            /*
+             * Imortant naming convention:
+             * page names and aliases must be alpha-numeric
+             * 
+             */
+        } else if ($data['short_name'] == NULL && $data['main_node'] != $data['last_child'] && !is_numeric($data['last_child'])) {
+            /*
+             * Find all its children then compare values if there is a match
+             * Fetch data
+             * first get the id of the main node  
+             */
+            $table = "pages";
+            $fields = array(
+                "field1" => "alias",
+                "field2" => "parent"
+            );
+            $values = array(
+                "value1" => $data['main_node'],
+                "value2" => "0"
+            );
+            $this->data = $this->queries->GetData($table, $fields, $values, "24");
+            $this->data = $this->queries->RetData();
+            if (count($this->data) > 0) {
+                foreach ($this->data as $p_data) {
+                    $main_node_id = $p_data['id'];
+                }
+                /*
+                 * Then find all the children 
+                 */
+                $search_pages = array(
+                    "table" => "pages",
+                    "field" => "parent",
+                    "value" => $main_node_id
+                );
+                $this->queries->_res = NULL;
+                $this->data = $this->queries->findChildren($search_pages, 2);
+                $this->data = $this->queries->RetData();
+                if (count($this->data) > 0) {
+
+                    foreach ($this->data as $page_info) {
+                        if ($page_info['alias'] == $data['last_child']) {
+                            $this->id = $page_info['id'];
+                            $this->name = $page_info['name'];
+                            $this->body = $page_info['body'];
+                            $this->parent = $page_info['parent'];
+                            $this->order = $page_info['ord'];
+                            $this->cdate = $page_info['cdate'];
+                            $this->special = $page_info['special'];
+                            $this->edate = $page_info['edate'];
+                            $this->title = $page_info['title'];
+                            $this->template = $page_info['template'];
+                            $this->type = $page_info['type'];
+                            $this->keywords = $page_info['keywords'];
+                            $this->description = $page_info['description'];
+                            $this->associated_date = $page_info['associated_date'];
+                            $this->vars = $page_info['vars'];
+                        } else {
+                            
+                        }
+                    }
+                }
             }
         } else {
-            
+
             /*
              * If last child is an id search by ID
              */
-
+            //var_dump($_REQUEST['page']);
             $sub_pages = $this->queries->GetData("pages", 'id', $data['last_child'], "0");
             $sub_pages = $this->queries->RetData();
             if (count($sub_pages) > 0) {
@@ -248,6 +342,8 @@ class Page {
                         $this->_band_id = $page_info['brand_id'];
                     }
                 } else {
+
+
                     echo 'page not found';
                 }
             }
@@ -311,18 +407,36 @@ class Page {
     }
 
     public function setBreadCrumb($page_name = NULL) {
-        
-        if($page_name != NULL){
-            $bread_crumb_cut = substr($page_name,16);
-            $bread_crumb_built = explode("/", $bread_crumb_cut);
-            
-            
-            
-            
-            
-           // var_dump($bread_crumb_built);
+
+        if ($page_name != NULL) {
+
+
+            $long_url_array = explode("/", $page_name);
+            $public_html = array_shift($long_url_array);
+            $url_depth = count($long_url_array);
+            $breadcrumb = array();
+            if ($url_depth == 1) {
+                foreach ($long_url_array as $b_link) {
+                    if ($b_link != "home") {
+                        $breadcrumb['active_link'] = array("home");
+                        $breadcrumb['inactive_link'] = $b_link;
+                     //   var_dump($breadcrumb);
+                    }
+                }
+            } else {
+
+                for ($i = 0; $i < ($url_depth - 1); $i++) {
+                    if ($long_url_array[$i] != $long_url_array[$url_depth - 1]) {
+                      
+                        $breadcrumb['active_link'] = $long_url_array[$i];
+                                                
+                    }
+                   // array_push($breadcrumb, $temp_array);
+                }
+                
+             //   var_dump($breadcrumb);
+            }
         }
-        
     }
 
     public function GetFooterData() {
@@ -354,23 +468,22 @@ class Page {
             $womens = array();
             $womens['womens'] = $get_womens_brands;
             array_push($footer_top_designers['w'], $womens);
-            
+
             $this->queries->_res = NULL;
             $get_boys_brands = $this->queries->GetData("brand_promotions", "gender", "Boys", "0");
             $get_boys_brands = $this->queries->RetData();
             $boys = array();
             $boys['boys'] = $get_boys_brands;
             array_push($footer_top_designers['b'], $boys);
-            
+
             $this->queries->_res = NULL;
             $get_girls_brands = $this->queries->GetData("brand_promotions", "gender", "Girls", "0");
             $get_girls_brands = $this->queries->RetData();
             $girls = array();
-            $girls['girls'] = $get_girls_brands;            
+            $girls['girls'] = $get_girls_brands;
             array_push($footer_top_designers['g'], $girls);
 
             array_push($this->_footer_links, $footer_top_designers);
-            
         } else {
 
 
@@ -385,8 +498,8 @@ class Page {
             $this->_footer_links = $get_designers;
         }
     }
-    
-    public function SetFooterData(){
+
+    public function SetFooterData() {
         return $this->_footer_links;
     }
 

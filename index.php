@@ -10,26 +10,69 @@
  */
 include_once 'rock.includes/common.php';
 $page = isset($_REQUEST['page']) ? $_REQUEST['page'] : '';
-$query_string = explode('/', $_SERVER['QUERY_STRING']);
-for ($i = 0; $i < count($query_string); $i++) {
-    
-}
 
-$child = $query_string[count($query_string) - 1]; //N-th node
-if (count($query_string) > 1) {
+$page_array = explode("/", $page); //turns the string into array
+$pop_first = array_shift($page_array); //takes out the public_html 
+$link_depth = count($page_array); // counts number of elements in that array
 
-    $parent = $query_string[1];
+
+/*
+ * if link depth is one thne it is a top level or short url alias
+ * www.sitename.com/page-name
+ */
+$page_data = array();
+if ($link_depth == 1) {
+
+    foreach ($page_array as $page_alias) {
+        
+    }
+  
 } else {
-    $parent = $child;
-}
-$page = str_replace('-', ' ', $page);
-$page = explode("/", $page);
+    /*
+     * Here we know that the pag must be a child of some page since its depth is greater than one
+     * www.sitename.com/parent-page/page-name
+     * mens/shoes/sport/...
+     * 0/1/2/...
+     */
+    for ($i = 0; $i < $link_depth; $i++) {
 
-foreach ($page as $page_name) {
-    
+        $main_parent = $page_array[0]; //Root we can find its id
+
+        /*
+         * once we find the id of the root parent
+         * we will look for its children
+         * if child alias is equal to the last node name then page is found 
+         */
+    }
+    //Last node on the request url
+    $last_node = $page_array[$link_depth - 1];
 }
-$page = substr($page_name, 12);
-$page = $page_name;
+
+//
+//$query_string = explode('/', $_SERVER['QUERY_STRING']);
+//for ($i = 0; $i < count($query_string); $i++) {
+//    
+//}
+//
+//$child = $query_string[count($query_string) - 1]; //N-th node
+//if (count($query_string) > 1) {
+//
+//    $parent = $query_string[1];
+//} else {
+//    $parent = $child;
+//}
+//$page = str_replace('-', ' ', $page);
+//$page = explode("/", $page);
+//
+//foreach ($page as $page_name) {
+//    
+//}
+//$page = substr($page_name, 12);
+//$page = $page_name;
+$page_alias_holder = ($page_alias != NULL)? $page_alias: '';
+$parent_alias_holder = ($main_parent != NULL)?$main_parent:'';
+$last_node_holder = ($last_node != NULL)?$last_node:'';
+
 $page_id = isset($_REQUEST['id']) ? $_REQUEST['id'] : 0; //By id
 
 $PAGEDATA = new Page(); //New instance of page class
@@ -44,14 +87,14 @@ $PAGEDATA = new Page(); //New instance of page class
 if (!$page_id) {
 
     if ($page && $page_id == 0) {
-        $withand = (substr($child, 0, strpos($child, '&')) !="")? $child=substr($child, 0, strpos($child, '&')):$child;
-            
+
         $data_for_query = array(
-            "main_node" => $parent,
-            "last_child" => $withand,
+            "main_node" => $parent_alias_holder,
+            "last_child" => $last_node_holder,
+            "short_name" => $page_alias_holder
         );
 
-        
+
         /*
          * get instance by NAME
          */
@@ -59,7 +102,7 @@ if (!$page_id) {
         $PAGEDATA->type;
         $footer_data = $PAGEDATA->GetFooterData();
         $footer_data = $PAGEDATA->_footer_links;
-        $PAGEDATA->setBreadCrumb($_SERVER['QUERY_STRING']);
+        $PAGEDATA->setBreadCrumb($_REQUEST['page']);
         switch ($PAGEDATA->type) {
             case "0": //Home Page Type
                 $template = THEME_DIR . '/' . THEME . '/html/_default.php';
