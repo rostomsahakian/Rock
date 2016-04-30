@@ -167,13 +167,19 @@
                              */##################################
                             case "choose_edit_page":
 
-                                if ($cmd['message'] != NULL) {
-
-                                    $flag = 1;
-                                    $pass_message = $this->_forms->ReturnMessages($cmd['message'], $flag);
+//                                if ($cmd['message'] != NULL) {
+//
+//                                    $flag = 1;
+//                                    $pass_message = $this->_forms->ReturnMessages($cmd['message'], $flag);
+//                                }
+//
+//                                $this->_forms->ListAllPagesOnMainContent($cmd['pages'], "0");
+                                if(isset($_REQUEST['parent'])){
+                                    $parent = $_REQUEST['parent'];
+                                }else{
+                                    $parent = "0";
                                 }
-
-                                $this->_forms->ListAllPagesOnMainContent($cmd['pages'], "0");
+                                $this->_Choosepage->DoShowTopLevelPages($parent);
 
                                 break;
                             /* #################################################

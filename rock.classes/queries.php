@@ -613,7 +613,7 @@ class queries {
 
             switch ($option) {
                 case "1":
-                    $sql = "SELECT `" . $data['select'] . "`, `parent` FROM `" . $data['table'] . "` WHERE `" . $data['field'] . "` = '" . (int) $data['value'] . "' ORDER BY `id` ASC";
+                    $sql = "SELECT `" . $data['select'] . "`, `parent`,`type` FROM `" . $data['table'] . "` WHERE `" . $data['field'] . "` = '" . (int) $data['value'] . "' ORDER BY `id` ASC";
 //                    var_dump($sql);
                     $result = $this->_mysqli->query($sql);
                     $row = $result->fetch_array(MYSQLI_ASSOC);
@@ -878,10 +878,16 @@ class queries {
 
                 case "2":
                     $sql = "DELETE FROM `" . $to_delete['table'] . "` WHERE `" . $to_delete['field1'] . "` = '" . $to_delete['value1'] . "'";
-
+                   
                     $result = $this->_mysqli->query($sql);
                     if ($result) {
                         return true;
+                    }
+                    break;
+
+                case "3":
+                    for ($i = 0; $i < count($to_delete['tables']); $i++) {
+                        $sql = "DELETE FROM `" . $to_delete['tables'][$i] . "` WHERE `" . $to_delete['fields'][$i] . "` = '" . $to_delete['value'][$i] . "'";
                     }
                     break;
             }

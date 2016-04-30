@@ -21,6 +21,7 @@ class BackendController {
     public $_queries;
     public $_page_list = array();
     public $_nav_promo;
+    public $_Choosepage;
     public $_promotions;
 
     /*
@@ -33,6 +34,7 @@ class BackendController {
         $this->_queries = new queries();
         $this->_promotions = new promotions();
         $this->_nav_promo = new NavPromotions();
+        $this->_Choosepage = new Choosepages();
         if (isset($_POST['brand'])) {
 
             $this->_promotions->InsertTopDesigners($_POST);

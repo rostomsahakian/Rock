@@ -372,7 +372,6 @@ class forms {
                                         <li aria-controls="f_pass" role="tab" ><a href="/rock.admin/?cmd=edit_page#tabs-advanced-options" data-toggle="tab">Advanced Options</a></li>
                                         <li aria-controls="f_pass" role="tab" ><a href="/rock.admin/?cmd=edit_page#tabs-images" data-toggle="tab">Images</a></li>
                                         <li aria-controls="f_pass" role="tab" ><a href="/rock.admin/?cmd=edit_page#tabs-files" data-toggle="tab">Files</a></li>
-                                        <li aria-controls="f_pass" role="tab" ><a href="/rock.admin/?cmd=edit_page#sub-pages" data-toggle="tab">Sub-pages</a></li>
                                         <!--add plugin tabs here-->
                                         <li class=""> </li>
                                     </ul>
@@ -968,75 +967,7 @@ class forms {
                                     <!--END Files Tab->
                                     <!--****-->
                                     <!--****-->
-                                    <!--Sub-pages Tab -->
-                                    <!--Sub-pages part starts-->
-                                    <?php
-                                    ?>
-
-                                    <div class="tab-pane" id="sub-pages">
-                                        <div class="col-md-12">
-                                            <div class="row" style="margin-top:5px; ">
-                                                <div class="panel panel-default">
-                                                    <div class="panel-heading"><span>Sub-Pages</span></div>
-                                                    <div class="panel-body">
-                                                        <?php
-                                                        $this->_queries->_res = NULL;
-                                                        $find_count_sub_children = $this->_queries->GetData("pages", 'parent', $this->_editFormData['id'], "0");
-                                                        $find_count_sub_children = $this->_queries->RetData();
-
-                                                        $num = count($find_count_sub_children);
-
-                                                        if ($sub_pages_data == NULL) {
-
-                                                            $this->_queries->_res = NULL;
-                                                            $data_for_listing = $this->_queries->GetData("pages", NULL, NULL, "3");
-                                                            $data_for_listing = $this->_queries->RetData();
-
-
-                                                            if ($num != "0") {
-
-                                                                $child_pages = $this->ListAllPagesOnMainContent($data_for_listing, $this->_editFormData['parent']);
-                                                            } else if ($num == "0" && $this->_editFormData['type'] == "5") {
-                                                                /*
-                                                                 * Find products from all products where columns match
-                                                                 * 1.parent name
-                                                                 * 2.category
-                                                                 * 3.gender
-                                                                 */
-
-                                                                $all_products = $this->ListAllItemsFromDB($this->_editFormData['name'], $this->_editFormData['parent']);
-                                                                //var_dump($all_products);
-                                                                $list_items_details_form = $this->ListItemsDetailsForm($all_products, $this->_editFormData['name']);
-                                                            }
-                                                        } else {
-
-                                                            if ($num != "0") {
-
-                                                                $child_pages = $this->ListAllPagesOnMainContent($sub_pages_data, $this->_editFormData['id']);
-                                                            } else if ($num == "0" && $this->_editFormData['type'] == "5") {
-
-                                                                /*
-                                                                 * Find products from all products where columns match
-                                                                 * 1.parent name
-                                                                 * 2.category
-                                                                 * 3.gender
-                                                                 */
-
-                                                                $all_products = $this->ListAllItemsFromDB($this->_editFormData['name'], $this->_editFormData['parent']);
-
-                                                                $list_items_details_form = $this->ListItemsDetailsForm($all_products, $this->_editFormData['name']);
-                                                            }
-                                                        }
-                                                        ?>
-
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <?php ?>
-                                    <!--Sub pages ends-->
+                       
                                 </div>
                             </div>
                         </div>
